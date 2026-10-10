@@ -288,7 +288,7 @@
         </div>
         <div id="loginAlert" class="alert alert-danger py-2 d-none small mb-3">الحساب أو الرمز غير صحيح!</div>
         <button type="submit" id="loginBtn" class="btn btn-action-save w-100 py-2 fs-6">
-          <i class="fa-solid fa-right-to-bracket me-1"></i> دخول سريع للنظام
+          <i class="fa-solid fa-right-to-bracket me-1"></i> دخول للنظام الفوري
         </button>
       </form>
     </div>
@@ -305,7 +305,7 @@
         <h3 class="brand-title mb-1" id="mainHeaderTitle"><i class="fa-solid fa-wifi me-2"></i>حسين لخدمات الإنترنت</h3>
         <div class="d-flex align-items-center gap-2 flex-wrap">
           <span class="owner-badge" id="currentUserBadge"><i class="fa-solid fa-user-shield"></i> إدارة: حسين عبد المجيد</span>
-          <span class="developer-tag" id="syncStatusTag"><i class="fa-solid fa-bolt text-warning"></i> متصل سحابياً</span>
+          <span class="developer-tag" id="syncStatusTag"><i class="fa-solid fa-bolt text-warning"></i> متصل بالسحابة</span>
         </div>
       </div>
       
@@ -660,7 +660,11 @@
 
     const activeSession = localStorage.getItem('hussain_active_session');
     if (activeSession) {
-      loginUserInstant();
+      document.getElementById('authScreen').classList.add('d-none');
+      document.getElementById('mainContent').classList.remove('d-none');
+      loadLocalData();
+      renderAllTables();
+      fetchCloudDataBackground();
     }
     updateCategoryLabels();
   });
@@ -708,23 +712,14 @@
 
     if ((user === ADMIN_USER && pass === ADMIN_PASS) || user !== "") {
       localStorage.setItem('hussain_active_session', 'true');
-      loginUserInstant();
+      document.getElementById('authScreen').classList.add('d-none');
+      document.getElementById('mainContent').classList.remove('d-none');
+      loadLocalData();
+      renderAllTables();
+      fetchCloudDataBackground();
     } else {
       document.getElementById('loginAlert').classList.remove('d-none');
     }
-  }
-
-  function loginUserInstant() {
-    // فتح الواجهة بشكل فوري وصاروخي بدون أي انتظار
-    document.getElementById('authScreen').classList.add('d-none');
-    document.getElementById('mainContent').classList.remove('d-none');
-    
-    // تحميل البيانات محلياً أولاً
-    loadLocalData();
-    renderAllTables();
-
-    // جلب البيانات من السحابة في الخلفية بهدوء تامة
-    fetchCloudDataBackground();
   }
 
   function loadLocalData() {
@@ -754,14 +749,9 @@
 
         localStorage.setItem('hussain_cloud_cache', JSON.stringify(data));
         renderAllTables();
-        const tag = document.getElementById('syncStatusTag');
-        if(tag) tag.innerHTML = `<i class="fa-solid fa-cloud-check text-success"></i> متصل بالسحابة`;
       }
     })
-    .catch(err => {
-      const tag = document.getElementById('syncStatusTag');
-      if(tag) tag.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-warning"></i> وضع محلي (غير متصل)`;
-    });
+    .catch(err => console.error(err));
   }
 
   function saveData() {
@@ -773,7 +763,6 @@
     localStorage.setItem('hussain_cloud_cache', JSON.stringify(payload));
     renderAllTables();
 
-    // حفظ في السحابة بالخلفية
     fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
       method: 'PUT',
       headers: {
@@ -781,13 +770,7 @@
         'X-Master-Key': MASTER_KEY
       },
       body: JSON.stringify(payload)
-    }).then(() => {
-      const tag = document.getElementById('syncStatusTag');
-      if(tag) tag.innerHTML = `<i class="fa-solid fa-cloud-check text-success"></i> تم الحفظ بالسحابة`;
-    }).catch(err => {
-      const tag = document.getElementById('syncStatusTag');
-      if(tag) tag.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-danger"></i> خطأ بالحفظ السحابي`;
-    });
+    }).catch(err => console.error(err));
   }
 
   function manualSaveAlert() {
