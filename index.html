@@ -414,7 +414,7 @@
     </div>
   </div>
 
-  <!-- لوحة تفعيل اشتراك سريع مع اختيار القسم -->
+  <!-- لوحة تفعيل اشتراك سريع المحدثة مع اختيار القسم التابع له -->
   <div class="activation-box mb-4">
     <h6 class="fw-bold text-info mb-3"><i class="fa-solid fa-bolt me-2"></i>تسجيل وتفعيل اشتراك (نقد / فقد):</h6>
     <form onsubmit="registerActivation(event)" class="row g-2 align-items-center">
@@ -701,7 +701,7 @@
 
 <script>
   const ADMIN_EMAIL = "huzt.m1@gmail.com";
-  const ADMIN_PASS = "huzt19721972";
+  const ADMIN_PASS = "Huzt19721972";
   const PERMANENT_ACTIVATION_CODE = "2031988";
 
   let currentUserKey = "";
@@ -764,15 +764,15 @@
   function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-    const pass = document.getElementById('loginPass').value.trim().toLowerCase();
+    const pass = document.getElementById('loginPass').value.trim();
 
-    if (email === ADMIN_EMAIL.toLowerCase() && (pass === "huzt19721972" || pass === "19721972")) {
+    if (email === ADMIN_EMAIL.toLowerCase() && (pass === ADMIN_PASS || pass.toLowerCase() === ADMIN_PASS.toLowerCase() || pass === "19721972")) {
       loginUser(ADMIN_EMAIL, true, Date.now());
       return;
     }
 
     const usersDb = JSON.parse(localStorage.getItem('hussain_users_db')) || {};
-    if (usersDb[email] && usersDb[email].pass.toLowerCase() === pass) {
+    if (usersDb[email] && usersDb[email].pass === pass) {
       loginUser(email, usersDb[email].isPermanent, usersDb[email].loginTime || Date.now());
     } else {
       document.getElementById('loginAlert').classList.remove('d-none');
