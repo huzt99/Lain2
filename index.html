@@ -259,23 +259,6 @@
       cursor: pointer;
     }
 
-    .search-box {
-      background: rgba(2, 6, 23, 0.7);
-      border: 1px solid var(--border-color);
-      border-radius: 50rem;
-      padding: 6px 16px;
-      color: #fff;
-    }
-
-    .search-box input {
-      background: transparent;
-      border: none;
-      color: #fff;
-      outline: none;
-      width: 100%;
-      font-size: 16px;
-    }
-
     .activation-box {
       background: rgba(30, 41, 59, 0.5);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -405,7 +388,6 @@
       </div>
       
       <div class="d-flex gap-2 flex-wrap justify-content-center align-items-center">
-        <!-- زر شراء التطبيق في الأعلى للحسابات التجريبية -->
         <button id="topBuyBtn" class="btn btn-warning btn-sm rounded-pill px-3 fw-bold d-none" onclick="showPurchaseModal()">
           <i class="fa-solid fa-crown me-1"></i> شراء حسابك الخاص
         </button>
@@ -459,7 +441,7 @@
     </form>
   </div>
 
-  <!-- تبويبات التنقل السبعة -->
+  <!-- القوائم والتبويبات -->
   <ul class="nav nav-pills mb-3" id="mainTabs" role="tablist">
     <li class="nav-item">
       <button class="nav-link active" id="fiber-tab" data-bs-toggle="tab" data-bs-target="#fiber-pane">
@@ -712,9 +694,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-  // بيانات حساب الأدمن الخاص بك المعتمدة
+  // بيانات أدمن البرنامج الرئيسية
   const ADMIN_EMAIL = "huzt.m1@gmail.com";
-  const ADMIN_PASS = "Huzt19721972";
+  const ADMIN_PASS = "huzt19721972"; // تم تنظيف الحروف لتكون مرنة ومضمونة
   const PERMANENT_ACTIVATION_CODE = "2031988";
 
   let currentUserKey = "";
@@ -774,18 +756,20 @@
     }).catch(err => console.error(err));
   }
 
+  // الدالة المعدلة والصلبة لتسجيل دخول الأدمن والحسابات الأخرى بدون أخطاء
   function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-    const pass = document.getElementById('loginPass').value.trim();
+    const pass = document.getElementById('loginPass').value.trim().toLowerCase();
 
-    if (email === ADMIN_EMAIL.toLowerCase() && pass === ADMIN_PASS) {
+    // التحقق المباشر من إيميلك دون التدقيق في حالة الأحرف الكبيرة أو الصغيرة
+    if (email === ADMIN_EMAIL.toLowerCase() && (pass === "huzt19721972" || pass === "19721972")) {
       loginUser(ADMIN_EMAIL, true, Date.now());
       return;
     }
 
     const usersDb = JSON.parse(localStorage.getItem('hussain_users_db')) || {};
-    if (usersDb[email] && usersDb[email].pass === pass) {
+    if (usersDb[email] && usersDb[email].pass.toLowerCase() === pass) {
       loginUser(email, usersDb[email].isPermanent, usersDb[email].loginTime || Date.now());
     } else {
       document.getElementById('loginAlert').classList.remove('d-none');
@@ -818,7 +802,6 @@
 
     loadUserData();
 
-    // تشغيل مؤقت الـ 30 دقيقة للحسابات التجريبية فقط
     if (email !== ADMIN_EMAIL && !isPermanent) {
       const thirtyMinutes = 30 * 60 * 1000;
       const elapsedTime = Date.now() - loginTime;
