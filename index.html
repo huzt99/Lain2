@@ -288,7 +288,7 @@
         </div>
         <div id="loginAlert" class="alert alert-danger py-2 d-none small mb-3">الحساب أو الرمز غير صحيح!</div>
         <button type="submit" id="loginBtn" class="btn btn-action-save w-100 py-2 fs-6">
-          <i class="fa-solid fa-right-to-bracket me-1"></i> دخول للنظام الفوري
+          <i class="fa-solid fa-right-to-bracket me-1"></i> دخول سريع للنظام
         </button>
       </form>
     </div>
@@ -305,7 +305,7 @@
         <h3 class="brand-title mb-1" id="mainHeaderTitle"><i class="fa-solid fa-wifi me-2"></i>حسين لخدمات الإنترنت</h3>
         <div class="d-flex align-items-center gap-2 flex-wrap">
           <span class="owner-badge" id="currentUserBadge"><i class="fa-solid fa-user-shield"></i> إدارة: حسين عبد المجيد</span>
-          <span class="developer-tag" id="syncStatusTag"><i class="fa-solid fa-bolt text-warning"></i> جاهز وسريع</span>
+          <span class="developer-tag" id="syncStatusTag"><i class="fa-solid fa-bolt text-warning"></i> متصل سحابياً</span>
         </div>
       </div>
       
@@ -660,7 +660,7 @@
 
     const activeSession = localStorage.getItem('hussain_active_session');
     if (activeSession) {
-      loginUser();
+      loginUserInstant();
     }
     updateCategoryLabels();
   });
@@ -708,21 +708,22 @@
 
     if ((user === ADMIN_USER && pass === ADMIN_PASS) || user !== "") {
       localStorage.setItem('hussain_active_session', 'true');
-      loginUser();
+      loginUserInstant();
     } else {
       document.getElementById('loginAlert').classList.remove('d-none');
     }
   }
 
-  function loginUser() {
+  function loginUserInstant() {
+    // فتح الواجهة بشكل فوري وصاروخي بدون أي انتظار
     document.getElementById('authScreen').classList.add('d-none');
     document.getElementById('mainContent').classList.remove('d-none');
     
-    // تحميل سريع محلي أولاً لتفتح اللوحة فوراً بدون انتظار
+    // تحميل البيانات محلياً أولاً
     loadLocalData();
     renderAllTables();
 
-    // جلب البيانات من السحابة في الخلفية بهدوء
+    // جلب البيانات من السحابة في الخلفية بهدوء تامة
     fetchCloudDataBackground();
   }
 
@@ -736,14 +737,13 @@
     paidActivations = data.paid || [];
   }
 
-  async function fetchCloudDataBackground() {
-    try {
-      let res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: { 'X-Master-Key': MASTER_KEY }
-      });
-      let json = await res.json();
+  function fetchCloudDataBackground() {
+    fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+      headers: { 'X-Master-Key': MASTER_KEY }
+    })
+    .then(res => res.json())
+    .then(json => {
       let data = json.record || {};
-
       if (data && Object.keys(data).length > 0) {
         fiberData = data.fiber || [];
         earthData = data.earth || [];
@@ -754,11 +754,14 @@
 
         localStorage.setItem('hussain_cloud_cache', JSON.stringify(data));
         renderAllTables();
-        document.getElementById('syncStatusTag').innerHTML = `<i class="fa-solid fa-cloud-check text-success"></i> متصل بالسحابة`;
+        const tag = document.getElementById('syncStatusTag');
+        if(tag) tag.innerHTML = `<i class="fa-solid fa-cloud-check text-success"></i> متصل بالسحابة`;
       }
-    } catch (err) {
-      document.getElementById('syncStatusTag').innerHTML = `<i class="fa-solid fa-triangle-exclamation text-warning"></i> وضع غير متصل (محلي)`;
-    }
+    })
+    .catch(err => {
+      const tag = document.getElementById('syncStatusTag');
+      if(tag) tag.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-warning"></i> وضع محلي (غير متصل)`;
+    });
   }
 
   function saveData() {
@@ -779,9 +782,11 @@
       },
       body: JSON.stringify(payload)
     }).then(() => {
-      document.getElementById('syncStatusTag').innerHTML = `<i class="fa-solid fa-cloud-check text-success"></i> تم الحفظ بالسحابة`;
+      const tag = document.getElementById('syncStatusTag');
+      if(tag) tag.innerHTML = `<i class="fa-solid fa-cloud-check text-success"></i> تم الحفظ بالسحابة`;
     }).catch(err => {
-      document.getElementById('syncStatusTag').innerHTML = `<i class="fa-solid fa-triangle-exclamation text-danger"></i> خطأ بالحفظ السحابي`;
+      const tag = document.getElementById('syncStatusTag');
+      if(tag) tag.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-danger"></i> خطأ بالحفظ السحابي`;
     });
   }
 
@@ -890,6 +895,7 @@
 
   function renderFiberTable() {
     const tbody = document.getElementById('fiberTbody');
+    if(!tbody) return;
     tbody.innerHTML = '';
     fiberData.forEach((item, index) => {
       let expDate = calculateExpiryDate(item.actDay, item.actMonth, item.actYear);
@@ -910,6 +916,7 @@
 
   function renderEarthTable() {
     const tbody = document.getElementById('earthTbody');
+    if(!tbody) return;
     tbody.innerHTML = '';
     earthData.forEach((item, index) => {
       let expDate = calculateExpiryDate(item.actDay, item.actMonth, item.actYear);
@@ -930,6 +937,7 @@
 
   function renderSpeedTable() {
     const tbody = document.getElementById('speedTbody');
+    if(!tbody) return;
     tbody.innerHTML = '';
     speedData.forEach((item, index) => {
       let expDate = calculateExpiryDate(item.actDay, item.actMonth, item.actYear);
