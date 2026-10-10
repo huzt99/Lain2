@@ -237,6 +237,11 @@
       background-color: #020617 !important;
     }
 
+    .table-input option {
+      background-color: #0f172a !important;
+      color: #ffffff !important;
+    }
+
     .btn-action-add {
       background: linear-gradient(135deg, #10b981, #059669);
       color: #fff;
@@ -296,7 +301,6 @@
     </ul>
 
     <div class="tab-content" id="authTabsContent">
-      <!-- تسجيل الدخول -->
       <div class="tab-pane fade show active" id="loginTabPane">
         <form onsubmit="handleLogin(event)">
           <div class="mb-2 text-start">
@@ -314,7 +318,6 @@
         </form>
       </div>
 
-      <!-- حساب جديد -->
       <div class="tab-pane fade" id="registerTabPane">
         <form onsubmit="handleRegister(event)">
           <div class="mb-2 text-start">
@@ -337,7 +340,7 @@
   </div>
 </div>
 
-<!-- Modal شراء الحساب عند انتهاء الـ 30 دقيقة -->
+<!-- Modal شراء الحساب -->
 <div class="modal fade" id="purchaseModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-content-custom text-center p-3">
@@ -411,7 +414,7 @@
     </div>
   </div>
 
-  <!-- لوحة تفعيل اشتراك سريع -->
+  <!-- لوحة تفعيل اشتراك سريع مع اختيار القسم -->
   <div class="activation-box mb-4">
     <h6 class="fw-bold text-info mb-3"><i class="fa-solid fa-bolt me-2"></i>تسجيل وتفعيل اشتراك (نقد / فقد):</h6>
     <form onsubmit="registerActivation(event)" class="row g-2 align-items-center">
@@ -422,7 +425,11 @@
         <input type="text" id="actUser" class="form-control table-input" placeholder="يوزر المشترك" required>
       </div>
       <div class="col-6 col-md-2">
-        <input type="text" id="actCategory" class="form-control table-input" placeholder="فئة الاشتراك">
+        <select id="actSection" class="form-select table-input" required>
+          <option value="fiber">الكابل الضوئي</option>
+          <option value="earth">أبراج إيرثلنك</option>
+          <option value="speed">أبراج سبيد</option>
+        </select>
       </div>
       <div class="col-6 col-md-2">
         <input type="number" id="actAmount" class="form-control table-input" placeholder="المبلغ (د.ع)" required>
@@ -441,7 +448,7 @@
     </form>
   </div>
 
-  <!-- القوائم والتبويبات -->
+  <!-- التبويبات -->
   <ul class="nav nav-pills mb-3" id="mainTabs" role="tablist">
     <li class="nav-item">
       <button class="nav-link active" id="fiber-tab" data-bs-toggle="tab" data-bs-target="#fiber-pane">
@@ -480,7 +487,7 @@
     </li>
   </ul>
 
-  <!-- محتوى الشاشات -->
+  <!-- المحتوى -->
   <div class="tab-content" id="mainTabsContent">
 
     <!-- 1. الكابل الضوئي -->
@@ -502,7 +509,6 @@
                 <th>اليوزر</th>
                 <th>الفئة</th>
                 <th>المبلغ</th>
-                <th>سيريال</th>
                 <th>تاريخ التفعيل</th>
                 <th>تاريخ الانتهاء</th>
                 <th>إجراء</th>
@@ -577,7 +583,7 @@
     <!-- السجل الشامل -->
     <div class="tab-pane fade" id="all-pane">
       <div class="content-card">
-        <h5 class="fw-bold text-warning mb-3"><i class="fa-solid fa-users-rectangle me-2"></i>السجل الشامل لجميع الاشتراكات</h5>
+        <h5 class="fw-bold text-warning mb-3"><i class="fa-solid fa-users-rectangle me-2"></i>السجل الشامل لجميع المشتركين</h5>
         <div class="table-responsive">
           <table class="table table-dark-custom text-center align-middle">
             <thead>
@@ -694,9 +700,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-  // بيانات أدمن البرنامج الرئيسية
   const ADMIN_EMAIL = "huzt.m1@gmail.com";
-  const ADMIN_PASS = "huzt19721972"; // تم تنظيف الحروف لتكون مرنة ومضمونة
+  const ADMIN_PASS = "huzt19721972";
   const PERMANENT_ACTIVATION_CODE = "2031988";
 
   let currentUserKey = "";
@@ -756,13 +761,11 @@
     }).catch(err => console.error(err));
   }
 
-  // الدالة المعدلة والصلبة لتسجيل دخول الأدمن والحسابات الأخرى بدون أخطاء
   function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value.trim().toLowerCase();
     const pass = document.getElementById('loginPass').value.trim().toLowerCase();
 
-    // التحقق المباشر من إيميلك دون التدقيق في حالة الأحرف الكبيرة أو الصغيرة
     if (email === ADMIN_EMAIL.toLowerCase() && (pass === "huzt19721972" || pass === "19721972")) {
       loginUser(ADMIN_EMAIL, true, Date.now());
       return;
@@ -926,17 +929,38 @@
     e.preventDefault();
     const name = document.getElementById('actName').value.trim();
     const user = document.getElementById('actUser').value.trim();
-    const cat = document.getElementById('actCategory').value.trim();
+    const section = document.getElementById('actSection').value;
     const price = document.getElementById('actAmount').value.trim();
     const type = document.getElementById('actType').value;
 
     const now = new Date();
     const dateStr = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
 
-    const item = { id: Date.now(), name, user, cat, price, date: dateStr };
+    const newItem = {
+      id: Date.now(),
+      name: name,
+      user: user,
+      cat: section === 'fiber' ? categories.cat1 : (section === 'earth' ? categories.cat2 : categories.cat3),
+      price: price,
+      actDay: now.getDate(),
+      actMonth: now.getMonth() + 1,
+      actYear: 2026,
+      date: dateStr
+    };
 
-    if (type === 'نقد') cashActivations.unshift(item);
-    else debtActivations.unshift(item);
+    if (section === 'fiber') {
+      fiberData.unshift(newItem);
+    } else if (section === 'earth') {
+      earthData.unshift(newItem);
+    } else if (section === 'speed') {
+      speedData.unshift(newItem);
+    }
+
+    if (type === 'نقد') {
+      cashActivations.unshift(newItem);
+    } else {
+      debtActivations.unshift(newItem);
+    }
 
     saveData();
     renderAllTables();
@@ -945,12 +969,13 @@
     const tgMsg = `🔔 <b>إشعار تفعيل جديد (${type})</b>\n\n` +
                   `👤 <b>الاسم:</b> ${name}\n` +
                   `🆔 <b>اليوزر:</b> ${user}\n` +
+                  `🏢 <b>القسم:</b> ${newItem.cat}\n` +
                   `💰 <b>المبلغ:</b> ${price} د.ع\n` +
                   `💳 <b>طريقة الدفع:</b> ${type}\n` +
                   `⏰ <b>الوقت:</b> ${dateStr}`;
     sendTelegramNotification(tgMsg);
 
-    alert("تم تسجيل التفعيل وإرسال الإشعار بنجاح!");
+    alert("تم تسجيل وتفعيل المشترك وإرسال الإشعار بنجاح!");
   }
 
   function renderFiberTable() {
@@ -965,7 +990,6 @@
           <td><input class="form-control table-input" value="${item.user}"></td>
           <td><input class="form-control table-input" value="${item.cat}"></td>
           <td><input class="form-control table-input" value="${item.price}"></td>
-          <td><input class="form-control table-input" value="${item.serial || ''}"></td>
           <td>${item.actDay || 1}/${item.actMonth || 1}/${item.actYear || 2026}</td>
           <td class="text-danger fw-bold">${expDate}</td>
           <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(fiberData, ${item.id}, renderFiberTable)"><i class="fa-solid fa-trash"></i></button></td>
@@ -1014,11 +1038,85 @@
     });
   }
 
+  function renderCashTable() {
+    const tbody = document.getElementById('cashTbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    cashActivations.forEach((item, index) => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.name}</td>
+          <td>${item.user}</td>
+          <td>${item.cat}</td>
+          <td>${item.price} د.ع</td>
+          <td>${item.date}</td>
+          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(cashActivations, ${item.id}, renderCashTable)"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+      `;
+    });
+  }
+
+  function renderDebtTable() {
+    const tbody = document.getElementById('debtTbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    debtActivations.forEach((item, index) => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.name}</td>
+          <td>${item.user}</td>
+          <td>${item.cat}</td>
+          <td>${item.price} د.ع</td>
+          <td>${item.date}</td>
+          <td><button class="btn btn-success btn-sm rounded-pill px-3" onclick="payDebt(${item.id})">تسديد</button></td>
+          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(debtActivations, ${item.id}, renderDebtTable)"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+      `;
+    });
+  }
+
+  function renderPaidTable() {
+    const tbody = document.getElementById('paidTbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    paidActivations.forEach((item, index) => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.name}</td>
+          <td>${item.user}</td>
+          <td>${item.cat}</td>
+          <td>${item.price} د.ع</td>
+          <td>${item.type || 'تسديد'}</td>
+          <td>${item.date}</td>
+        </tr>
+      `;
+    });
+  }
+
+  function payDebt(id) {
+    const idx = debtActivations.findIndex(x => x.id === id);
+    if (idx !== -1) {
+      let item = debtActivations.splice(idx, 1)[0];
+      item.type = "تسديد دين (فقد)";
+      paidActivations.unshift(item);
+      saveData();
+      renderDebtTable();
+      renderPaidTable();
+      alert("تم تسديد المبلغ بنجاح ونقله إلى سجل المبالغ المسددة!");
+    }
+  }
+
   function renderAllTables() {
     renderFiberTable();
     renderEarthTable();
     renderSpeedTable();
     renderAllRecordTable();
+    renderCashTable();
+    renderDebtTable();
+    renderPaidTable();
   }
 
   function renderAllRecordTable() {
@@ -1049,16 +1147,16 @@
   }
 
   function addFiberRow() {
-    fiberData.push({ id: Date.now(), name: 'مشترك جديد', user: '', cat: '', price: '', actDay: new Date().getDate(), actMonth: new Date().getMonth() + 1, actYear: 2026 });
-    saveData(); renderFiberTable();
+    fiberData.push({ id: Date.now(), name: 'مشترك جديد', user: '', cat: categories.cat1, price: '', actDay: new Date().getDate(), actMonth: new Date().getMonth() + 1, actYear: 2026 });
+    saveData(); renderFiberTable(); renderAllRecordTable();
   }
   function addEarthRow() {
-    earthData.push({ id: Date.now(), name: 'مشترك جديد', user: '', cat: '', price: '', actDay: new Date().getDate(), actMonth: new Date().getMonth() + 1, actYear: 2026 });
-    saveData(); renderEarthTable();
+    earthData.push({ id: Date.now(), name: 'مشترك جديد', user: '', cat: categories.cat2, price: '', actDay: new Date().getDate(), actMonth: new Date().getMonth() + 1, actYear: 2026 });
+    saveData(); renderEarthTable(); renderAllRecordTable();
   }
   function addSpeedRow() {
-    speedData.push({ id: Date.now(), name: 'مشترك جديد', user: '', cat: '', price: '', actDay: new Date().getDate(), actMonth: new Date().getMonth() + 1, actYear: 2026 });
-    saveData(); renderSpeedTable();
+    speedData.push({ id: Date.now(), name: 'مشترك جديد', user: '', cat: categories.cat3, price: '', actDay: new Date().getDate(), actMonth: new Date().getMonth() + 1, actYear: 2026 });
+    saveData(); renderSpeedTable(); renderAllRecordTable();
   }
 
   function deleteItem(arr, id, callback) {
@@ -1067,7 +1165,7 @@
       if (idx !== -1) {
         arr.splice(idx, 1);
         saveData();
-        callback();
+        renderAllTables();
       }
     }
   }
@@ -1085,7 +1183,7 @@
         if (name) {
           fiberData.push({
             id: Date.now() + Math.random(),
-            name: name.trim(), user: user ? user.trim() : '', cat: cat ? cat.trim() : '', price: price ? price.trim() : '0',
+            name: name.trim(), user: user ? user.trim() : '', cat: cat ? cat.trim() : categories.cat1, price: price ? price.trim() : '0',
             actDay: new Date().getDate(), actMonth: new Date().getMonth() + 1, actYear: 2026
           });
           count++;
