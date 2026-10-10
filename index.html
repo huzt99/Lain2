@@ -144,7 +144,6 @@ body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verda
 </div>
 
 <script>
-// 1. التهيئة والذاكرة المحلية (مع دعم البيانات القديمة لضمان عدم ضياع أي اسم)
 let currentTab = 'cat1';
 let categories = JSON.parse(localStorage.getItem('drox_categories')) || 
                  JSON.parse(localStorage.getItem('customCategories')) || {
@@ -157,7 +156,6 @@ let subscribers = JSON.parse(localStorage.getItem('drox_subscribers')) ||
                     JSON.parse(localStorage.getItem('subscribers')) || [];
 localStorage.setItem('drox_subscribers', JSON.stringify(subscribers));
 
-// 2. حساب تاريخ الانتهاء الدقيق (شهر كامل بمعالجة أيام الشهور 28/29/30/31)
 function calculateExpiryDate(startDateStr) {
   let startDate = startDateStr ? new Date(startDateStr) : new Date();
   let day = startDate.getDate();
@@ -178,7 +176,6 @@ function calculateExpiryDate(startDateStr) {
   return expiryDate.toISOString().split('T')[0];
 }
 
-// 3. إرسال إشعارات تليجرام الشاملة (للتفعيل نقداً، بالفقد، وللتسديد)
 function sendTelegramNotification(actionType, name, category, amount, paymentType) {
   const token = localStorage.getItem('drox_tg_token') || localStorage.getItem('telegram_token') || '8115682025:AAH_QxT1Xw7c8fK2yV1zL9mN0P3qR4sT5uV';
   const chatId = localStorage.getItem('drox_tg_chat_id') || localStorage.getItem('telegram_chat_id') || '6590858813';
@@ -198,7 +195,6 @@ function sendTelegramNotification(actionType, name, category, amount, paymentTyp
   }).catch(err => console.error('خطأ في الاتصال بتيليجرام:', err));
 }
 
-// 4. تحديث الواجهات والقوائم
 function updateCategoryLabels() {
   document.getElementById('tabCat1').innerText = categories.cat1;
   document.getElementById('tabCat2').innerText = categories.cat2;
@@ -262,7 +258,6 @@ function renderSubscribers() {
   });
 }
 
-// 5. إضافة تفعيل جديد مع إرسال إشعار شامل (نقد / فقد)
 function handleAddSubscriber(e) {
   e.preventDefault();
   let name = document.getElementById('subName').value;
@@ -291,7 +286,6 @@ function handleAddSubscriber(e) {
   alert("تم تفعيل الاشتراك وإرسال الإشعار بنجاح!");
 }
 
-// 6. التسديد والحذف
 function paySubscriber(id) {
   let sub = subscribers.find(s => s.id === id);
   if (sub) {
@@ -311,7 +305,6 @@ function deleteSubscriber(id) {
   }
 }
 
-// 7. إدارة النافذة وإعدادات الفئات وتيليجرام
 function openCategoryModal() {
   document.getElementById('cat1Input').value = categories.cat1;
   document.getElementById('cat2Input').value = categories.cat2;
@@ -346,7 +339,6 @@ function saveTelegramSettings() {
   alert("تم حفظ إعدادات تيليجرام بنجاح!");
 }
 
-// 8. الاستيراد والتصدير
 function importFromCSV(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -393,7 +385,6 @@ function exportToCSV() {
   document.body.removeChild(link);
 }
 
-// التشغيل الأولي عند فتح الصفحة
 window.onload = function() {
   updateCategoryLabels();
   renderSubscribers();
