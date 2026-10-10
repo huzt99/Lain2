@@ -7,32 +7,41 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
   <style>
-    body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    .card-custom { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    body { background-color: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .card-custom { border-radius: 16px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    .btn-action { border-radius: 10px; font-weight: 600; padding: 10px 15px; }
+    .nav-pills .nav-link { border-radius: 10px; margin: 3px; font-weight: 600; }
+    .nav-pills .nav-link.active { background-color: #0d6efd; }
     .badge-cat { font-size: 0.85rem; padding: 6px 12px; border-radius: 20px; }
   </style>
 </head>
 <body>
 
-<div class="container py-4">
+<div class="container py-3">
   <!-- الهيدر الرئيسي -->
-  <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
-    <h3 class="fw-bold text-primary">⚡ نظام DROX لإدارة المشتركين</h3>
-    <button onclick="openTelegramModal()" class="btn btn-outline-dark btn-sm">⚙️ إعدادات تيليجرام</button>
+  <div class="d-flex justify-content-between align-items-center mb-3 p-2 bg-white card-custom">
+    <h4 class="fw-bold text-primary mb-0">⚡ نظام DROX لإدارة المشتركين</h4>
+    <button onclick="openTelegramModal()" class="btn btn-outline-secondary btn-sm rounded-3">⚙️ إعدادات تيليجرام</button>
   </div>
 
   <!-- شريط الخيارات والأزرار الرئيسية -->
-  <div class="card card-custom p-3 mb-4">
-    <div class="d-flex gap-2 flex-wrap">
-      <button onclick="openCategoryModal()" class="btn btn-primary">⚙️ تعديل مسميات الفئات والأبراج</button>
-      <button onclick="document.getElementById('excelFileInput').click()" class="btn btn-success">📥 استيراد من Excel/CSV</button>
-      <button onclick="exportToCSV()" class="btn btn-secondary">📤 تصدير نسخة احتياطية</button>
+  <div class="card card-custom p-3 mb-3 text-center">
+    <div class="d-grid gap-2 col-12 mx-auto">
+      <button onclick="openCategoryModal()" class="btn btn-primary btn-action">⚙️ تعديل مسميات الفئات والأبراج</button>
+      <div class="row g-2">
+        <div class="col-6">
+          <button onclick="document.getElementById('excelFileInput').click()" class="btn btn-success btn-action w-100">📥 استيراد Excel</button>
+        </div>
+        <div class="col-6">
+          <button onclick="exportToCSV()" class="btn btn-secondary btn-action w-100">📤 تصدير نسخة</button>
+        </div>
+      </div>
       <input type="file" id="excelFileInput" accept=".csv" style="display:none;" onchange="importFromCSV(event)">
     </div>
   </div>
 
-  <!-- تبويبات العرض (حسب الفئة + القائمة الشاملة) -->
-  <ul class="nav nav-pills mb-3" id="mainTabs">
+  <!-- تبويبات العرض (الأبراج + السجل الشامل) -->
+  <ul class="nav nav-pills nav-justified mb-2 card card-custom p-2 flex-row" id="mainTabs">
     <li class="nav-item">
       <button class="nav-link active" onclick="switchTab('cat1')" id="tabCat1">مشتركين الضوئي</button>
     </li>
@@ -42,81 +51,81 @@
     <li class="nav-item">
       <button class="nav-link" onclick="switchTab('cat3')" id="tabCat3">أبراج سبيد</button>
     </li>
-    <li class="nav-item">
-      <button class="nav-link bg-dark text-white" onclick="switchTab('all')" id="tabAll">📋 السجل الشامل لجميع الاشتراكات</button>
-    </li>
   </ul>
+  
+  <div class="mb-3">
+    <button class="nav-link btn btn-dark w-100 text-white p-2 fw-bold rounded-3" onclick="switchTab('all')" id="tabAll">📋 السجل الشامل لجميع الاشتراكات</button>
+  </div>
 
   <!-- نموذج إضافة / تفعيل مشترك جديد -->
-  <div class="card card-custom p-3 mb-4">
-    <h5 class="fw-bold mb-3">➕ تفعيل اشتراك جديد</h5>
-    <form id="addForm" onsubmit="handleAddSubscriber(event)" class="row g-3">
-      <div class="col-md-3">
-        <input type="text" id="subName" class="form-control" placeholder="اسم المشترك" required>
+  <div class="card card-custom p-3 mb-3">
+    <h5 class="fw-bold mb-3 text-secondary">➕ تفعيل اشتراك جديد</h5>
+    <form id="addForm" onsubmit="handleAddSubscriber(event)" class="row g-2">
+      <div class="col-12">
+        <input type="text" id="subName" class="form-control form-control-lg fs-6" placeholder="اسم المشترك" required>
       </div>
-      <div class="col-md-3">
-        <select id="subCategory" class="form-select"></select>
+      <div class="col-12">
+        <select id="subCategory" class="form-select form-select-lg fs-6"></select>
       </div>
-      <div class="col-md-2">
-        <input type="number" id="subPrice" class="form-control" placeholder="المبلغ (د.ع)" required>
+      <div class="col-12">
+        <input type="number" id="subPrice" class="form-control form-control-lg fs-6" placeholder="المبلغ (د.ع)" required>
       </div>
-      <div class="col-md-2">
-        <select id="paymentType" class="form-select">
+      <div class="col-12">
+        <select id="paymentType" class="form-select form-select-lg fs-6">
           <option value="نقدًا">نقدًا</option>
           <option value="بالفقد (آجل)">بالفقد (آجل)</option>
         </select>
       </div>
-      <div class="col-md-2">
-        <button type="submit" class="btn btn-success w-100">تفعيل وتأكيد</button>
+      <div class="col-12 mt-3">
+        <button type="submit" class="btn btn-success btn-lg w-100 fw-bold fs-6">تفعيل وتأكيد</button>
       </div>
     </form>
   </div>
 
   <!-- جدول عرض المشتركين -->
   <div class="card card-custom p-3">
-    <h5 class="fw-bold mb-3" id="tableTitle">قائمة المشتركين</h5>
+    <h6 class="fw-bold mb-3 text-primary" id="tableTitle">قائمة المشتركين</h6>
     <div class="table-responsive">
-      <table class="table table-hover align-middle">
+      <table class="table table-hover align-middle text-center" style="font-size: 0.88rem;">
         <thead class="table-light">
           <tr>
             <th>اسم المشترك</th>
             <th>الفئة / البرج</th>
             <th>المبلغ</th>
-            <th>طريقة الدفع</th>
-            <th>تاريخ التفعيل</th>
-            <th>تاريخ الانتهاء</th>
-            <th>الحالة</th>
-            <th>الإجراءات</th>
+            <th>الدفع</th>
+            <th>التفعيل</th>
+            <th>الانتهاء</th>
+            <th>الإجراء</th>
           </tr>
         </thead>
         <tbody id="subscribersTableBody">
-          <!-- يتم ملء البيانات ديناميكياً -->
+          <!-- ملء البيانات -->
         </tbody>
       </table>
     </div>
   </div>
 </div>
 
-<!-- نافذة تعديل مسميات الفئات والأبراج -->
+<!-- نافذة تعديل مسميات الفئات -->
 <div id="categoryModal" class="modal" tabindex="-1" style="display:none; background:rgba(0,0,0,0.5); position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999;">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-3">
-      <h5 class="modal-title mb-3">⚙️ تعديل مسميات الفئات والأبراج</h5>
+  <div class="modal-dialog modal-dialog-centered p-3">
+    <div class="modal-content p-3 border-0 rounded-4">
+      <h5 class="modal-title mb-3 fw-bold">⚙️ تعديل مسميات الفئات والأبراج</h5>
       <div class="mb-2">
-        <label>الفئة الأولى:</label>
+        <label class="form-label">الفئة الأولى:</label>
         <input type="text" id="cat1Input" class="form-control">
       </div>
       <div class="mb-2">
-        <label>الفئة الثانية:</label>
+        <label class="form-label">الفئة الثانية:</label>
         <input type="text" id="cat2Input" class="form-control">
       </div>
       <div class="mb-2">
-        <label>الفئة الثالثة:</label>
+        <label class="form-label">الفئة الثالثة:</label>
         <input type="text" id="cat3Input" class="form-control">
       </div>
-      <div class="mt-3 text-end">
-        <button onclick="saveCategories()" class="btn btn-primary">حفظ المسميات</button>
-        <button onclick="closeCategoryModal()" class="btn btn-secondary">إلغاء</button>
+      <div class="mt-3 text-end d-flex gap-2 justify-content-end">
+        <button onclick="saveCategories()" class="btn btn-primary w-50">حفظ المسميات</button>
+        <button onclick="closeCategoryModal()" class="btn btn-light w-50">إلغاء</button>
       </div>
     </div>
   </div>
@@ -124,38 +133,45 @@
 
 <!-- نافذة إعدادات تيليجرام -->
 <div id="telegramModal" class="modal" tabindex="-1" style="display:none; background:rgba(0,0,0,0.5); position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999;">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-3">
-      <h5 class="modal-title mb-3">⚙️ إعدادات تيليجرام</h5>
+  <div class="modal-dialog modal-dialog-centered p-3">
+    <div class="modal-content p-3 border-0 rounded-4">
+      <h5 class="modal-title mb-3 fw-bold">⚙️ إعدادات تيليجرام</h5>
       <div class="mb-2">
-        <label>Bot Token:</label>
+        <label class="form-label">Bot Token:</label>
         <input type="text" id="tgTokenInput" class="form-control">
       </div>
       <div class="mb-2">
-        <label>Chat ID:</label>
+        <label class="form-label">Chat ID:</label>
         <input type="text" id="tgChatIdInput" class="form-control">
       </div>
-      <div class="mt-3 text-end">
-        <button onclick="saveTelegramSettings()" class="btn btn-success">حفظ الإعدادات</button>
-        <button onclick="closeTelegramModal()" class="btn btn-secondary">إلغاء</button>
+      <div class="mt-3 text-end d-flex gap-2 justify-content-end">
+        <button onclick="saveTelegramSettings()" class="btn btn-success w-50">حفظ الإعدادات</button>
+        <button onclick="closeTelegramModal()" class="btn btn-light w-50">إلغاء</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  // 1. التهيئة والذاكرة المحلية
   let currentTab = 'cat1';
-  let categories = JSON.parse(localStorage.getItem('drox_categories')) || {
+  
+  // استرجاع المسميات مع الحفاظ على البيانات القديمة
+  let categories = JSON.parse(localStorage.getItem('drox_categories')) || 
+                     JSON.parse(localStorage.getItem('customCategories')) || {
     cat1: "مشتركين الضوئي",
     cat2: "أبراج أمجد",
     cat3: "أبراج سبيد"
   };
-  let subscribers = JSON.parse(localStorage.getItem('drox_subscribers')) || [];
 
-  // 2. حساب تاريخ الانتهاء الدقيق (شهر كامل بمعالجة أيام الشهور 28/29/30/31)
+  // جلب قائمة المشتركين القديمة والحفظ التلقائي في المفتاح الجديد
+  let subscribers = JSON.parse(localStorage.getItem('drox_subscribers')) || 
+                        JSON.parse(localStorage.getItem('subscribers')) || [];
+
+  // التأكد من توحيد التخزين
+  localStorage.setItem('drox_subscribers', JSON.stringify(subscribers));
+
   function calculateExpiryDate(startDateStr) {
-    let startDate = new Date(startDateStr);
+    let startDate = startDateStr ? new Date(startDateStr) : new Date();
     let day = startDate.getDate();
     let month = startDate.getMonth();
     let year = startDate.getFullYear();
@@ -167,18 +183,16 @@
       targetYear++;
     }
 
-    // حساب عدد الأيام الفعلي في الشهر القادم
     let daysInTargetMonth = new Date(targetYear, targetMonth + 1, 0).getDate();
     let targetDay = Math.min(day, daysInTargetMonth);
 
-    let expiryDate = new Date(targetYear, targetMonth, targetDay, startDate.getHours(), startDate.getMinutes());
+    let expiryDate = new Date(targetYear, targetMonth, targetDay);
     return expiryDate.toISOString().split('T')[0];
   }
 
-  // 3. إرسال إشعارات تليجرام الشاملة
   function sendTelegramNotification(actionType, name, category, amount, paymentType) {
-    const token = localStorage.getItem('drox_tg_token') || '8115682025:AAH_QxT1Xw7c8fK2yV1zL9mN0P3qR4sT5uV';
-    const chatId = localStorage.getItem('drox_tg_chat_id') || '6590858813';
+    const token = localStorage.getItem('drox_tg_token') || localStorage.getItem('telegram_token') || '8115682025:AAH_QxT1Xw7c8fK2yV1zL9mN0P3qR4sT5uV';
+    const chatId = localStorage.getItem('drox_tg_chat_id') || localStorage.getItem('telegram_chat_id') || '6590858813';
 
     let message = `🔔 *إشعار نظام DROX*\n\n`;
     message += `📌 *نوع العملية:* ${actionType}\n`;
@@ -192,10 +206,9 @@
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
-    }).catch(err => console.error('خطأ في الاتصال بتيليجرام:', err));
+    }).catch(err => console.error('خطأ تيليجرام:', err));
   }
 
-  // 4. تحديث الواجهات والقوائم
   function updateCategoryLabels() {
     document.getElementById('tabCat1').innerText = categories.cat1;
     document.getElementById('tabCat2').innerText = categories.cat2;
@@ -226,34 +239,38 @@
     tbody.innerHTML = '';
 
     let filtered = subscribers;
-    if (currentTab === 'cat1') filtered = subscribers.filter(s => s.category === categories.cat1);
+    if (currentTab === 'cat1') filtered = subscribers.filter(s => s.category === categories.cat1 || !s.category);
     if (currentTab === 'cat2') filtered = subscribers.filter(s => s.category === categories.cat2);
     if (currentTab === 'cat3') filtered = subscribers.filter(s => s.category === categories.cat3);
 
     document.getElementById('tableTitle').innerText = currentTab === 'all' 
       ? '📋 السجل الشامل لجميع الاشتراكات' 
-      : `قائمة مشتركين: ${categories[currentTab]}`;
+      : `قائمة مشتركين: ${categories[currentTab] || 'العامة'}`;
 
-    filtered.forEach((sub, index) => {
+    filtered.forEach((sub) => {
+      let startDate = sub.startDate || new Date().toISOString().split('T')[0];
+      let expiryDate = sub.expiryDate || calculateExpiryDate(startDate);
+      let catName = sub.category || categories.cat1;
+      let payType = sub.paymentType || sub.type || 'نقدًا';
+      let price = sub.price || sub.amount || '0';
+
       let tr = document.createElement('tr');
       tr.innerHTML = `
         <td class="fw-bold">${sub.name}</td>
-        <td><span class="badge bg-info text-dark badge-cat">${sub.category}</span></td>
-        <td>${sub.price} د.ع</td>
-        <td><span class="badge ${sub.paymentType === 'نقدًا' ? 'bg-success' : 'bg-warning text-dark'}">${sub.paymentType}</span></td>
-        <td>${sub.startDate}</td>
-        <td class="text-danger fw-bold">${sub.expiryDate}</td>
-        <td><span class="badge bg-primary">نشط</span></td>
+        <td><span class="badge bg-info text-dark badge-cat">${catName}</span></td>
+        <td>${price}</td>
+        <td><span class="badge ${payType.includes('نقد') ? 'bg-success' : 'bg-warning text-dark'}">${payType}</span></td>
+        <td>${startDate}</td>
+        <td class="text-danger fw-bold">${expiryDate}</td>
         <td>
-          <button onclick="paySubscriber('${sub.id}')" class="btn btn-sm btn-outline-success">💰 تسديد</button>
-          <button onclick="deleteSubscriber('${sub.id}')" class="btn btn-sm btn-outline-danger">🗑️ حذف</button>
+          <button onclick="paySubscriber('${sub.id}')" class="btn btn-sm btn-outline-success p-1">💰</button>
+          <button onclick="deleteSubscriber('${sub.id}')" class="btn btn-sm btn-outline-danger p-1">🗑️</button>
         </td>
       `;
       tbody.appendChild(tr);
     });
   }
 
-  // 5. إضافة تفعيل جديد
   function handleAddSubscriber(e) {
     e.preventDefault();
     let name = document.getElementById('subName').value;
@@ -282,27 +299,25 @@
     alert("تم تفعيل الاشتراك وإرسال الإشعار بنجاح!");
   }
 
-  // 6. التسديد والحذف
   function paySubscriber(id) {
     let sub = subscribers.find(s => s.id === id);
     if (sub) {
-      sub.paymentType = "نقدًا (تم التسديد)";
+      sub.paymentType = "نقدًا (تسديد)";
       localStorage.setItem('drox_subscribers', JSON.stringify(subscribers));
-      sendTelegramNotification("تسديد اشتراك", sub.name, sub.category, sub.price, "نقدًا");
+      sendTelegramNotification("تسديد اشتراك", sub.name, sub.category || categories.cat1, sub.price || sub.amount || '0', "نقدًا");
       renderSubscribers();
-      alert("تم تسديد المبلغ وإرسال الإشعار عبر تيليجرام!");
+      alert("تم التسديد وتحديث الحالة!");
     }
   }
 
   function deleteSubscriber(id) {
-    if (confirm("هل أنت تأكد من حذف هذا المشترك؟")) {
+    if (confirm("هل تريد حذف المشترك؟")) {
       subscribers = subscribers.filter(s => s.id !== id);
       localStorage.setItem('drox_subscribers', JSON.stringify(subscribers));
       renderSubscribers();
     }
   }
 
-  // 7. إدارة النافذة وإعدادات الفئات وتيليجرام
   function openCategoryModal() {
     document.getElementById('cat1Input').value = categories.cat1;
     document.getElementById('cat2Input').value = categories.cat2;
@@ -320,12 +335,12 @@
     updateCategoryLabels();
     renderSubscribers();
     closeCategoryModal();
-    alert("تم حفظ التعديلات وحفظ المسميات بنجاح!");
+    alert("تم حفظ المسميات بنجاح!");
   }
 
   function openTelegramModal() {
-    document.getElementById('tgTokenInput').value = localStorage.getItem('drox_tg_token') || '';
-    document.getElementById('tgChatIdInput').value = localStorage.getItem('drox_tg_chat_id') || '';
+    document.getElementById('tgTokenInput').value = localStorage.getItem('drox_tg_token') || localStorage.getItem('telegram_token') || '';
+    document.getElementById('tgChatIdInput').value = localStorage.getItem('drox_tg_chat_id') || localStorage.getItem('telegram_chat_id') || '';
     document.getElementById('telegramModal').style.display = 'block';
   }
   function closeTelegramModal() { document.getElementById('telegramModal').style.display = 'none'; }
@@ -334,10 +349,9 @@
     localStorage.setItem('drox_tg_token', document.getElementById('tgTokenInput').value);
     localStorage.setItem('drox_tg_chat_id', document.getElementById('tgChatIdInput').value);
     closeTelegramModal();
-    alert("تم حفظ إعدادات تيليجرام بنجاح!");
+    alert("تم حفظ إعدادات تيليجرام!");
   }
 
-  // 8. الاستيراد والتصدير
   function importFromCSV(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -372,9 +386,9 @@
 
   function exportToCSV() {
     if (subscribers.length === 0) return alert("لا يوجد مشتركين للتصدير!");
-    let csv = "data:text/csv;charset=utf-8,الاسم,الفئة,المبلغ,طريقة الدفع,تاريخ التفعيل,تاريخ الانتهاء\n";
+    let csv = "data:text/csv;charset=utf-8,الاسم,الفئة,المبلغ,الدفع,التفعيل,الانتهاء\n";
     subscribers.forEach(s => {
-      csv += `${s.name},${s.category},${s.price},${s.paymentType},${s.startDate},${s.expiryDate}\n`;
+      csv += `${s.name},${s.category || categories.cat1},${s.price || s.amount || 0},${s.paymentType || 'نقدًا'},${s.startDate || ''},${s.expiryDate || ''}\n`;
     });
     const link = document.createElement("a");
     link.setAttribute("href", encodeURI(csv));
@@ -384,7 +398,6 @@
     document.body.removeChild(link);
   }
 
-  // التشغيل الأولي عند فتح الصفحة
   window.onload = function() {
     updateCategoryLabels();
     renderSubscribers();
