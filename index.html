@@ -10,64 +10,69 @@
 body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 .card-custom { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 .badge-cat { font-size: 0.85rem; padding: 6px 12px; border-radius: 20px; }
+
+/* تنسيقات الشاشة والشكل المنسق للموبايل */
+.btn-mobile { width: 100%; margin-bottom: 8px; border-radius: 8px; font-weight: 600; }
+.nav-mobile { display: flex; flex-direction: column; gap: 6px; }
+.nav-mobile .nav-link { text-align: center; border-radius: 8px; font-weight: 600; width: 100%; }
 </style>
 </head>
 <body>
 
-<div class="container py-4">
+<div class="container py-3">
 <!-- الهيدر الرئيسي -->
-<div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
-<h3 class="fw-bold text-primary">⚡ نظام DROX لإدارة المشتركين</h3>
+<div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+<h4 class="fw-bold text-primary mb-0">⚡ نظام DROX لإدارة المشتركين</h4>
 <button onclick="openTelegramModal()" class="btn btn-outline-dark btn-sm">⚙️ إعدادات تيليجرام</button>
 </div>
 
-<!-- شريط الخيارات والأزرار الرئيسية -->
-<div class="card card-custom p-3 mb-4">
-<div class="d-flex gap-2 flex-wrap">
-<button onclick="openCategoryModal()" class="btn btn-primary">⚙️ تعديل مسميات الفئات والأبراج</button>
-<button onclick="document.getElementById('excelFileInput').click()" class="btn btn-success">📥 استيراد من Excel/CSV</button>
-<button onclick="exportToCSV()" class="btn btn-secondary">📤 تصدير نسخة احتياطية</button>
-<input type="file" id="excelFileInput" accept=".csv" style="display:none;" onchange="importFromCSV(event)">
-</div>
+<!-- شريط الخيارات والأزرار الرئيسية مرتبة بانتظام -->
+<div class="card card-custom p-3 mb-3">
+  <button onclick="openCategoryModal()" class="btn btn-primary btn-mobile">⚙️ تعديل مسميات الفئات والأبراج</button>
+  <button onclick="document.getElementById('excelFileInput').click()" class="btn btn-success btn-mobile">📥 استيراد من Excel/CSV</button>
+  <button onclick="exportToCSV()" class="btn btn-secondary btn-mobile mb-0">📤 تصدير نسخة احتياطية</button>
+  <input type="file" id="excelFileInput" accept=".csv" style="display:none;" onchange="importFromCSV(event)">
 </div>
 
-<!-- تبويبات العرض (حسب الفئة + القائمة الشاملة) -->
-<ul class="nav nav-pills mb-3" id="mainTabs">
-<li class="nav-item">
-<button class="nav-link active" onclick="switchTab('cat1')" id="tabCat1">مشتركين الضوئي</button>
-</li>
-<li class="nav-item">
-<button class="nav-link" onclick="switchTab('cat2')" id="tabCat2">أبراج أمجد</button>
-</li>
-<li class="nav-item">
-<button class="nav-link" onclick="switchTab('cat3')" id="tabCat3">أبراج سبيد</button>
-</li>
-<li class="nav-item">
-<button class="nav-link bg-dark text-white" onclick="switchTab('all')" id="tabAll">📋 السجل الشامل لجميع الاشتراكات</button>
-</li>
-</ul>
+<!-- تبويبات العرض (الأبراج + السجل الشامل) مرتبة بشكل أنيق -->
+<div class="card card-custom p-2 mb-3">
+  <ul class="nav nav-pills nav-mobile" id="mainTabs">
+    <li class="nav-item">
+      <button class="nav-link active" onclick="switchTab('cat1')" id="tabCat1">مشتركين الضوئي</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" onclick="switchTab('cat2')" id="tabCat2">أبراج أمجد</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" onclick="switchTab('cat3')" id="tabCat3">أبراج سبيد</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link bg-dark text-white" onclick="switchTab('all')" id="tabAll">📋 السجل الشامل لجميع الاشتراكات</button>
+    </li>
+  </ul>
+</div>
 
 <!-- نموذج إضافة / تفعيل مشترك جديد -->
-<div class="card card-custom p-3 mb-4">
+<div class="card card-custom p-3 mb-3">
 <h5 class="fw-bold mb-3">➕ تفعيل اشتراك جديد</h5>
-<form id="addForm" onsubmit="handleAddSubscriber(event)" class="row g-3">
-<div class="col-md-3">
+<form id="addForm" onsubmit="handleAddSubscriber(event)" class="row g-2">
+<div class="col-12">
 <input type="text" id="subName" class="form-control" placeholder="اسم المشترك" required>
 </div>
-<div class="col-md-3">
+<div class="col-12">
 <select id="subCategory" class="form-select"></select>
 </div>
-<div class="col-md-2">
+<div class="col-12">
 <input type="number" id="subPrice" class="form-control" placeholder="المبلغ (د.ع)" required>
 </div>
-<div class="col-md-2">
+<div class="col-12">
 <select id="paymentType" class="form-select">
 <option value="نقدًا">نقدًا</option>
 <option value="بالفقد (آجل)">بالفقد (آجل)</option>
 </select>
 </div>
-<div class="col-md-2">
-<button type="submit" class="btn btn-success w-100">تفعيل وتأكيد</button>
+<div class="col-12 mt-2">
+<button type="submit" class="btn btn-success w-100 fw-bold">تفعيل وتأكيد</button>
 </div>
 </form>
 </div>
@@ -76,15 +81,15 @@ body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verda
 <div class="card card-custom p-3">
 <h5 class="fw-bold mb-3" id="tableTitle">قائمة المشتركين</h5>
 <div class="table-responsive">
-<table class="table table-hover align-middle">
+<table class="table table-hover align-middle text-center" style="font-size: 0.9rem;">
 <thead class="table-light">
 <tr>
 <th>اسم المشترك</th>
 <th>الفئة / البرج</th>
 <th>المبلغ</th>
 <th>طريقة الدفع</th>
-<th>تاريخ التفعيل</th>
-<th>تاريخ الانتهاء</th>
+<th>التفعيل</th>
+<th>الانتهاء</th>
 <th>الحالة</th>
 <th>الإجراءات</th>
 </tr>
@@ -99,24 +104,24 @@ body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verda
 
 <!-- نافذة تعديل مسميات الفئات والأبراج -->
 <div id="categoryModal" class="modal" tabindex="-1" style="display:none; background:rgba(0,0,0,0.5); position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999;">
-<div class="modal-dialog modal-dialog-centered">
+<div class="modal-dialog modal-dialog-centered p-3">
 <div class="modal-content p-3">
-<h5 class="modal-title mb-3">⚙️ تعديل مسميات الفئات والأبراج</h5>
+<h5 class="modal-title mb-3 fw-bold">⚙️ تعديل مسميات الفئات والأبراج</h5>
 <div class="mb-2">
-<label>الفئة الأولى:</label>
+<label class="form-label">الفئة الأولى:</label>
 <input type="text" id="cat1Input" class="form-control">
 </div>
 <div class="mb-2">
-<label>الفئة الثانية:</label>
+<label class="form-label">الفئة الثانية:</label>
 <input type="text" id="cat2Input" class="form-control">
 </div>
 <div class="mb-2">
-<label>الفئة الثالثة:</label>
+<label class="form-label">الفئة الثالثة:</label>
 <input type="text" id="cat3Input" class="form-control">
 </div>
-<div class="mt-3 text-end">
-<button onclick="saveCategories()" class="btn btn-primary">حفظ المسميات</button>
-<button onclick="closeCategoryModal()" class="btn btn-secondary">إلغاء</button>
+<div class="mt-3 text-end d-flex gap-2">
+<button onclick="saveCategories()" class="btn btn-primary w-50">حفظ المسميات</button>
+<button onclick="closeCategoryModal()" class="btn btn-secondary w-50">إلغاء</button>
 </div>
 </div>
 </div>
@@ -124,20 +129,20 @@ body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verda
 
 <!-- نافذة إعدادات تيليجرام -->
 <div id="telegramModal" class="modal" tabindex="-1" style="display:none; background:rgba(0,0,0,0.5); position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999;">
-<div class="modal-dialog modal-dialog-centered">
+<div class="modal-dialog modal-dialog-centered p-3">
 <div class="modal-content p-3">
-<h5 class="modal-title mb-3">⚙️ إعدادات تيليجرام</h5>
+<h5 class="modal-title mb-3 fw-bold">⚙️ إعدادات تيليجرام</h5>
 <div class="mb-2">
-<label>Bot Token:</label>
+<label class="form-label">Bot Token:</label>
 <input type="text" id="tgTokenInput" class="form-control">
 </div>
 <div class="mb-2">
-<label>Chat ID:</label>
+<label class="form-label">Chat ID:</label>
 <input type="text" id="tgChatIdInput" class="form-control">
 </div>
-<div class="mt-3 text-end">
-<button onclick="saveTelegramSettings()" class="btn btn-success">حفظ الإعدادات</button>
-<button onclick="closeTelegramModal()" class="btn btn-secondary">إلغاء</button>
+<div class="mt-3 text-end d-flex gap-2">
+<button onclick="saveTelegramSettings()" class="btn btn-success w-50">حفظ الإعدادات</button>
+<button onclick="closeTelegramModal()" class="btn btn-secondary w-50">إلغاء</button>
 </div>
 </div>
 </div>
@@ -210,7 +215,7 @@ function updateCategoryLabels() {
 
 function switchTab(tabKey) {
   currentTab = tabKey;
-  document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('#mainTabs .nav-link').forEach(btn => btn.classList.remove('active'));
 
   if(tabKey === 'cat1') document.getElementById('tabCat1').classList.add('active');
   if(tabKey === 'cat2') document.getElementById('tabCat2').classList.add('active');
