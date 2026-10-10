@@ -131,8 +131,14 @@
 
   function handleLogin(e) {
     e.preventDefault();
-    localStorage.setItem('hussain_active_session', 'true');
-    showApp();
+    const user = document.getElementById('loginEmail').value.trim();
+    const pass = document.getElementById('loginPass').value.trim();
+    if(user === "Huzt1988" && pass === "1001001992") {
+      localStorage.setItem('hussain_active_session', 'true');
+      showApp();
+    } else {
+      document.getElementById('loginAlert').classList.remove('d-none');
+    }
   }
 
   function showApp() {
