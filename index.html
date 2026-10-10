@@ -2,1663 +2,393 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-  <title>حسين لخدمات الإنترنت - نظام إدارة المشتركين</title>
-  <!-- Bootstrap 5 RTL -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <!-- Google Fonts (Cairo) -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام DROX لإدارة المشتركين</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
   <style>
-    :root {
-      --bg-dark: #0b0f19;
-      --panel-bg: rgba(18, 26, 43, 0.85);
-      --primary-cyan: #06b6d4;
-      --primary-blue: #3b82f6;
-      --accent-green: #10b981;
-      --accent-amber: #f59e0b;
-      --accent-red: #ef4444;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border-color: rgba(56, 189, 248, 0.2);
-    }
-
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    body {
-      font-family: 'Cairo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background-color: var(--bg-dark);
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(6, 182, 212, 0.12) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.12) 0px, transparent 50%),
-        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
-      color: var(--text-main);
-      min-height: 100vh;
-      margin: 0;
-      padding-bottom: 30px;
-      overflow-x: hidden;
-    }
-
-    /* Auth Screen Style */
-    #authScreen {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100vh;
-      background: radial-gradient(circle at center, #111d33 0%, #070a12 100%);
-      z-index: 99999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      overflow-y: auto;
-    }
-
-    .auth-card {
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid var(--border-color);
-      border-radius: 24px;
-      padding: 30px 20px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 20px rgba(6, 182, 212, 0.2);
-      text-align: center;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    .lock-icon {
-      width: 70px;
-      height: 70px;
-      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(59, 130, 246, 0.2));
-      border: 1px solid var(--primary-cyan);
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 15px auto;
-      font-size: 1.8rem;
-      color: var(--primary-cyan);
-      box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
-    }
-
-    .auth-input {
-      background: rgba(2, 6, 23, 0.9) !important;
-      border: 1px solid var(--border-color) !important;
-      color: #38bdf8 !important;
-      border-radius: 12px !important;
-      text-align: center;
-      font-size: 1.05rem;
-    }
-
-    .auth-input::placeholder {
-      color: #64748b !important;
-    }
-
-    .auth-input:focus {
-      box-shadow: 0 0 12px rgba(6, 182, 212, 0.4) !important;
-      border-color: var(--primary-cyan) !important;
-    }
-
-    /* Main Container Styles */
-    .header-panel {
-      background: var(--panel-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 20px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
-
-    .brand-title {
-      font-weight: 900;
-      background: linear-gradient(135deg, #38bdf8, #818cf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 0.5px;
-    }
-
-    .owner-badge {
-      background: rgba(6, 182, 212, 0.15);
-      border: 1px solid rgba(6, 182, 212, 0.3);
-      color: var(--primary-cyan);
-      padding: 6px 16px;
-      border-radius: 50rem;
-      font-weight: 700;
-      font-size: 0.95rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* Tabs Styling */
-    .nav-pills {
-      gap: 8px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding-bottom: 12px;
-      overflow-x: auto;
-      flex-wrap: nowrap;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-
-    .nav-pills::-webkit-scrollbar {
-      display: none;
-    }
-
-    .nav-pills .nav-link {
-      color: var(--text-muted);
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 10px 18px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      white-space: nowrap;
-      transition: all 0.25s ease;
-    }
-
-    .nav-pills .nav-link:hover {
-      color: #fff;
-      border-color: var(--primary-cyan);
-    }
-
-    .nav-pills .nav-link.active {
-      background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
-      color: #fff;
-      border-color: transparent;
-      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35);
-    }
-
-    /* Cards & Tables */
-    .content-card {
-      background: var(--panel-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 20px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    .table-responsive {
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .table-dark-custom {
-      --bs-table-bg: rgba(15, 23, 42, 0.9);
-      --bs-table-color: #f1f5f9;
-      margin-bottom: 0;
-    }
-
-    .table-dark-custom th {
-      background: rgba(30, 41, 59, 0.95);
-      color: var(--primary-cyan);
-      font-weight: 800;
-      border-bottom: 2px solid var(--border-color);
-      white-space: nowrap;
-      padding: 12px 14px;
-    }
-
-    .table-dark-custom td {
-      vertical-align: middle;
-      border-color: rgba(255, 255, 255, 0.05);
-      padding: 10px 12px;
-    }
-
-    .table-input {
-      background: rgba(15, 23, 42, 0.9) !important;
-      border: 1px solid rgba(56, 189, 248, 0.3) !important;
-      color: #ffffff !important;
-      border-radius: 8px !important;
-      font-size: 15px !important;
-      font-weight: 600 !important;
-      padding: 6px 10px;
-      min-width: 100px;
-    }
-
-    .table-input::placeholder {
-      color: #94a3b8 !important;
-      opacity: 1;
-    }
-
-    .table-input:focus {
-      border-color: var(--primary-cyan) !important;
-      box-shadow: 0 0 8px rgba(6, 182, 212, 0.5) !important;
-      color: #ffffff !important;
-      background-color: #020617 !important;
-    }
-
-    .table-input option {
-      background-color: #0f172a !important;
-      color: #ffffff !important;
-    }
-
-    .btn-action-add {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: #fff;
-      border: none;
-      font-weight: 700;
-      border-radius: 50rem;
-      padding: 8px 20px;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-      cursor: pointer;
-    }
-
-    .btn-action-save {
-      background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
-      color: #fff;
-      border: none;
-      font-weight: 700;
-      border-radius: 50rem;
-      padding: 8px 20px;
-      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
-      cursor: pointer;
-    }
-
-    .btn-action-print {
-      background: linear-gradient(135deg, #8b5cf6, #6366f1);
-      color: #fff;
-      border: none;
-      font-weight: 700;
-      border-radius: 50rem;
-      padding: 8px 20px;
-      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-      cursor: pointer;
-    }
-
-    .btn-action-debt-print {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: #fff;
-      border: none;
-      font-weight: 700;
-      border-radius: 50rem;
-      padding: 8px 20px;
-      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-      cursor: pointer;
-    }
-
-    .btn-action-paid-print {
-      background: linear-gradient(135deg, #06b6d4, #0284c7);
-      color: #fff;
-      border: none;
-      font-weight: 700;
-      border-radius: 50rem;
-      padding: 8px 20px;
-      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
-      cursor: pointer;
-    }
-
-    .search-box {
-      background: rgba(2, 6, 23, 0.7);
-      border: 1px solid var(--border-color);
-      border-radius: 50rem;
-      padding: 6px 16px;
-      color: #fff;
-    }
-
-    .search-box input {
-      background: transparent;
-      border: none;
-      color: #fff;
-      outline: none;
-      width: 100%;
-      font-size: 16px;
-    }
-
-    .activation-box {
-      background: rgba(30, 41, 59, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 20px;
-    }
-
-    .date-select {
-      min-width: 65px;
-      padding: 4px 6px;
-      font-size: 0.85rem !important;
-    }
-
-    /* Modal styling */
-    .modal-content-custom {
-      background-color: #0f172a;
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      border-radius: 20px;
-    }
-
-    /* Print Template */
-    #printReportArea {
-      display: none;
-    }
-
-    @media print {
-      @page {
-        size: auto;
-        margin: 15mm;
-      }
-      body {
-        background: #fff !important;
-        color: #000 !important;
-        padding: 0 !important;
-        background-image: none !important;
-      }
-      #authScreen, #mainContent, .modal {
-        display: none !important;
-      }
-      #printReportArea {
-        display: block !important;
-        padding: 10px;
-        font-family: 'Cairo', sans-serif;
-        direction: rtl;
-      }
-      .print-header {
-        border-bottom: 3px solid #0f172a;
-        padding-bottom: 12px;
-        margin-bottom: 20px;
-      }
-      .print-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-      }
-      .print-table th, .print-table td {
-        border: 1px solid #cbd5e1;
-        padding: 8px;
-        text-align: center;
-        font-size: 0.9rem;
-      }
-      .print-table th {
-        background-color: #f1f5f9;
-        font-weight: bold;
-      }
-      .print-total-box {
-        background-color: #fffbe3;
-        border: 2px dashed #d97706;
-        border-radius: 12px;
-        padding: 15px;
-        text-align: center;
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #b45309;
-      }
-    }
+    body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .card-custom { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .badge-cat { font-size: 0.85rem; padding: 6px 12px; border-radius: 20px; }
   </style>
 </head>
 <body>
 
-<!-- شاشة المصادقة وتسجيل الدخول / إنشاء حساب -->
-<div id="authScreen">
-  <div class="auth-card">
-    <div class="lock-icon">
-      <i class="fa-solid fa-shield-halved"></i>
-    </div>
-    <h4 class="fw-bold mb-1">حسين لخدمات الإنترنت</h4>
-    <p class="text-muted small mb-3">نظام إدارة الشبكات والتفعيلات</p>
-
-    <!-- تبديل الأشكال: دخول أو تسجيل جديد -->
-    <ul class="nav nav-pills nav-justified mb-3" id="authTabs" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active py-1" id="login-tab-btn" data-bs-toggle="pill" data-bs-target="#loginTabPane" type="button">تسجيل دخول</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link py-1" id="register-tab-btn" data-bs-toggle="pill" data-bs-target="#registerTabPane" type="button">حساب جديد</button>
-      </li>
-    </ul>
-
-    <div class="tab-content" id="authTabsContent">
-      <!-- نافذة تسجيل الدخول -->
-      <div class="tab-pane fade show active" id="loginTabPane" role="tabpanel">
-        <form onsubmit="handleLogin(event)">
-          <div class="mb-2 text-start">
-            <label class="small text-muted mb-1">البريد الإلكتروني:</label>
-            <input type="email" id="loginEmail" class="form-control auth-input" placeholder="example@gmail.com" required>
-          </div>
-          <div class="mb-3 text-start">
-            <label class="small text-muted mb-1">الرمز السري:</label>
-            <input type="password" id="loginPass" class="form-control auth-input" placeholder="••••••••" required>
-          </div>
-          <div id="loginAlert" class="alert alert-danger py-2 d-none small mb-3">البريد أو الرمز غير صحيح!</div>
-          <button type="submit" class="btn btn-action-save w-100 py-2 fs-6">
-            <i class="fa-solid fa-right-to-bracket me-1"></i> دخول للنظام
-          </button>
-        </form>
-      </div>
-
-      <!-- نافذة التسجيل الجديد (تمنح 30 دقيقة تجريبية) -->
-      <div class="tab-pane fade" id="registerTabPane" role="tabpanel">
-        <form onsubmit="handleRegister(event)">
-          <div class="mb-2 text-start">
-            <label class="small text-muted mb-1">البريد الإلكتروني:</label>
-            <input type="email" id="regEmail" class="form-control auth-input" placeholder="example@gmail.com" required>
-          </div>
-          <div class="mb-3 text-start">
-            <label class="small text-muted mb-1">اختر رمزاً سرياً:</label>
-            <input type="password" id="regPass" class="form-control auth-input" placeholder="••••••••" required>
-          </div>
-          <div class="alert alert-warning py-2 small mb-3" style="font-size: 0.8rem;">
-            <i class="fa-solid fa-circle-info me-1"></i> التسجيل يمنحك تجربة مؤقتة لمدة <strong>30 دقيقة</strong>!
-          </div>
-          <button type="submit" class="btn btn-action-add w-100 py-2 fs-6">
-            <i class="fa-solid fa-user-plus me-1"></i> إنشاء حساب تجريبي
-          </button>
-        </form>
-      </div>
-    </div>
-
+<div class="container py-4">
+  <!-- الهيدر الرئيسي -->
+  <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+    <h3 class="fw-bold text-primary">⚡ نظام DROX لإدارة المشتركين</h3>
+    <button onclick="openTelegramModal()" class="btn btn-outline-dark btn-sm">⚙️ إعدادات تيليجرام</button>
   </div>
-</div>
 
-<!-- Modal نافذة شراء الحساب الدائم وإدخال كود 7 أرقام -->
-<div class="modal fade" id="purchaseModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content modal-content-custom text-center p-3">
-      <div class="modal-header border-0 justify-content-center">
-        <h4 class="modal-title fw-bold text-warning"><i class="fa-solid fa-crown me-2"></i>انتهت الفترة التجريبية (30 دقيقة)</h4>
-      </div>
-      <div class="modal-body">
-        <p class="text-muted small mb-3">للاستمرار في استخدام التطبيق بكامل ميزاته وبدون توقف، يرجى شراء حسابك الخاص الدائم.</p>
-        
-        <div class="mb-3">
-          <label class="form-label small text-info fw-bold">أدخل كود الشراء (7 أرقام):</label>
-          <input type="text" id="activationCodeInput" class="form-control auth-input text-center" placeholder="أدخل الكود هنا" maxlength="7" pattern="[0-9]{7}">
-        </div>
-        <div id="codeAlert" class="alert alert-danger py-1 d-none small mb-3">كود الشراء غير صحيح!</div>
-
-        <button type="button" class="btn btn-action-save w-100 py-2 mb-3" onclick="verifyActivationCode()">
-          <i class="fa-solid fa-check-circle me-1"></i> تفعيل الحساب للابد
-        </button>
-
-        <div class="p-3 rounded text-start" style="background: rgba(15, 23, 42, 0.8); border: 1px dashed var(--border-color);">
-          <p class="small mb-2 text-light text-center fw-bold">تواصل مع المطور للحصول على كود الشراء:</p>
-          <div class="d-flex flex-column gap-2">
-            <a href="https://wa.me/9647862597668" target="_blank" class="btn btn-success btn-sm rounded-pill fw-bold">
-              <i class="fa-brands fa-whatsapp me-1"></i> واتساب: 07862597668
-            </a>
-            <a href="https://t.me/huzt92" target="_blank" class="btn btn-info btn-sm rounded-pill fw-bold text-dark">
-              <i class="fa-brands fa-telegram me-1"></i> تلجرام: @huzt92
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer border-0 justify-content-center">
-        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill" onclick="logoutSystem()">تسجيل الخروج</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal إعدادات تيليجرام الخاصة بحساب المستخدم -->
-<div class="modal fade" id="telegramSettingsModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content modal-content-custom">
-      <div class="modal-header border-secondary">
-        <h5 class="modal-title fw-bold text-info"><i class="fa-brands fa-telegram me-2"></i>إعدادات إشعارات تيليجرام</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p class="small text-muted mb-3">قم بإدخال التوكن والآيدي الخاص ببوتك وقناتك لتصلك إشعارات العمليات المالية الخاصة بك حصراً:</p>
-        <div class="mb-3 text-start">
-          <label class="form-label small">Telegram Bot Token:</label>
-          <input type="text" id="userBotToken" class="form-control table-input" placeholder="مثال: 8769810627:AAHZGU...">
-        </div>
-        <div class="mb-3 text-start">
-          <label class="form-label small">Telegram Chat ID / Channel ID:</label>
-          <input type="text" id="userChatId" class="form-control table-input" placeholder="مثال: -1003786170089">
-        </div>
-      </div>
-      <div class="modal-footer border-secondary">
-        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">إلغاء</button>
-        <button type="button" class="btn btn-action-add" onclick="saveUserTelegramSettings()">حفظ الإعدادات <i class="fa-solid fa-check ms-1"></i></button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- المحتوى الرئيسي -->
-<div id="mainContent" class="container-fluid px-2 px-md-4 py-3 d-none">
-
-  <!-- الترويسة الرئيسية -->
-  <div class="header-panel mb-4">
-    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
-      <div class="text-center text-md-start">
-        <h3 class="brand-title mb-1"><i class="fa-solid fa-wifi me-2"></i>حسين لخدمات الإنترنت</h3>
-        <span class="owner-badge" id="currentUserBadge"><i class="fa-solid fa-user-check"></i> إدارة: حسين عبد المجيد</span>
-      </div>
-      <div class="d-flex gap-2 flex-wrap justify-content-center align-items-center">
-        <!-- زر الشراء الظاهر بالأعلى للحسابات التجريبية -->
-        <button id="topBuyBtn" class="btn btn-warning btn-sm rounded-pill px-3 fw-bold d-none" onclick="showPurchaseModal()">
-          <i class="fa-solid fa-crown me-1"></i> شراء حسابك الخاص
-        </button>
-        <button class="btn btn-outline-info btn-sm rounded-pill px-3 fw-bold" onclick="openTelegramModal()">
-          <i class="fa-brands fa-telegram me-1"></i> إعدادات تيليجرام
-        </button>
-        <button class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-bold" onclick="logoutSystem()">
-          <i class="fa-solid fa-power-off me-1"></i> خروج
-        </button>
-      </div>
+  <!-- شريط الخيارات والأزرار الرئيسية -->
+  <div class="card card-custom p-3 mb-4">
+    <div class="d-flex gap-2 flex-wrap">
+      <button onclick="openCategoryModal()" class="btn btn-primary">⚙️ تعديل مسميات الفئات والأبراج</button>
+      <button onclick="document.getElementById('excelFileInput').click()" class="btn btn-success">📥 استيراد من Excel/CSV</button>
+      <button onclick="exportToCSV()" class="btn btn-secondary">📤 تصدير نسخة احتياطية</button>
+      <input type="file" id="excelFileInput" accept=".csv" style="display:none;" onchange="importFromCSV(event)">
     </div>
   </div>
 
-  <!-- لوحة تسجيل تفعيل جديد سريع -->
-  <div class="activation-box mb-4">
-    <h6 class="fw-bold text-info mb-3"><i class="fa-solid fa-bolt me-2"></i>تسجيل وتفعيل اشتراك (نقد / فقد):</h6>
-    <form onsubmit="registerActivation(event)" class="row g-2 align-items-center">
-      <div class="col-12 col-md-3">
-        <input type="text" id="actName" class="form-control table-input" placeholder="اسم المشترك" required>
+  <!-- تبويبات العرض (حسب الفئة + القائمة الشاملة) -->
+  <ul class="nav nav-pills mb-3" id="mainTabs">
+    <li class="nav-item">
+      <button class="nav-link active" onclick="switchTab('cat1')" id="tabCat1">مشتركين الضوئي</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" onclick="switchTab('cat2')" id="tabCat2">أبراج أمجد</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" onclick="switchTab('cat3')" id="tabCat3">أبراج سبيد</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link bg-dark text-white" onclick="switchTab('all')" id="tabAll">📋 السجل الشامل لجميع الاشتراكات</button>
+    </li>
+  </ul>
+
+  <!-- نموذج إضافة / تفعيل مشترك جديد -->
+  <div class="card card-custom p-3 mb-4">
+    <h5 class="fw-bold mb-3">➕ تفعيل اشتراك جديد</h5>
+    <form id="addForm" onsubmit="handleAddSubscriber(event)" class="row g-3">
+      <div class="col-md-3">
+        <input type="text" id="subName" class="form-control" placeholder="اسم المشترك" required>
       </div>
-      <div class="col-12 col-md-2">
-        <input type="text" id="actUser" class="form-control table-input" placeholder="يوزر المشترك" required>
+      <div class="col-md-3">
+        <select id="subCategory" class="form-select"></select>
       </div>
-      <div class="col-6 col-md-2">
-        <input type="text" id="actCategory" class="form-control table-input" placeholder="فئة الاشتراك">
+      <div class="col-md-2">
+        <input type="number" id="subPrice" class="form-control" placeholder="المبلغ (د.ع)" required>
       </div>
-      <div class="col-6 col-md-2">
-        <input type="number" id="actAmount" class="form-control table-input" placeholder="المبلغ (د.ع)" required>
-      </div>
-      <div class="col-8 col-md-2">
-        <select id="actType" class="form-select table-input" required>
-          <option value="نقد">نقد 💵</option>
-          <option value="فقد">فقد (آجل) ⏳</option>
+      <div class="col-md-2">
+        <select id="paymentType" class="form-select">
+          <option value="نقدًا">نقدًا</option>
+          <option value="بالفقد (آجل)">بالفقد (آجل)</option>
         </select>
       </div>
-      <div class="col-4 col-md-1">
-        <button type="submit" class="btn btn-action-add w-100 py-1" title="تفعيل وإضافة">
-          <i class="fa-solid fa-plus"></i>
-        </button>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-success w-100">تفعيل وتأكيد</button>
       </div>
     </form>
   </div>
 
-  <!-- التنقل بين القوائم الستة -->
-  <ul class="nav nav-pills mb-3" id="mainTabs" role="tablist">
-    <li class="nav-item">
-      <button class="nav-link active" id="fiber-tab" data-bs-toggle="tab" data-bs-target="#fiber-pane">
-        <i class="fa-solid fa-network-wired me-1"></i> 1. المشتركين (كابل ضوئي)
-      </button>
-    </li>
-    <li class="nav-item">
-      <button class="nav-link" id="earth-tab" data-bs-toggle="tab" data-bs-target="#earth-pane">
-        <i class="fa-solid fa-tower-cell me-1"></i> 2. مشتركين إيرثلنك (أبراج)
-      </button>
-    </li>
-    <li class="nav-item">
-      <button class="nav-link" id="speed-tab" data-bs-toggle="tab" data-bs-target="#speed-pane">
-        <i class="fa-solid fa-broadcast-tower me-1"></i> 3. مشتركين سبيد (أبراج)
-      </button>
-    </li>
-    <li class="nav-item">
-      <button class="nav-link" id="cash-tab" data-bs-toggle="tab" data-bs-target="#cash-pane">
-        <i class="fa-solid fa-money-bill-wave me-1"></i> 4. تفعيلات النقد
-      </button>
-    </li>
-    <li class="nav-item">
-      <button class="nav-link" id="debt-tab" data-bs-toggle="tab" data-bs-target="#debt-pane">
-        <i class="fa-solid fa-clock-rotate-left me-1"></i> 5. تفعيلات الفقد
-      </button>
-    </li>
-    <li class="nav-item">
-      <button class="nav-link" id="paid-tab" data-bs-toggle="tab" data-bs-target="#paid-pane">
-        <i class="fa-solid fa-receipt me-1"></i> 6. المبالغ المسددة
-      </button>
-    </li>
-  </ul>
-
-  <!-- محتوى القوائم -->
-  <div class="tab-content" id="mainTabsContent">
-
-    <!-- 1. الكابل الضوئي -->
-    <div class="tab-pane fade show active" id="fiber-pane">
-      <div class="content-card">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-          <h5 class="fw-bold text-info mb-0"><i class="fa-solid fa-cable-car me-2"></i>مشتركين الكابل الضوئي</h5>
-          <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
-            <div class="search-box flex-grow-1">
-              <input type="text" id="searchFiber" placeholder="بحث عن اسم أو يوزر..." onkeyup="renderFiberTable()">
-            </div>
-            <button class="btn btn-action-add btn-sm" onclick="addFiberRow()"><i class="fa-solid fa-plus me-1"></i> إضافة</button>
-            <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ التغيرات</button>
-          </div>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-dark-custom text-center align-middle">
-            <thead>
-              <tr>
-                <th style="width: 40px;">#</th>
-                <th>اسم المشترك</th>
-                <th>يوزر المشترك</th>
-                <th>فئة الاشتراك</th>
-                <th>مبلغ الاشتراك</th>
-                <th>سيريال المشترك</th>
-                <th style="min-width: 210px;">تاريخ التفعيل (يوم / شهر / سنة)</th>
-                <th style="width: 50px;">إجراء</th>
-              </tr>
-            </thead>
-            <tbody id="fiberTbody"></tbody>
-          </table>
-        </div>
-      </div>
+  <!-- جدول عرض المشتركين -->
+  <div class="card card-custom p-3">
+    <h5 class="fw-bold mb-3" id="tableTitle">قائمة المشتركين</h5>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>اسم المشترك</th>
+            <th>الفئة / البرج</th>
+            <th>المبلغ</th>
+            <th>طريقة الدفع</th>
+            <th>تاريخ التفعيل</th>
+            <th>تاريخ الانتهاء</th>
+            <th>الحالة</th>
+            <th>الإجراءات</th>
+          </tr>
+        </thead>
+        <tbody id="subscribersTableBody">
+          <!-- يتم ملء البيانات ديناميكياً -->
+        </tbody>
+      </table>
     </div>
-
-    <!-- 2. إيرثلنك أبراج -->
-    <div class="tab-pane fade" id="earth-pane">
-      <div class="content-card">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-          <h5 class="fw-bold text-info mb-0"><i class="fa-solid fa-tower-broadcast me-2"></i>مشتركين إيرثلنك (أبراج)</h5>
-          <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
-            <div class="search-box flex-grow-1">
-              <input type="text" id="searchEarth" placeholder="بحث عن اسم أو يوزر..." onkeyup="renderEarthTable()">
-            </div>
-            <button class="btn btn-action-add btn-sm" onclick="addEarthRow()"><i class="fa-solid fa-plus me-1"></i> إضافة</button>
-            <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ التغيرات</button>
-          </div>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-dark-custom text-center align-middle">
-            <thead>
-              <tr>
-                <th style="width: 40px;">#</th>
-                <th>اسم المشترك</th>
-                <th>يوزر المشترك</th>
-                <th>فئة الاشتراك</th>
-                <th>مبلغ الاشتراك</th>
-                <th style="min-width: 210px;">تاريخ التفعيل (يوم / شهر / سنة)</th>
-                <th style="width: 50px;">إجراء</th>
-              </tr>
-            </thead>
-            <tbody id="earthTbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. سبيد أبراج -->
-    <div class="tab-pane fade" id="speed-pane">
-      <div class="content-card">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-          <h5 class="fw-bold text-info mb-0"><i class="fa-solid fa-wifi me-2"></i>مشتركين سبيد (أبراج)</h5>
-          <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
-            <div class="search-box flex-grow-1">
-              <input type="text" id="searchSpeed" placeholder="بحث عن اسم أو يوزر..." onkeyup="renderSpeedTable()">
-            </div>
-            <button class="btn btn-action-add btn-sm" onclick="addSpeedRow()"><i class="fa-solid fa-plus me-1"></i> إضافة</button>
-            <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ التغيرات</button>
-          </div>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-dark-custom text-center align-middle">
-            <thead>
-              <tr>
-                <th style="width: 40px;">#</th>
-                <th>اسم المشترك</th>
-                <th>يوزر المشترك</th>
-                <th>فئة الاشتراك</th>
-                <th>مبلغ الاشتراك</th>
-                <th style="min-width: 210px;">تاريخ التفعيل (يوم / شهر / سنة)</th>
-                <th style="width: 50px;">إجراء</th>
-              </tr>
-            </thead>
-            <tbody id="speedTbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- 4. تفعيلات النقد -->
-    <div class="tab-pane fade" id="cash-pane">
-      <div class="content-card">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-          <h5 class="fw-bold text-success mb-0"><i class="fa-solid fa-circle-check me-2"></i>سجل تفعيلات النقد المباشر</h5>
-          <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
-            <div class="search-box flex-grow-1">
-              <input type="text" id="searchCash" placeholder="بحث في تفعيلات النقد..." onkeyup="renderCashTable()">
-            </div>
-            <button class="btn btn-action-print btn-sm" onclick="printTodaySales()"><i class="fa-solid fa-print me-1"></i> طباعة مبيعات اليوم</button>
-            <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ التغيرات</button>
-          </div>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-dark-custom text-center align-middle">
-            <thead>
-              <tr>
-                <th style="width: 40px;">#</th>
-                <th>اسم المشترك</th>
-                <th>يوزر المشترك</th>
-                <th>فئة الاشتراك</th>
-                <th>مبلغ الاشتراك</th>
-                <th>التاريخ والوقت</th>
-                <th style="width: 50px;">إجراء</th>
-              </tr>
-            </thead>
-            <tbody id="cashTbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- 5. تفعيلات الفقد -->
-    <div class="tab-pane fade" id="debt-pane">
-      <div class="content-card">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-          <h5 class="fw-bold text-warning mb-0"><i class="fa-solid fa-hourglass-half me-2"></i>سجل تفعيلات الفقد (الآجل)</h5>
-          <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
-            <div class="search-box flex-grow-1">
-              <input type="text" id="searchDebt" placeholder="بحث في تفعيلات الفقد..." onkeyup="renderDebtTable()">
-            </div>
-            <button class="btn btn-action-debt-print btn-sm" onclick="printDebtSales()"><i class="fa-solid fa-print me-1"></i> طباعة مبيعات الفقد</button>
-            <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ التغيرات</button>
-          </div>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-dark-custom text-center align-middle">
-            <thead>
-              <tr>
-                <th style="width: 40px;">#</th>
-                <th>اسم المشترك</th>
-                <th>يوزر المشترك</th>
-                <th>فئة الاشتراك</th>
-                <th>المبلغ المطلوب</th>
-                <th>تاريخ التفعيل</th>
-                <th>تسديد</th>
-                <th style="width: 50px;">إجراء</th>
-              </tr>
-            </thead>
-            <tbody id="debtTbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- 6. المبالغ المسددة -->
-    <div class="tab-pane fade" id="paid-pane">
-      <div class="content-card">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-          <h5 class="fw-bold text-info mb-0"><i class="fa-solid fa-receipt me-2"></i>سجل المبالغ المسددة</h5>
-          <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
-            <div class="search-box flex-grow-1">
-              <input type="text" id="searchPaid" placeholder="بحث في المبالغ المسددة..." onkeyup="renderPaidTable()">
-            </div>
-            <button class="btn btn-action-paid-print btn-sm" onclick="printPaidSales()"><i class="fa-solid fa-print me-1"></i> طباعة سجل التسديدات</button>
-            <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ التغيرات</button>
-          </div>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-dark-custom text-center align-middle">
-            <thead>
-              <tr>
-                <th style="width: 40px;">#</th>
-                <th>اسم المشترك</th>
-                <th>يوزر المشترك</th>
-                <th>فئة الاشتراك</th>
-                <th>المبلغ المسدد</th>
-                <th>نوع التسديد</th>
-                <th>التاريخ والوقت</th>
-                <th style="width: 50px;">إجراء</th>
-              </tr>
-            </thead>
-            <tbody id="paidTbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>
 
-<!-- Modal خيارات التسديد -->
-<div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
+<!-- نافذة تعديل مسميات الفئات والأبراج -->
+<div id="categoryModal" class="modal" tabindex="-1" style="display:none; background:rgba(0,0,0,0.5); position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999;">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content modal-content-custom">
-      <div class="modal-header border-secondary">
-        <h5 class="modal-title fw-bold text-info"><i class="fa-solid fa-wallet me-2"></i>خيارات تسديد الدين</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-content p-3">
+      <h5 class="modal-title mb-3">⚙️ تعديل مسميات الفئات والأبراج</h5>
+      <div class="mb-2">
+        <label>الفئة الأولى:</label>
+        <input type="text" id="cat1Input" class="form-control">
       </div>
-      <div class="modal-body">
-        <input type="hidden" id="modalDebtId">
-        <div class="mb-3 text-center">
-          <h6 id="modalCustomerInfo" class="fw-bold text-warning mb-1"></h6>
-          <p id="modalAmountInfo" class="text-light mb-0"></p>
-        </div>
-        <div class="mb-3">
-          <label class="form-label font-bold">نوع التسديد:</label>
-          <select id="payTypeSelect" class="form-select table-input" onchange="togglePartialInput()">
-            <option value="full">تسديد المبلغ كاملاً 💵</option>
-            <option value="partial">تسديد جزء من المبلغ 🪙</option>
-          </select>
-        </div>
-        <div class="mb-3 d-none" id="partialGroup">
-          <label class="form-label">المبلغ المسدد حالياً (د.ع):</label>
-          <input type="number" id="partialAmountInput" class="form-control table-input" placeholder="أدخل المبلغ المسدد">
-        </div>
+      <div class="mb-2">
+        <label>الفئة الثانية:</label>
+        <input type="text" id="cat2Input" class="form-control">
       </div>
-      <div class="modal-footer border-secondary">
-        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">إلغاء</button>
-        <button type="button" class="btn btn-action-add" onclick="processPayment()">تأكيد التسديد <i class="fa-solid fa-check ms-1"></i></button>
+      <div class="mb-2">
+        <label>الفئة الثالثة:</label>
+        <input type="text" id="cat3Input" class="form-control">
+      </div>
+      <div class="mt-3 text-end">
+        <button onclick="saveCategories()" class="btn btn-primary">حفظ المسميات</button>
+        <button onclick="closeCategoryModal()" class="btn btn-secondary">إلغاء</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- نموذج التقرير الخاص بالطباعة -->
-<div id="printReportArea">
-  <div class="print-header d-flex justify-content-between align-items-center">
-    <div>
-      <h2 style="margin: 0; font-weight: 800; color: #0284c7;">حسين لخدمات الإنترنت</h2>
-      <p style="margin: 3px 0 0 0; font-size: 0.95rem; color: #475569;" id="printReportSubtitle">تقرير المبيعات والتفعيلات اليومية</p>
+<!-- نافذة إعدادات تيليجرام -->
+<div id="telegramModal" class="modal" tabindex="-1" style="display:none; background:rgba(0,0,0,0.5); position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999;">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <h5 class="modal-title mb-3">⚙️ إعدادات تيليجرام</h5>
+      <div class="mb-2">
+        <label>Bot Token:</label>
+        <input type="text" id="tgTokenInput" class="form-control">
+      </div>
+      <div class="mb-2">
+        <label>Chat ID:</label>
+        <input type="text" id="tgChatIdInput" class="form-control">
+      </div>
+      <div class="mt-3 text-end">
+        <button onclick="saveTelegramSettings()" class="btn btn-success">حفظ الإعدادات</button>
+        <button onclick="closeTelegramModal()" class="btn btn-secondary">إلغاء</button>
+      </div>
     </div>
-    <div style="text-align: left; font-size: 0.85rem; color: #334155;">
-      <div id="printReportAdminName"><strong>إشراف:</strong> حسين عبد المجيد</div>
-      <div><strong>تاريخ الطباعة:</strong> <span id="printDate"></span></div>
-      <div><strong>وقت الطباعة:</strong> <span id="printTime"></span></div>
-    </div>
-  </div>
-
-  <h4 style="margin-bottom: 15px; text-align: center; font-weight: 700;" id="printReportTitle">تفاصيل المبيعات</h4>
-
-  <table class="print-table">
-    <thead>
-      <tr id="printTableHeader">
-        <th style="width: 40px;">#</th>
-        <th>اسم المشترك</th>
-        <th>يوزر المشترك</th>
-        <th>فئة الاشتراك</th>
-        <th>التاريخ والوقت</th>
-        <th>المبلغ (د.ع)</th>
-      </tr>
-    </thead>
-    <tbody id="printTbody"></tbody>
-  </table>
-
-  <div class="print-total-box mt-3" id="printTotalBox">
-    <span id="printTotalLabel">إجمالي المبلغ:</span> <span id="printTotalAmount" style="color: #b45309;">0</span> دينار عراقي
-  </div>
-
-  <div class="d-flex justify-content-between align-items-center mt-5 pt-3" style="font-size: 0.9rem; color: #64748b;">
-    <div>توقيع وتصديق المسؤول: .......................................</div>
-    <div>حسين لخدمات الإنترنت - جميع الحقوق محفوظة</div>
   </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-  // بيانات الأدمن الثابتة الخاصة بك
-  const ADMIN_EMAIL = "huzt.m1@gmail.com";
-  const ADMIN_PASS = "Huzt19881988";
-  const PERMANENT_ACTIVATION_CODE = "2031988";
+  // 1. التهيئة والذاكرة المحلية
+  let currentTab = 'cat1';
+  let categories = JSON.parse(localStorage.getItem('drox_categories')) || {
+    cat1: "مشتركين الضوئي",
+    cat2: "أبراج أمجد",
+    cat3: "أبراج سبيد"
+  };
+  let subscribers = JSON.parse(localStorage.getItem('drox_subscribers')) || [];
 
-  let currentUserKey = "";
-  let currentEmail = "";
-  let trialTimerInterval = null;
+  // 2. حساب تاريخ الانتهاء الدقيق (شهر كامل بمعالجة أيام الشهور 28/29/30/31)
+  function calculateExpiryDate(startDateStr) {
+    let startDate = new Date(startDateStr);
+    let day = startDate.getDate();
+    let month = startDate.getMonth();
+    let year = startDate.getFullYear();
 
-  let paymentModalInstance = null;
-  let purchaseModalInstance = null;
-  let telegramModalInstance = null;
-
-  // قواعد البيانات للمستخدم الحالي
-  let fiberData = [];
-  let earthData = [];
-  let speedData = [];
-  let cashActivations = [];
-  let debtActivations = [];
-  let paidActivations = [];
-  let userTelegram = { token: "", chatId: "" };
-
-  document.addEventListener('DOMContentLoaded', () => {
-    paymentModalInstance = new bootstrap.Modal(document.getElementById('paymentModal'));
-    purchaseModalInstance = new bootstrap.Modal(document.getElementById('purchaseModal'));
-    telegramModalInstance = new bootstrap.Modal(document.getElementById('telegramSettingsModal'));
-
-    // التحقق هل هناك جلسة سابقة مسجلة
-    const activeSession = localStorage.getItem('hussain_active_session');
-    if (activeSession) {
-      const sessionData = JSON.parse(activeSession);
-      loginUser(sessionData.email, sessionData.isPermanent, sessionData.loginTime);
+    let targetMonth = month + 1;
+    let targetYear = year;
+    if (targetMonth > 11) {
+      targetMonth = 0;
+      targetYear++;
     }
-  });
 
-  // إرسال إشعار تيليجرام الخاص بحساب المستخدم
-  function sendTelegramNotification(message) {
-    if (!userTelegram.token || !userTelegram.chatId) return;
-    const url = `https://api.telegram.org/bot${userTelegram.token}/sendMessage`;
-    fetch(url, {
+    // حساب عدد الأيام الفعلي في الشهر القادم
+    let daysInTargetMonth = new Date(targetYear, targetMonth + 1, 0).getDate();
+    let targetDay = Math.min(day, daysInTargetMonth);
+
+    let expiryDate = new Date(targetYear, targetMonth, targetDay, startDate.getHours(), startDate.getMinutes());
+    return expiryDate.toISOString().split('T')[0];
+  }
+
+  // 3. إرسال إشعارات تليجرام الشاملة
+  function sendTelegramNotification(actionType, name, category, amount, paymentType) {
+    const token = localStorage.getItem('drox_tg_token') || '8115682025:AAH_QxT1Xw7c8fK2yV1zL9mN0P3qR4sT5uV';
+    const chatId = localStorage.getItem('drox_tg_chat_id') || '6590858813';
+
+    let message = `🔔 *إشعار نظام DROX*\n\n`;
+    message += `📌 *نوع العملية:* ${actionType}\n`;
+    message += `👤 *اسم المشترك:* ${name}\n`;
+    message += `📡 *الفئة / البرج:* ${category}\n`;
+    message += `💰 *المبلغ:* ${amount} دينار\n`;
+    message += `💳 *طريقة الدفع:* ${paymentType}\n`;
+    message += `⏰ *التاريخ:* ${new Date().toLocaleString('ar-IQ')}`;
+
+    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: userTelegram.chatId,
-        text: message,
-        parse_mode: 'HTML'
-      })
-    }).catch(err => console.error("Error sending Telegram message:", err));
+      body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
+    }).catch(err => console.error('خطأ في الاتصال بتيليجرام:', err));
   }
 
-  // تسجيل الدخول
-  function handleLogin(e) {
+  // 4. تحديث الواجهات والقوائم
+  function updateCategoryLabels() {
+    document.getElementById('tabCat1').innerText = categories.cat1;
+    document.getElementById('tabCat2').innerText = categories.cat2;
+    document.getElementById('tabCat3').innerText = categories.cat3;
+
+    let subCatSelect = document.getElementById('subCategory');
+    subCatSelect.innerHTML = `
+      <option value="${categories.cat1}">${categories.cat1}</option>
+      <option value="${categories.cat2}">${categories.cat2}</option>
+      <option value="${categories.cat3}">${categories.cat3}</option>
+    `;
+  }
+
+  function switchTab(tabKey) {
+    currentTab = tabKey;
+    document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
+    
+    if(tabKey === 'cat1') document.getElementById('tabCat1').classList.add('active');
+    if(tabKey === 'cat2') document.getElementById('tabCat2').classList.add('active');
+    if(tabKey === 'cat3') document.getElementById('tabCat3').classList.add('active');
+    if(tabKey === 'all') document.getElementById('tabAll').classList.add('active');
+
+    renderSubscribers();
+  }
+
+  function renderSubscribers() {
+    const tbody = document.getElementById('subscribersTableBody');
+    tbody.innerHTML = '';
+
+    let filtered = subscribers;
+    if (currentTab === 'cat1') filtered = subscribers.filter(s => s.category === categories.cat1);
+    if (currentTab === 'cat2') filtered = subscribers.filter(s => s.category === categories.cat2);
+    if (currentTab === 'cat3') filtered = subscribers.filter(s => s.category === categories.cat3);
+
+    document.getElementById('tableTitle').innerText = currentTab === 'all' 
+      ? '📋 السجل الشامل لجميع الاشتراكات' 
+      : `قائمة مشتركين: ${categories[currentTab]}`;
+
+    filtered.forEach((sub, index) => {
+      let tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="fw-bold">${sub.name}</td>
+        <td><span class="badge bg-info text-dark badge-cat">${sub.category}</span></td>
+        <td>${sub.price} د.ع</td>
+        <td><span class="badge ${sub.paymentType === 'نقدًا' ? 'bg-success' : 'bg-warning text-dark'}">${sub.paymentType}</span></td>
+        <td>${sub.startDate}</td>
+        <td class="text-danger fw-bold">${sub.expiryDate}</td>
+        <td><span class="badge bg-primary">نشط</span></td>
+        <td>
+          <button onclick="paySubscriber('${sub.id}')" class="btn btn-sm btn-outline-success">💰 تسديد</button>
+          <button onclick="deleteSubscriber('${sub.id}')" class="btn btn-sm btn-outline-danger">🗑️ حذف</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // 5. إضافة تفعيل جديد
+  function handleAddSubscriber(e) {
     e.preventDefault();
-    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-    const pass = document.getElementById('loginPass').value;
+    let name = document.getElementById('subName').value;
+    let category = document.getElementById('subCategory').value;
+    let price = document.getElementById('subPrice').value;
+    let paymentType = document.getElementById('paymentType').value;
+    let startDate = new Date().toISOString().split('T')[0];
+    let expiryDate = calculateExpiryDate(startDate);
 
-    if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
-      loginUser(email, true, Date.now());
-      return;
-    }
-
-    const usersDb = JSON.parse(localStorage.getItem('hussain_users_db')) || {};
-    if (usersDb[email] && usersDb[email].pass === pass) {
-      loginUser(email, usersDb[email].isPermanent, usersDb[email].loginTime || Date.now());
-    } else {
-      document.getElementById('loginAlert').classList.remove('d-none');
-    }
-  }
-
-  // إنشاء حساب جديد (تجريبي 30 دقيقة)
-  function handleRegister(e) {
-    e.preventDefault();
-    const email = document.getElementById('regEmail').value.trim().toLowerCase();
-    const pass = document.getElementById('regPass').value;
-
-    if (email === ADMIN_EMAIL) {
-      alert("هذا البريد مخصص للأدمن الأساسي، يرجى تسجيل الدخول مباشرة.");
-      return;
-    }
-
-    let usersDb = JSON.parse(localStorage.getItem('hussain_users_db')) || {};
-    if (usersDb[email]) {
-      alert("البريد الإلكتروني مسجل مسبقاً، يرجى تسجيل الدخول.");
-      return;
-    }
-
-    const now = Date.now();
-    usersDb[email] = {
-      pass: pass,
-      isPermanent: false,
-      loginTime: now
+    let newSub = {
+      id: Date.now().toString(),
+      name: name,
+      category: category,
+      price: price,
+      paymentType: paymentType,
+      startDate: startDate,
+      expiryDate: expiryDate
     };
-    localStorage.setItem('hussain_users_db', JSON.stringify(usersDb));
 
-    alert("تم إنشاء الحساب التجريبي بنجاح! لديك 30 دقيقة من الآن.");
-    loginUser(email, false, now);
+    subscribers.push(newSub);
+    localStorage.setItem('drox_subscribers', JSON.stringify(subscribers));
+
+    sendTelegramNotification("تفعيل اشتراك جديد", name, category, price, paymentType);
+    renderSubscribers();
+    document.getElementById('addForm').reset();
+    alert("تم تفعيل الاشتراك وإرسال الإشعار بنجاح!");
   }
 
-  // دالة تفعيل جلسة المستخدم
-  function loginUser(email, isPermanent, loginTime) {
-    currentEmail = email;
-    currentUserKey = "hussain_user_data_" + email.replace(/[@.]/g, '_');
-
-    // حفظ الجلسة
-    localStorage.setItem('hussain_active_session', JSON.stringify({ email, isPermanent, loginTime }));
-
-    // تحميل بيانات هذا المستخدم فقط
-    loadUserData();
-
-    // التحقق من انتهاء الفترة التجريبية (30 دقيقة) للمستخدمين غير الدائمين وغير الأدمن
-    if (email !== ADMIN_EMAIL && !isPermanent) {
-      const thirtyMinutes = 30 * 60 * 1000;
-      const elapsedTime = Date.now() - loginTime;
-      
-      if (elapsedTime >= thirtyMinutes) {
-        logoutSystem();
-        return;
-      } else {
-        const remainingTime = thirtyMinutes - elapsedTime;
-        if (trialTimerInterval) clearTimeout(trialTimerInterval);
-        trialTimerInterval = setTimeout(() => {
-          alert("انتهت فترة التجربة (30 دقيقة). تم تسجيل الخروج تلقائياً.");
-          logoutSystem();
-        }, remainingTime);
-      }
-    }
-
-    // إظهار واجهة التطبيق
-    document.getElementById('authScreen').classList.add('d-none');
-    document.getElementById('mainContent').classList.remove('d-none');
-    document.getElementById('loginAlert').classList.add('d-none');
-
-    const topBuyBtn = document.getElementById('topBuyBtn');
-    if (email === ADMIN_EMAIL || isPermanent) {
-      topBuyBtn.classList.add('d-none');
-    } else {
-      topBuyBtn.classList.remove('d-none');
-    }
-
-    if (email === ADMIN_EMAIL) {
-      document.getElementById('currentUserBadge').innerHTML = `<i class="fa-solid fa-user-shield"></i> إدارة: حسين عبد المجيد (الأدمن)`;
-    } else {
-      document.getElementById('currentUserBadge').innerHTML = `<i class="fa-solid fa-user-gear"></i> الحساب: ${email}`;
-    }
-
-    renderAllTables();
-  }
-
-  function showPurchaseModal() {
-    purchaseModalInstance.show();
-  }
-
-  // التحقق من كود الشراء (7 أرقام: 2031988)
-  function verifyActivationCode() {
-    const code = document.getElementById('activationCodeInput').value.trim();
-    if (code === PERMANENT_ACTIVATION_CODE) {
-      let usersDb = JSON.parse(localStorage.getItem('hussain_users_db')) || {};
-      if (usersDb[currentEmail]) {
-        usersDb[currentEmail].isPermanent = true;
-        localStorage.setItem('hussain_users_db', JSON.stringify(usersDb));
-      }
-      
-      let session = JSON.parse(localStorage.getItem('hussain_active_session')) || {};
-      session.isPermanent = true;
-      localStorage.setItem('hussain_active_session', JSON.stringify(session));
-
-      if (trialTimerInterval) clearTimeout(trialTimerInterval);
-      purchaseModalInstance.hide();
-      alert("تم تفعيل حسابك بنجاح للابد! شكراً لك.");
-      loginUser(currentEmail, true, Date.now());
-    } else {
-      document.getElementById('codeAlert').classList.remove('d-none');
+  // 6. التسديد والحذف
+  function paySubscriber(id) {
+    let sub = subscribers.find(s => s.id === id);
+    if (sub) {
+      sub.paymentType = "نقدًا (تم التسديد)";
+      localStorage.setItem('drox_subscribers', JSON.stringify(subscribers));
+      sendTelegramNotification("تسديد اشتراك", sub.name, sub.category, sub.price, "نقدًا");
+      renderSubscribers();
+      alert("تم تسديد المبلغ وإرسال الإشعار عبر تيليجرام!");
     }
   }
 
-  function logoutSystem() {
-    if (trialTimerInterval) clearTimeout(trialTimerInterval);
-    localStorage.removeItem('hussain_active_session');
-    location.reload();
+  function deleteSubscriber(id) {
+    if (confirm("هل أنت تأكد من حذف هذا المشترك؟")) {
+      subscribers = subscribers.filter(s => s.id !== id);
+      localStorage.setItem('drox_subscribers', JSON.stringify(subscribers));
+      renderSubscribers();
+    }
   }
 
-  function loadUserData() {
-    const data = JSON.parse(localStorage.getItem(currentUserKey)) || {};
-    fiberData = data.fiber || [];
-    earthData = data.earth || [];
-    speedData = data.speed || [];
-    cashActivations = data.cash || [];
-    debtActivations = data.debt || [];
-    paidActivations = data.paid || [];
-    userTelegram = data.telegram || { token: "", chatId: "" };
+  // 7. إدارة النافذة وإعدادات الفئات وتيليجرام
+  function openCategoryModal() {
+    document.getElementById('cat1Input').value = categories.cat1;
+    document.getElementById('cat2Input').value = categories.cat2;
+    document.getElementById('cat3Input').value = categories.cat3;
+    document.getElementById('categoryModal').style.display = 'block';
   }
+  function closeCategoryModal() { document.getElementById('categoryModal').style.display = 'none'; }
 
-  function saveData() {
-    const data = {
-      fiber: fiberData,
-      earth: earthData,
-      speed: speedData,
-      cash: cashActivations,
-      debt: debtActivations,
-      paid: paidActivations,
-      telegram: userTelegram
-    };
-    localStorage.setItem(currentUserKey, JSON.stringify(data));
-  }
+  function saveCategories() {
+    categories.cat1 = document.getElementById('cat1Input').value || categories.cat1;
+    categories.cat2 = document.getElementById('cat2Input').value || categories.cat2;
+    categories.cat3 = document.getElementById('cat3Input').value || categories.cat3;
 
-  function manualSaveAlert() {
-    saveData();
-    alert('تم حفظ جميع التغييرات بنجاح في حسابك الخاص!');
+    localStorage.setItem('drox_categories', JSON.stringify(categories));
+    updateCategoryLabels();
+    renderSubscribers();
+    closeCategoryModal();
+    alert("تم حفظ التعديلات وحفظ المسميات بنجاح!");
   }
 
   function openTelegramModal() {
-    document.getElementById('userBotToken').value = userTelegram.token || '';
-    document.getElementById('userChatId').value = userTelegram.chatId || '';
-    telegramModalInstance.show();
+    document.getElementById('tgTokenInput').value = localStorage.getItem('drox_tg_token') || '';
+    document.getElementById('tgChatIdInput').value = localStorage.getItem('drox_tg_chat_id') || '';
+    document.getElementById('telegramModal').style.display = 'block';
   }
+  function closeTelegramModal() { document.getElementById('telegramModal').style.display = 'none'; }
 
-  function saveUserTelegramSettings() {
-    userTelegram.token = document.getElementById('userBotToken').value.trim();
-    userTelegram.chatId = document.getElementById('userChatId').value.trim();
-    saveData();
-    telegramModalInstance.hide();
+  function saveTelegramSettings() {
+    localStorage.setItem('drox_tg_token', document.getElementById('tgTokenInput').value);
+    localStorage.setItem('drox_tg_chat_id', document.getElementById('tgChatIdInput').value);
+    closeTelegramModal();
     alert("تم حفظ إعدادات تيليجرام بنجاح!");
   }
 
-  function registerActivation(e) {
-    e.preventDefault();
-    const name = document.getElementById('actName').value.trim();
-    const user = document.getElementById('actUser').value.trim();
-    const cat = document.getElementById('actCategory').value.trim();
-    const price = document.getElementById('actAmount').value.trim();
-    const type = document.getElementById('actType').value;
-    
-    if(!user) {
-      alert('يرجى كتابة يوزر المشترك ليتسنى للنظام توجيهه تلقائياً!');
-      return;
-    }
+  // 8. الاستيراد والتصدير
+  function importFromCSV(event) {
+    const file = event.target.files[0];
+    if (!file) return;
 
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
-
-    const currentDay = now.getDate();
-    const currentMonth = now.getMonth() + 1;
-    const currentYear = now.getFullYear() < 2026 ? 2026 : now.getFullYear();
-
-    let found = false;
-    let targetSection = '';
-    const userLower = user.toLowerCase().trim();
-
-    const fiberMatch = fiberData.find(x => x.user.toLowerCase().trim() === userLower);
-    if (fiberMatch) {
-      fiberMatch.actDay = currentDay;
-      fiberMatch.actMonth = currentMonth;
-      fiberMatch.actYear = currentYear;
-      if (price) fiberMatch.price = price;
-      if (cat) fiberMatch.cat = cat;
-      found = true;
-      targetSection = 'المشتركين (كابل ضوئي)';
-    }
-
-    const earthMatch = earthData.find(x => x.user.toLowerCase().trim() === userLower);
-    if (earthMatch) {
-      earthMatch.actDay = currentDay;
-      earthMatch.actMonth = currentMonth;
-      earthMatch.actYear = currentYear;
-      if (price) earthMatch.price = price;
-      if (cat) earthMatch.cat = cat;
-      found = true;
-      targetSection = 'مشتركين إيرثلنك (أبراج)';
-    }
-
-    const speedMatch = speedData.find(x => x.user.toLowerCase().trim() === userLower);
-    if (speedMatch) {
-      speedMatch.actDay = currentDay;
-      speedMatch.actMonth = currentMonth;
-      speedMatch.actYear = currentYear;
-      if (price) speedMatch.price = price;
-      if (cat) speedMatch.cat = cat;
-      found = true;
-      targetSection = 'مشتركين سبيد (أبراج)';
-    }
-
-    if (!found) {
-      const isFiberPattern = /^mu\d+f\d+p\d+$/i.test(userLower);
-      const isEarthPattern = /amjad\d*$/i.test(userLower);
-      const isSpeedPattern = /spdn\d*$/i.test(userLower);
-
-      const newSubscriber = {
-        id: Date.now() + 1,
-        name: name,
-        user: user,
-        cat: cat,
-        price: price,
-        actDay: currentDay,
-        actMonth: currentMonth,
-        actYear: currentYear
-      };
-
-      if (isFiberPattern) {
-        fiberData.unshift({ ...newSubscriber, serial: '' });
-        found = true;
-        targetSection = 'المشتركين (كابل ضوئي)';
-      } else if (isEarthPattern) {
-        earthData.unshift(newSubscriber);
-        found = true;
-        targetSection = 'مشتركين إيرثلنك (أبراج)';
-      } else if (isSpeedPattern) {
-        speedData.unshift(newSubscriber);
-        found = true;
-        targetSection = 'مشتركين سبيد (أبراج)';
-      }
-    }
-
-    const item = { 
-      id: Date.now(), 
-      name, 
-      user, 
-      cat, 
-      price, 
-      date: dateStr,
-      timestamp: now.getTime()
-    };
-
-    if (type === 'نقد') {
-      cashActivations.unshift(item);
-      renderCashTable();
-    } else {
-      debtActivations.unshift(item);
-      renderDebtTable();
-    }
-
-    saveData();
-    renderFiberTable();
-    renderEarthTable();
-    renderSpeedTable();
-
-    e.target.reset();
-
-    if (found) {
-      alert(`تم التفعيل بنجاح! \nتم إضافة/تحديث المشترك تلقائياً في خانة: [${targetSection}].`);
-    } else {
-      alert(`تم تسجيل التفعيل بنجاح وإضافته إلى قائمة [تفعيلات ${type}].`);
-    }
-  }
-
-  function openPaymentModal(id) {
-    const item = debtActivations.find(x => x.id === id);
-    if (!item) return;
-
-    document.getElementById('modalDebtId').value = id;
-    document.getElementById('modalCustomerInfo').innerText = `المشترك: ${item.name} (${item.user || 'بدون يوزر'})`;
-    document.getElementById('modalAmountInfo').innerText = `المبلغ المطلوب حالياً: ${Number(item.price || 0).toLocaleString()} د.ع`;
-    document.getElementById('payTypeSelect').value = 'full';
-    document.getElementById('partialAmountInput').value = '';
-    togglePartialInput();
-
-    paymentModalInstance.show();
-  }
-
-  function togglePartialInput() {
-    const payType = document.getElementById('payTypeSelect').value;
-    const partialGroup = document.getElementById('partialGroup');
-    if (payType === 'partial') {
-      partialGroup.classList.remove('d-none');
-    } else {
-      partialGroup.classList.add('d-none');
-    }
-  }
-
-  function processPayment() {
-    const id = Number(document.getElementById('modalDebtId').value);
-    const payType = document.getElementById('payTypeSelect').value;
-    const idx = debtActivations.findIndex(x => x.id === id);
-
-    if (idx === -1) return;
-
-    const item = debtActivations[idx];
-    const originalPrice = Number(item.price || 0);
-    const now = new Date();
-    const payDate = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
-
-    if (payType === 'full') {
-      const paidItem = {
-        id: Date.now(),
-        name: item.name,
-        user: item.user,
-        cat: item.cat,
-        paidAmount: originalPrice,
-        type: 'سداد كامل 💵',
-        date: payDate,
-        timestamp: now.getTime()
-      };
-
-      paidActivations.unshift(paidItem);
-      debtActivations.splice(idx, 1);
-
-      saveData();
-      renderDebtTable();
-      renderPaidTable();
-      paymentModalInstance.hide();
-
-      const message = `✅ <b>تم تسديد الدين بالكامـل</b>\n\n` +
-                      `👤 <b>الاسم:</b> ${item.name}\n` +
-                      `🆔 <b>اليوزر:</b> ${item.user || '-'}\n` +
-                      `💰 <b>المبلغ المسدد:</b> ${originalPrice.toLocaleString()} د.ع\n` +
-                      `🕒 <b>الوقت:</b> ${payDate}\n\n` +
-                      `🏛 <b>حسين لخدمات الإنترنت</b>`;
-      sendTelegramNotification(message);
-
-      alert('تم تسديد المبلغ بالكامل بنجاح!');
-    } else {
-      const partialAmount = Number(document.getElementById('partialAmountInput').value);
-      if (!partialAmount || partialAmount <= 0) {
-        alert('يرجى إدخال مبلغ مسدد صحيح!');
-        return;
-      }
-
-      if (partialAmount >= originalPrice) {
-        alert('المبلغ يتجاوز أو يساوي الدين، يرجى اختيار تسديد كامل.');
-        return;
-      }
-
-      const remainingPrice = originalPrice - partialAmount;
-      item.price = remainingPrice;
-
-      const paidItem = {
-        id: Date.now(),
-        name: item.name,
-        user: item.user,
-        cat: item.cat,
-        paidAmount: partialAmount,
-        type: `سداد جزئي (المتبقي: ${remainingPrice.toLocaleString()} د.ع)`,
-        date: payDate,
-        timestamp: now.getTime()
-      };
-
-      paidActivations.unshift(paidItem);
-
-      saveData();
-      renderDebtTable();
-      renderPaidTable();
-      paymentModalInstance.hide();
-
-      const message = `🪙 <b>تم تسديد جزء من الدين</b>\n\n` +
-                      `👤 <b>الاسم:</b> ${item.name}\n` +
-                      `💵 <b>المبلغ المسدد:</b> ${partialAmount.toLocaleString()} د.ع\n` +
-                      `⏳ <b>المتبقي:</b> ${remainingPrice.toLocaleString()} د.ع\n` +
-                      `🕒 <b>الوقت:</b> ${payDate}\n\n` +
-                      `🏛 <b>حسين لخدمات الإنترنت</b>`;
-      sendTelegramNotification(message);
-
-      alert(`تم تسديد ${partialAmount.toLocaleString()} د.ع بنجاح.`);
-    }
-  }
-
-  function getDayOptions(selectedDay) {
-    let options = '';
-    for (let d = 1; d <= 31; d++) {
-      options += `<option value="${d}" ${String(d) === String(selectedDay) ? 'selected' : ''}>${d}</option>`;
-    }
-    return options;
-  }
-
-  function getMonthOptions(selectedMonth) {
-    let options = '';
-    for (let m = 1; m <= 12; m++) {
-      options += `<option value="${m}" ${String(m) === String(selectedMonth) ? 'selected' : ''}>${m}</option>`;
-    }
-    return options;
-  }
-
-  function getYearOptions(selectedYear) {
-    let options = '';
-    for (let y = 2026; y <= 2100; y++) {
-      options += `<option value="${y}" ${String(y) === String(selectedYear) ? 'selected' : ''}>${y}</option>`;
-    }
-    return options;
-  }
-
-  function renderFiberTable() {
-    const query = document.getElementById('searchFiber').value.toLowerCase();
-    const tbody = document.getElementById('fiberTbody');
-    tbody.innerHTML = '';
-    const today = new Date();
-
-    fiberData.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td><input class="form-control table-input" value="${item.name}" onchange="updateItem(fiberData, ${item.id}, 'name', this.value)"></td>
-          <td><input class="form-control table-input" value="${item.user}" onchange="updateItem(fiberData, ${item.id}, 'user', this.value)"></td>
-          <td><input class="form-control table-input" value="${item.cat}" onchange="updateItem(fiberData, ${item.id}, 'cat', this.value)"></td>
-          <td><input class="form-control table-input" value="${item.price}" onchange="updateItem(fiberData, ${item.id}, 'price', this.value)"></td>
-          <td><input class="form-control table-input" value="${item.serial || ''}" onchange="updateItem(fiberData, ${item.id}, 'serial', this.value)"></td>
-          <td>
-            <div class="d-flex gap-1 justify-content-center">
-              <select class="form-select table-input date-select" onchange="updateItem(fiberData, ${item.id}, 'actDay', this.value)">${getDayOptions(item.actDay || today.getDate())}</select>
-              <select class="form-select table-input date-select" onchange="updateItem(fiberData, ${item.id}, 'actMonth', this.value)">${getMonthOptions(item.actMonth || today.getMonth() + 1)}</select>
-              <select class="form-select table-input date-select" style="min-width: 75px;" onchange="updateItem(fiberData, ${item.id}, 'actYear', this.value)">${getYearOptions(item.actYear || 2026)}</select>
-            </div>
-          </td>
-          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(fiberData, ${item.id}, renderFiberTable)"><i class="fa-solid fa-trash"></i></button></td>
-        </tr>
-      `;
-    });
-  }
-
-  function addFiberRow() {
-    const today = new Date();
-    fiberData.push({ id: Date.now(), name: 'مشترك جديد', user: '', cat: '', price: '', serial: '', actDay: today.getDate(), actMonth: today.getMonth() + 1, actYear: 2026 });
-    saveData();
-    renderFiberTable();
-  }
-
-  function renderEarthTable() {
-    const query = document.getElementById('searchEarth').value.toLowerCase();
-    const tbody = document.getElementById('earthTbody');
-    tbody.innerHTML = '';
-    const today = new Date();
-
-    earthData.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td><input class="form-control table-input" value="${item.name}" onchange="updateItem(earthData, ${item.id}, 'name', this.value)"></td>
-          <td><input class="form-control table-input" value="${item.user}" onchange="updateItem(earthData, ${item.id}, 'user', this.value)"></td>
-          <td><input class="form-control table-input" value="${item.cat}" onchange="updateItem(earthData, ${item.id}, 'cat', this.value)"></td>
-          <td><input class="form-control table-input" value="${item.price}" onchange="updateItem(earthData, ${item.id}, 'price', this.value)"></td>
-          <td>
-            <div class="d-flex gap-1 justify-content-center">
-              <select class="form-select table-input date-select" onchange="updateItem(earthData, ${item.id}, 'actDay', this.value)">${getDayOptions(item.actDay || today.getDate())}</select>
-              <select class="form-select table-input date-select" onchange="updateItem(earthData, ${item.id}, 'actMonth', this.value)">${getMonthOptions(item.actMonth || today.getMonth() + 1)}</select>
-              <select class="form-select table-input date-select" style="min-width: 75px;" onchange="updateItem(earthData, ${item.id}, 'actYear', this.value)">${getYearOptions(item.actYear || 2026)}</select>
-            </div>
-          </td>
-          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(earthData, ${item.id}, renderEarthTable)"><i class="fa-solid fa-trash"></i></button></td>
-        </tr>
-      `;
-    });
-  }
-
-  function addEarthRow() {
-    const today = new Date();
-    earthData.push({ id: Date.now(), name: 'مشترك جديد', user: '', cat: '', price: '', actDay: today.getDate(), actMonth: today.getMonth() + 1, actYear: 2026 });
-    saveData();
-    renderEarthTable();
-  }
-
-  function renderSpeedTable() {
-    const query = document.getElementById('searchSpeed').value.toLowerCase();
-    const tbody = document.getElementById('speedTbody');
-    tbody.innerHTML = '';
-    const today = new Date();
-
-    speedData.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td><input class="form-control table-input" value="${item.name}" onchange="updateItem(speedData, ${item.id}, 'name', this.value)"></td>
-          <td><input class="form-control table-input" value="${item.user}" onchange="updateItem(speedData, ${item.id}, 'user', this.value)"></td>
-          <td><input class="form-control table-input" value="${item.cat}" onchange="updateItem(speedData, ${item.id}, 'cat', this.value)"></td>
-          <td><input class="form-control table-input" value="${item.price}" onchange="updateItem(speedData, ${item.id}, 'price', this.value)"></td>
-          <td>
-            <div class="d-flex gap-1 justify-content-center">
-              <select class="form-select table-input date-select" onchange="updateItem(speedData, ${item.id}, 'actDay', this.value)">${getDayOptions(item.actDay || today.getDate())}</select>
-              <select class="form-select table-input date-select" onchange="updateItem(speedData, ${item.id}, 'actMonth', this.value)">${getMonthOptions(item.actMonth || today.getMonth() + 1)}</select>
-              <select class="form-select table-input date-select" style="min-width: 75px;" onchange="updateItem(speedData, ${item.id}, 'actYear', this.value)">${getYearOptions(item.actYear || 2026)}</select>
-            </div>
-          </td>
-          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(speedData, ${item.id}, renderSpeedTable)"><i class="fa-solid fa-trash"></i></button></td>
-        </tr>
-      `;
-    });
-  }
-
-  function addSpeedRow() {
-    const today = new Date();
-    speedData.push({ id: Date.now(), name: 'مشترك جديد', user: '', cat: '', price: '', actDay: today.getDate(), actMonth: today.getMonth() + 1, actYear: 2026 });
-    saveData();
-    renderSpeedTable();
-  }
-
-  function renderCashTable() {
-    const query = document.getElementById('searchCash').value.toLowerCase();
-    const tbody = document.getElementById('cashTbody');
-    tbody.innerHTML = '';
-    cashActivations.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${item.name}</td>
-          <td>${item.user || '-'}</td>
-          <td>${item.cat || '-'}</td>
-          <td class="text-success fw-bold">${Number(item.price || 0).toLocaleString()} د.ع</td>
-          <td class="small text-muted">${item.date}</td>
-          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(cashActivations, ${item.id}, renderCashTable)"><i class="fa-solid fa-trash"></i></button></td>
-        </tr>
-      `;
-    });
-  }
-
-  function renderDebtTable() {
-    const query = document.getElementById('searchDebt').value.toLowerCase();
-    const tbody = document.getElementById('debtTbody');
-    tbody.innerHTML = '';
-    debtActivations.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${item.name}</td>
-          <td>${item.user || '-'}</td>
-          <td>${item.cat || '-'}</td>
-          <td class="text-warning fw-bold">${Number(item.price || 0).toLocaleString()} د.ع</td>
-          <td class="small text-muted">${item.date}</td>
-          <td><button class="btn btn-success btn-sm rounded-pill px-2 py-0" onclick="openPaymentModal(${item.id})">تسديد <i class="fa-solid fa-money-check-dollar ms-1"></i></button></td>
-          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(debtActivations, ${item.id}, renderDebtTable)"><i class="fa-solid fa-trash"></i></button></td>
-        </tr>
-      `;
-    });
-  }
-
-  function renderPaidTable() {
-    const query = document.getElementById('searchPaid').value.toLowerCase();
-    const tbody = document.getElementById('paidTbody');
-    tbody.innerHTML = '';
-    paidActivations.filter(x => x.name.toLowerCase().includes(query) || (x.user && x.user.toLowerCase().includes(query))).forEach((item, index) => {
-      tbody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${item.name}</td>
-          <td>${item.user || '-'}</td>
-          <td>${item.cat || '-'}</td>
-          <td class="text-info fw-bold">${Number(item.paidAmount || 0).toLocaleString()} د.ع</td>
-          <td><span class="badge bg-secondary">${item.type}</span></td>
-          <td class="small text-muted">${item.date}</td>
-          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(paidActivations, ${item.id}, renderPaidTable)"><i class="fa-solid fa-trash"></i></button></td>
-        </tr>
-      `;
-    });
-  }
-
-  function printTodaySales() {
-    const now = new Date();
-    const todayLocaleStr = now.toLocaleDateString('ar-IQ');
-    const todayItems = cashActivations.filter(item => item.date && item.date.includes(todayLocaleStr));
-
-    document.getElementById('printReportSubtitle').innerText = 'تقرير المبيعات والتفعيلات النقدية اليومية';
-    document.getElementById('printReportTitle').innerText = 'تفاصيل المبيعات النقدية لليوم';
-    document.getElementById('printTotalLabel').innerText = 'إجمالي مبيعات اليوم النقدية:';
-
-    document.getElementById('printTableHeader').innerHTML = `
-      <th style="width: 40px;">#</th>
-      <th>اسم المشترك</th>
-      <th>يوزر المشترك</th>
-      <th>فئة الاشتراك</th>
-      <th>التاريخ والوقت</th>
-      <th>المبلغ (د.ع)</th>
-    `;
-
-    const printTbody = document.getElementById('printTbody');
-    printTbody.innerHTML = '';
-    let totalSales = 0;
-
-    if (todayItems.length === 0) {
-      printTbody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #64748b;">لا توجد أي مبيعات نقدية مسجلة بتاريخ اليوم</td></tr>`;
-    } else {
-      todayItems.forEach((item, index) => {
-        totalSales += Number(item.price) || 0;
-        printTbody.innerHTML += `<tr><td>${index + 1}</td><td><strong>${item.name}</strong></td><td>${item.user || '-'}</td><td>${item.cat || '-'}</td><td>${item.date}</td><td><strong>${Number(item.price || 0).toLocaleString()} د.ع</strong></td></tr>`;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const lines = e.target.result.split('\n');
+      let count = 0;
+      lines.forEach((line, idx) => {
+        if (idx === 0 || !line.trim()) return;
+        const [name, category, price, type] = line.split(',');
+        if (name && category) {
+          let startDate = new Date().toISOString().split('T')[0];
+          subscribers.push({
+            id: (Date.now() + Math.random()).toString(),
+            name: name.trim(),
+            category: category.trim(),
+            price: price ? price.trim() : "0",
+            paymentType: type ? type.trim() : "نقدًا",
+            startDate: startDate,
+            expiryDate: calculateExpiryDate(startDate)
+          });
+          count++;
+        }
       });
-    }
-
-    document.getElementById('printDate').innerText = todayLocaleStr;
-    document.getElementById('printTime').innerText = now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('printTotalAmount').innerText = totalSales.toLocaleString();
-    window.print();
+      localStorage.setItem('drox_subscribers', JSON.stringify(subscribers));
+      renderSubscribers();
+      alert(`تم استيراد ${count} مشترك وتوزيعهم بنجاح!`);
+    };
+    reader.readAsText(file);
   }
 
-  function printDebtSales() {
-    const now = new Date();
-    document.getElementById('printReportSubtitle').innerText = 'تقرير تفعيلات المبيعات الآجلة (الفقد)';
-    document.getElementById('printReportTitle').innerText = 'تفاصيل مبيعات الفقد المتبقية';
-    document.getElementById('printTotalLabel').innerText = 'مجموع إجمالي المبيعات المطلوبة (الفقد):';
-
-    document.getElementById('printTableHeader').innerHTML = `
-      <th style="width: 40px;">#</th>
-      <th>اسم المشترك</th>
-      <th>يوزر المشترك</th>
-      <th>فئة الاشتراك</th>
-      <th>التاريخ والوقت</th>
-      <th>المبلغ (د.ع)</th>
-    `;
-
-    const printTbody = document.getElementById('printTbody');
-    printTbody.innerHTML = '';
-    let totalDebt = 0;
-
-    debtActivations.forEach((item, index) => {
-      totalDebt += Number(item.price) || 0;
-      printTbody.innerHTML += `<tr><td>${index + 1}</td><td><strong>${item.name}</strong></td><td>${item.user || '-'}</td><td>${item.cat || '-'}</td><td>${item.date}</td><td><strong>${Number(item.price || 0).toLocaleString()} د.ع</strong></td></tr>`;
+  function exportToCSV() {
+    if (subscribers.length === 0) return alert("لا يوجد مشتركين للتصدير!");
+    let csv = "data:text/csv;charset=utf-8,الاسم,الفئة,المبلغ,طريقة الدفع,تاريخ التفعيل,تاريخ الانتهاء\n";
+    subscribers.forEach(s => {
+      csv += `${s.name},${s.category},${s.price},${s.paymentType},${s.startDate},${s.expiryDate}\n`;
     });
-
-    document.getElementById('printDate').innerText = now.toLocaleDateString('ar-IQ');
-    document.getElementById('printTime').innerText = now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('printTotalAmount').innerText = totalDebt.toLocaleString();
-    window.print();
+    const link = document.createElement("a");
+    link.setAttribute("href", encodeURI(csv));
+    link.setAttribute("download", `DROX_Subscribers_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
-  function printPaidSales() {
-    const now = new Date();
-    document.getElementById('printReportSubtitle').innerText = 'تقرير كشف المبالغ والديون المسددة';
-    document.getElementById('printReportTitle').innerText = 'تفاصيل سجل التسديدات المستلمة';
-    document.getElementById('printTotalLabel').innerText = 'إجمالي المبالغ المسددة:';
-
-    document.getElementById('printTableHeader').innerHTML = `
-      <th style="width: 40px;">#</th>
-      <th>اسم المشترك</th>
-      <th>يوزر المشترك</th>
-      <th>نوع التسديد</th>
-      <th>التاريخ والوقت</th>
-      <th>المبلغ المسدد (د.ع)</th>
-    `;
-
-    const printTbody = document.getElementById('printTbody');
-    printTbody.innerHTML = '';
-    let totalPaid = 0;
-
-    paidActivations.forEach((item, index) => {
-      totalPaid += Number(item.paidAmount) || 0;
-      printTbody.innerHTML += `<tr><td>${index + 1}</td><td><strong>${item.name}</strong></td><td>${item.user || '-'}</td><td>${item.type || '-'}</td><td>${item.date}</td><td><strong>${Number(item.paidAmount || 0).toLocaleString()} د.ع</strong></td></tr>`;
-    });
-
-    document.getElementById('printDate').innerText = now.toLocaleDateString('ar-IQ');
-    document.getElementById('printTime').innerText = now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('printTotalAmount').innerText = totalPaid.toLocaleString();
-    window.print();
-  }
-
-  function updateItem(arr, id, key, val) {
-    const obj = arr.find(x => x.id === id);
-    if (obj) {
-      obj[key] = val;
-      saveData();
-    }
-  }
-
-  function deleteItem(arr, id, callback) {
-    if (confirm("هل أنت تأكد من الحذف؟")) {
-      const idx = arr.findIndex(x => x.id === id);
-      if (idx !== -1) {
-        arr.splice(idx, 1);
-        saveData();
-        callback();
-      }
-    }
-  }
-
-  function renderAllTables() {
-    renderFiberTable();
-    renderEarthTable();
-    renderSpeedTable();
-    renderCashTable();
-    renderDebtTable();
-    renderPaidTable();
-  }
+  // التشغيل الأولي عند فتح الصفحة
+  window.onload = function() {
+    updateCategoryLabels();
+    renderSubscribers();
+  };
 </script>
 </body>
 </html>
