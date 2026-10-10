@@ -274,7 +274,7 @@
       <i class="fa-solid fa-shield-halved"></i>
     </div>
     <h4 class="fw-bold mb-1" id="authBrandHeader">حسين لخدمات الإنترنت</h4>
-    <p class="text-muted small mb-3">نظام إدارة الشبكات والتفعيلات السحابي</p>
+    <p class="text-muted small mb-3">نظام إدارة الشبكات والتفعيلات</p>
 
     <ul class="nav nav-pills nav-justified mb-3" id="authTabs" role="tablist">
       <li class="nav-item">
@@ -737,7 +737,7 @@
       try {
         const sessionData = JSON.parse(activeSession);
         if (sessionData && sessionData.email) {
-          loginUser(sessionData.email, sessionData.isPermanent, sessionData.loginTime, true);
+          loginUser(sessionData.email, sessionData.isPermanent, sessionData.loginTime);
         }
       } catch (err) {
         localStorage.removeItem('hussain_active_session');
@@ -782,48 +782,28 @@
     }).catch(err => console.error(err));
   }
 
-  async function handleLogin(e) {
+  function handleLogin(e) {
     e.preventDefault();
     const user = document.getElementById('loginEmail').value.trim();
     const pass = document.getElementById('loginPass').value.trim();
-    const btn = document.getElementById('loginBtn');
-
-    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-1"></i> جاري الاتصال...`;
 
     if (user === ADMIN_USER && pass === ADMIN_PASS) {
       loginUser(ADMIN_USER, true, Date.now());
       return;
     }
 
-    let usersDb = JSON.parse(localStorage.getItem('hussain_users_db')) || {};
-    
-    try {
-      let cloudDbRes = await fetch('https://api.jsonbin.io/v3/b/661858a7e41b4d34e4e3201d/latest', {
-        headers: { 'X-Master-Key': '$2a$10$7v1b2x3c4v5b6n7m8k9l0e1r2t3y4u5i6o7p8a9s0d1f2g3h4j5k6' }
-      });
-      if (cloudDbRes.ok) {
-        let cloudData = await cloudDbRes.json();
-        if (cloudData && cloudData.record && cloudData.record.users) {
-          usersDb = cloudData.record.users;
-          localStorage.setItem('hussain_users_db', JSON.stringify(usersDb));
-        }
-      }
-    } catch(err) {}
-
+    const usersDb = JSON.parse(localStorage.getItem('hussain_users_db')) || {};
     if (usersDb[user] && String(usersDb[user].pass) === String(pass)) {
-      await fetchUserDataCloud(user);
       loginUser(user, usersDb[user].isPermanent, usersDb[user].loginTime || Date.now());
     } else {
       document.getElementById('loginAlert').classList.remove('d-none');
-      btn.innerHTML = `<i class="fa-solid fa-right-to-bracket me-1"></i> دخول للنظام`;
     }
   }
 
-  async function handleRegister(e) {
+  function handleRegister(e) {
     e.preventDefault();
     const user = document.getElementById('regEmail').value.trim();
     const pass = document.getElementById('regPass').value.trim();
-    const btn = document.getElementById('regBtn');
 
     if (!user || !pass) return;
 
@@ -832,50 +812,19 @@
       return;
     }
 
-    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-1"></i> جاري إنشاء الحساب...`;
-
     let usersDb = JSON.parse(localStorage.getItem('hussain_users_db')) || {};
     const now = Date.now();
     usersDb[user] = { pass: pass, isPermanent: false, loginTime: now };
     localStorage.setItem('hussain_users_db', JSON.stringify(usersDb));
 
-    await syncUsersDbToCloud(usersDb);
-
     alert("تم إنشاء الحساب التجريبي بنجاح! لديك 30 دقيقة من الآن.");
     loginUser(user, false, now);
   }
 
-  async function syncUsersDbToCloud(usersDb) {
-    try {
-      let res = await fetch(`https://api.jsonbin.io/v3/b/661858a7e41b4d34e4e3201d/latest`, {
-        headers: { 'X-Master-Key': '$2a$10$7v1b2x3c4v5b6n7m8k9l0e1r2t3y4u5i6o7p8a9s0d1f2g3h4j5k6' }
-      });
-      let fullDb = {};
-      if (res.ok) {
-        let json = await res.json();
-        if (json && json.record) fullDb = json.record;
-      }
-      fullDb.users = usersDb;
-
-      await fetch('https://api.jsonbin.io/v3/b/661858a7e41b4d34e4e3201d', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': '$2a$10$7v1b2x3c4v5b6n7m8k9l0e1r2t3y4u5i6o7p8a9s0d1f2g3h4j5k6'
-        },
-        body: JSON.stringify(fullDb)
-      });
-    } catch(err) {}
-  }
-
-  async function loginUser(email, isPermanent, loginTime, skipCloudFetch = false) {
+  function loginUser(email, isPermanent, loginTime) {
     currentEmail = email;
     currentUserKey = "hussain_user_data_" + email.replace(/[@.\s]/g, '_');
     localStorage.setItem('hussain_active_session', JSON.stringify({ email, isPermanent, loginTime }));
-
-    if (!skipCloudFetch) {
-      await fetchUserDataCloud(email);
-    }
 
     loadUserData();
 
@@ -911,62 +860,22 @@
     renderAllTables();
   }
 
-  async function fetchUserDataCloud(email) {
-    let safeKey = "hussain_user_data_" + email.replace(/[@.\s]/g, '_');
-    try {
-      let res = await fetch(`https://api.jsonbin.io/v3/b/661858a7e41b4d34e4e3201d/latest`, {
-        headers: { 'X-Master-Key': '$2a$10$7v1b2x3c4v5b6n7m8k9l0e1r2t3y4u5i6o7p8a9s0d1f2g3h4j5k6' }
-      });
-      if (res.ok) {
-        let json = await res.json();
-        if (json && json.record && json.record[safeKey]) {
-          localStorage.setItem(safeKey, JSON.stringify(json.record[safeKey]));
-        }
-      }
-    } catch(err) {}
-  }
-
-  async function saveUserDataCloud(dataObj) {
-    try {
-      let res = await fetch(`https://api.jsonbin.io/v3/b/661858a7e41b4d34e4e3201d/latest`, {
-        headers: { 'X-Master-Key': '$2a$10$7v1b2x3c4v5b6n7m8k9l0e1r2t3y4u5i6o7p8a9s0d1f2g3h4j5k6' }
-      });
-      let fullDb = {};
-      if (res.ok) {
-        let json = await res.json();
-        if (json && json.record) fullDb = json.record;
-      }
-      
-      fullDb[currentUserKey] = dataObj;
-
-      await fetch('https://api.jsonbin.io/v3/b/661858a7e41b4d34e4e3201d', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': '$2a$10$7v1b2x3c4v5b6n7m8k9l0e1r2t3y4u5i6o7p8a9s0d1f2g3h4j5k6'
-        },
-        body: JSON.stringify(fullDb)
-      });
-    } catch(err) {}
-  }
-
   function showPurchaseModal() {
     new bootstrap.Modal(document.getElementById('purchaseModal')).show();
   }
 
-  async function verifyActivationCode() {
+  function verifyActivationCode() {
     const code = document.getElementById('activationCodeInput').value.trim();
     if (code === PERMANENT_ACTIVATION_CODE) {
       let usersDb = JSON.parse(localStorage.getItem('hussain_users_db')) || {};
       if (usersDb[currentEmail]) {
         usersDb[currentEmail].isPermanent = true;
         localStorage.setItem('hussain_users_db', JSON.stringify(usersDb));
-        await syncUsersDbToCloud(usersDb);
       }
 
       document.getElementById('modalPurchaseTitle').innerHTML = `🎉 مبروك على شرائك النسخة الدائمة!`;
       document.getElementById('purchaseModalBody').innerHTML = `
-        <div class="alert alert-success py-2 fw-bold mb-3">تم تفعيل حسابك الدائم بنجاح وحفظه في السحاب!</div>
+        <div class="alert alert-success py-2 fw-bold mb-3">تم تفعيل حسابك الدائم بنجاح!</div>
         <div class="mb-3 text-start">
           <label class="form-label small text-info fw-bold">أدخل اسمك أو اسم شبكتك ليعرض على شاشة التطبيق:</label>
           <input type="text" id="newAppNameInput" class="form-control auth-input text-center" placeholder="مثال: شبكة الفرات للإنترنت" value="${localStorage.getItem('drox_custom_app_name') || ''}" required autocomplete="off">
@@ -1012,12 +921,11 @@
       cash: cashActivations, debt: debtActivations, paid: paidActivations
     };
     localStorage.setItem(currentUserKey, JSON.stringify(data));
-    saveDataCloud(data);
   }
 
   function manualSaveAlert() {
     saveData();
-    alert('تم حفظ كافة البيانات وتحديثها سحابياً بنجاح!');
+    alert('تم حفظ كافة البيانات والتعديلات بنجاح!');
   }
 
   function openCategoryModal() {
@@ -1110,7 +1018,7 @@
                   `⏰ <b>التاريخ:</b> ${dateStr}`;
     sendTelegramNotification(tgMsg);
 
-    alert("تم تسجيل وتفعيل المشترك وحفظه سحابياً بنجاح!");
+    alert("تم تسجيل وتفعيل المشترك وإرسال الإشعار بنجاح!");
   }
 
   function renderFiberTable() {
