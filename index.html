@@ -48,7 +48,6 @@
       overflow-x: hidden;
     }
 
-    /* Auth Screen Style */
     #authScreen {
       position: fixed;
       inset: 0;
@@ -109,7 +108,6 @@
       border-color: var(--primary-cyan) !important;
     }
 
-    /* Main Container Styles */
     .header-panel {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -141,7 +139,6 @@
       gap: 8px;
     }
 
-    /* Tabs Styling */
     .nav-pills {
       gap: 8px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -180,7 +177,6 @@
       box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35);
     }
 
-    /* Cards & Tables */
     .content-card {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -241,11 +237,6 @@
       background-color: #020617 !important;
     }
 
-    .table-input option {
-      background-color: #0f172a !important;
-      color: #ffffff !important;
-    }
-
     .btn-action-add {
       background: linear-gradient(135deg, #10b981, #059669);
       color: #fff;
@@ -293,12 +284,6 @@
       margin-bottom: 20px;
     }
 
-    .date-select {
-      min-width: 65px;
-      padding: 4px 6px;
-      font-size: 0.85rem !important;
-    }
-
     .modal-content-custom {
       background-color: #0f172a;
       border: 1px solid var(--border-color);
@@ -309,7 +294,7 @@
 </head>
 <body>
 
-<!-- شاشة المصادقة والدخول -->
+<!-- شاشة الدخول والتسجيل -->
 <div id="authScreen">
   <div class="auth-card">
     <div class="lock-icon">
@@ -328,6 +313,7 @@
     </ul>
 
     <div class="tab-content" id="authTabsContent">
+      <!-- تسجيل الدخول -->
       <div class="tab-pane fade show active" id="loginTabPane">
         <form onsubmit="handleLogin(event)">
           <div class="mb-2 text-start">
@@ -345,6 +331,7 @@
         </form>
       </div>
 
+      <!-- حساب جديد -->
       <div class="tab-pane fade" id="registerTabPane">
         <form onsubmit="handleRegister(event)">
           <div class="mb-2 text-start">
@@ -355,10 +342,52 @@
             <label class="small text-muted mb-1">اختر رمزاً سرياً:</label>
             <input type="password" id="regPass" class="form-control auth-input" placeholder="••••••••" required>
           </div>
+          <div class="alert alert-warning py-2 small mb-3" style="font-size: 0.8rem;">
+            <i class="fa-solid fa-circle-info me-1"></i> التسجيل يمنحك تجربة مؤقتة لمدة <strong>30 دقيقة</strong>!
+          </div>
           <button type="submit" class="btn btn-action-add w-100 py-2 fs-6">
             <i class="fa-solid fa-user-plus me-1"></i> إنشاء حساب تجريبي
           </button>
         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal شراء الحساب عند انتهاء الـ 30 دقيقة -->
+<div class="modal fade" id="purchaseModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-content-custom text-center p-3">
+      <div class="modal-header border-0 justify-content-center">
+        <h4 class="modal-title fw-bold text-warning"><i class="fa-solid fa-crown me-2"></i>انتهت الفترة التجريبية (30 دقيقة)</h4>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted small mb-3">للاستمرار في استخدام التطبيق بكامل ميزاته وبدون توقف، يرجى شراء حسابك الخاص الدائم.</p>
+        
+        <div class="mb-3">
+          <label class="form-label small text-info fw-bold">أدخل كود الشراء (7 أرقام):</label>
+          <input type="text" id="activationCodeInput" class="form-control auth-input text-center" placeholder="أدخل الكود هنا" maxlength="7">
+        </div>
+        <div id="codeAlert" class="alert alert-danger py-1 d-none small mb-3">كود الشراء غير صحيح!</div>
+
+        <button type="button" class="btn btn-action-save w-100 py-2 mb-3" onclick="verifyActivationCode()">
+          <i class="fa-solid fa-check-circle me-1"></i> تفعيل الحساب للابد
+        </button>
+
+        <div class="p-3 rounded text-start" style="background: rgba(15, 23, 42, 0.8); border: 1px dashed var(--border-color);">
+          <p class="small mb-2 text-light text-center fw-bold">تواصل مع المطور للحصول على كود الشراء:</p>
+          <div class="d-flex flex-column gap-2">
+            <a href="https://wa.me/9647862597668" target="_blank" class="btn btn-success btn-sm rounded-pill fw-bold text-center">
+              <i class="fa-brands fa-whatsapp me-1"></i> واتساب: 07862597668
+            </a>
+            <a href="https://t.me/huzt92" target="_blank" class="btn btn-info btn-sm rounded-pill fw-bold text-dark text-center">
+              <i class="fa-brands fa-telegram me-1"></i> تلجرام: @huzt92
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill" onclick="logoutSystem()">تسجيل الخروج</button>
       </div>
     </div>
   </div>
@@ -376,6 +405,10 @@
       </div>
       
       <div class="d-flex gap-2 flex-wrap justify-content-center align-items-center">
+        <!-- زر شراء التطبيق في الأعلى للحسابات التجريبية -->
+        <button id="topBuyBtn" class="btn btn-warning btn-sm rounded-pill px-3 fw-bold d-none" onclick="showPurchaseModal()">
+          <i class="fa-solid fa-crown me-1"></i> شراء حسابك الخاص
+        </button>
         <button class="btn btn-outline-warning btn-sm rounded-pill px-3 fw-bold" onclick="openCategoryModal()">
           <i class="fa-solid fa-sliders me-1"></i> تعديل المسميات
         </button>
@@ -396,7 +429,7 @@
     </div>
   </div>
 
-  <!-- لوحة تسجيل تفعيل جديد سريع -->
+  <!-- لوحة تفعيل اشتراك سريع -->
   <div class="activation-box mb-4">
     <h6 class="fw-bold text-info mb-3"><i class="fa-solid fa-bolt me-2"></i>تسجيل وتفعيل اشتراك (نقد / فقد):</h6>
     <form onsubmit="registerActivation(event)" class="row g-2 align-items-center">
@@ -426,7 +459,7 @@
     </form>
   </div>
 
-  <!-- التنقل بين القوائم + زر السجل الشامل -->
+  <!-- تبويبات التنقل السبعة -->
   <ul class="nav nav-pills mb-3" id="mainTabs" role="tablist">
     <li class="nav-item">
       <button class="nav-link active" id="fiber-tab" data-bs-toggle="tab" data-bs-target="#fiber-pane">
@@ -465,7 +498,7 @@
     </li>
   </ul>
 
-  <!-- محتوى القوائم -->
+  <!-- محتوى الشاشات -->
   <div class="tab-content" id="mainTabsContent">
 
     <!-- 1. الكابل الضوئي -->
@@ -559,7 +592,7 @@
       </div>
     </div>
 
-    <!-- السجل الشامل لجميع القوائم -->
+    <!-- السجل الشامل -->
     <div class="tab-pane fade" id="all-pane">
       <div class="content-card">
         <h5 class="fw-bold text-warning mb-3"><i class="fa-solid fa-users-rectangle me-2"></i>السجل الشامل لجميع الاشتراكات</h5>
@@ -582,7 +615,7 @@
       </div>
     </div>
 
-    <!-- تفعيلات النقد -->
+    <!-- 4. تفعيلات النقد -->
     <div class="tab-pane fade" id="cash-pane">
       <div class="content-card">
         <h5 class="fw-bold text-success mb-3">سجل تفعيلات النقد المباشر</h5>
@@ -597,7 +630,7 @@
       </div>
     </div>
 
-    <!-- تفعيلات الفقد -->
+    <!-- 5. تفعيلات الفقد -->
     <div class="tab-pane fade" id="debt-pane">
       <div class="content-card">
         <h5 class="fw-bold text-warning mb-3">سجل تفعيلات الفقد (الآجل)</h5>
@@ -612,7 +645,7 @@
       </div>
     </div>
 
-    <!-- المبالغ المسددة -->
+    <!-- 6. المبالغ المسددة -->
     <div class="tab-pane fade" id="paid-pane">
       <div class="content-card">
         <h5 class="fw-bold text-info mb-3">سجل المبالغ المسددة</h5>
@@ -679,12 +712,14 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-  // البريد والرمز السري الأساسي الخاص بك
+  // بيانات حساب الأدمن الخاص بك المعتمدة
   const ADMIN_EMAIL = "huzt.m1@gmail.com";
-  const ADMIN_PASS = "Huzt19881988";
+  const ADMIN_PASS = "Huzt19721972";
+  const PERMANENT_ACTIVATION_CODE = "2031988";
 
   let currentUserKey = "";
   let currentEmail = "";
+  let trialTimerInterval = null;
 
   let fiberData = [];
   let earthData = [];
@@ -739,14 +774,12 @@
     }).catch(err => console.error(err));
   }
 
-  // معالجة تسجيل الدخول المحسنة لمنع رفض إيميل الأدمن
   function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value.trim().toLowerCase();
     const pass = document.getElementById('loginPass').value.trim();
 
-    // قبول إيميلك مباشرة بغض النظر عن حالة الأحرف
-    if (email === ADMIN_EMAIL.toLowerCase() || email === "huzt.m1@gmail.com") {
+    if (email === ADMIN_EMAIL.toLowerCase() && pass === ADMIN_PASS) {
       loginUser(ADMIN_EMAIL, true, Date.now());
       return;
     }
@@ -770,11 +803,12 @@
     }
 
     let usersDb = JSON.parse(localStorage.getItem('hussain_users_db')) || {};
-    usersDb[email] = { pass: pass, isPermanent: false, loginTime: Date.now() };
+    const now = Date.now();
+    usersDb[email] = { pass: pass, isPermanent: false, loginTime: now };
     localStorage.setItem('hussain_users_db', JSON.stringify(usersDb));
 
-    alert("تم إنشاء الحساب بنجاح!");
-    loginUser(email, false, Date.now());
+    alert("تم إنشاء الحساب التجريبي بنجاح! لديك 30 دقيقة من الآن.");
+    loginUser(email, false, now);
   }
 
   function loginUser(email, isPermanent, loginTime) {
@@ -783,12 +817,61 @@
     localStorage.setItem('hussain_active_session', JSON.stringify({ email, isPermanent, loginTime }));
 
     loadUserData();
+
+    // تشغيل مؤقت الـ 30 دقيقة للحسابات التجريبية فقط
+    if (email !== ADMIN_EMAIL && !isPermanent) {
+      const thirtyMinutes = 30 * 60 * 1000;
+      const elapsedTime = Date.now() - loginTime;
+      
+      if (elapsedTime >= thirtyMinutes) {
+        logoutSystem();
+        return;
+      } else {
+        const remainingTime = thirtyMinutes - elapsedTime;
+        if (trialTimerInterval) clearTimeout(trialTimerInterval);
+        trialTimerInterval = setTimeout(() => {
+          alert("انتهت فترة التجربة (30 دقيقة). تم تسجيل الخروج تلقائياً.");
+          logoutSystem();
+        }, remainingTime);
+      }
+    }
+
     document.getElementById('authScreen').classList.add('d-none');
     document.getElementById('mainContent').classList.remove('d-none');
+
+    const topBuyBtn = document.getElementById('topBuyBtn');
+    if (email === ADMIN_EMAIL || isPermanent) {
+      topBuyBtn.classList.add('d-none');
+      document.getElementById('currentUserBadge').innerHTML = `<i class="fa-solid fa-user-shield"></i> إدارة: حسين عبد المجيد (الأدمن)`;
+    } else {
+      topBuyBtn.classList.remove('d-none');
+      document.getElementById('currentUserBadge').innerHTML = `<i class="fa-solid fa-user-gear"></i> حساب تجريبي: ${email}`;
+    }
+
     renderAllTables();
   }
 
+  function showPurchaseModal() {
+    new bootstrap.Modal(document.getElementById('purchaseModal')).show();
+  }
+
+  function verifyActivationCode() {
+    const code = document.getElementById('activationCodeInput').value.trim();
+    if (code === PERMANENT_ACTIVATION_CODE) {
+      let usersDb = JSON.parse(localStorage.getItem('hussain_users_db')) || {};
+      if (usersDb[currentEmail]) {
+        usersDb[currentEmail].isPermanent = true;
+        localStorage.setItem('hussain_users_db', JSON.stringify(usersDb));
+      }
+      loginUser(currentEmail, true, Date.now());
+      alert("تم تفعيل حسابك الدائم بنجاح!");
+    } else {
+      document.getElementById('codeAlert').classList.remove('d-none');
+    }
+  }
+
   function logoutSystem() {
+    if (trialTimerInterval) clearTimeout(trialTimerInterval);
     localStorage.removeItem('hussain_active_session');
     location.reload();
   }
@@ -841,6 +924,19 @@
     document.getElementById('titleCat1').innerText = categories.cat1;
     document.getElementById('titleCat2').innerText = categories.cat2;
     document.getElementById('titleCat3').innerText = categories.cat3;
+  }
+
+  function openTelegramModal() {
+    document.getElementById('userBotToken').value = userTelegram.token || '';
+    document.getElementById('userChatId').value = userTelegram.chatId || '';
+    new bootstrap.Modal(document.getElementById('telegramSettingsModal')).show();
+  }
+
+  function saveUserTelegramSettings() {
+    userTelegram.token = document.getElementById('userBotToken').value.trim();
+    userTelegram.chatId = document.getElementById('userChatId').value.trim();
+    saveData();
+    alert("تم حفظ إعدادات تيليجرام بنجاح!");
   }
 
   function registerActivation(e) {
