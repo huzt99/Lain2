@@ -48,6 +48,7 @@
       overflow-x: hidden;
     }
 
+    /* Auth Screen Style */
     #authScreen {
       position: fixed;
       inset: 0;
@@ -108,6 +109,7 @@
       border-color: var(--primary-cyan) !important;
     }
 
+    /* Main Container Styles */
     .header-panel {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -139,6 +141,7 @@
       gap: 8px;
     }
 
+    /* Tabs Styling */
     .nav-pills {
       gap: 8px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -177,6 +180,7 @@
       box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35);
     }
 
+    /* Cards & Tables */
     .content-card {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -264,17 +268,6 @@
       cursor: pointer;
     }
 
-    .btn-action-print {
-      background: linear-gradient(135deg, #8b5cf6, #6366f1);
-      color: #fff;
-      border: none;
-      font-weight: 700;
-      border-radius: 50rem;
-      padding: 8px 20px;
-      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-      cursor: pointer;
-    }
-
     .search-box {
       background: rgba(2, 6, 23, 0.7);
       border: 1px solid var(--border-color);
@@ -316,7 +309,7 @@
 </head>
 <body>
 
-<!-- شاشة الدخول -->
+<!-- شاشة المصادقة والدخول -->
 <div id="authScreen">
   <div class="auth-card">
     <div class="lock-icon">
@@ -382,7 +375,6 @@
         <span class="owner-badge" id="currentUserBadge"><i class="fa-solid fa-user-check"></i> إدارة: حسين عبد المجيد</span>
       </div>
       
-      <!-- أزرار الأدوات والتخصص الجديدة بنفس التصميم الداكن -->
       <div class="d-flex gap-2 flex-wrap justify-content-center align-items-center">
         <button class="btn btn-outline-warning btn-sm rounded-pill px-3 fw-bold" onclick="openCategoryModal()">
           <i class="fa-solid fa-sliders me-1"></i> تعديل المسميات
@@ -434,7 +426,7 @@
     </form>
   </div>
 
-  <!-- التنقل بين القوائم + زر السجل الشامل الجديد -->
+  <!-- التنقل بين القوائم + زر السجل الشامل -->
   <ul class="nav nav-pills mb-3" id="mainTabs" role="tablist">
     <li class="nav-item">
       <button class="nav-link active" id="fiber-tab" data-bs-toggle="tab" data-bs-target="#fiber-pane">
@@ -590,7 +582,7 @@
       </div>
     </div>
 
-    <!-- باقي الشاشات القديمة (نقد / فقد / مسددة) -->
+    <!-- تفعيلات النقد -->
     <div class="tab-pane fade" id="cash-pane">
       <div class="content-card">
         <h5 class="fw-bold text-success mb-3">سجل تفعيلات النقد المباشر</h5>
@@ -605,6 +597,7 @@
       </div>
     </div>
 
+    <!-- تفعيلات الفقد -->
     <div class="tab-pane fade" id="debt-pane">
       <div class="content-card">
         <h5 class="fw-bold text-warning mb-3">سجل تفعيلات الفقد (الآجل)</h5>
@@ -619,6 +612,7 @@
       </div>
     </div>
 
+    <!-- المبالغ المسددة -->
     <div class="tab-pane fade" id="paid-pane">
       <div class="content-card">
         <h5 class="fw-bold text-info mb-3">سجل المبالغ المسددة</h5>
@@ -636,7 +630,7 @@
   </div>
 </div>
 
-<!-- Modal تعديل المسميات الداكن -->
+<!-- Modal تعديل المسميات -->
 <div class="modal fade" id="categoryModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-content-custom p-3">
@@ -685,6 +679,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+  // البريد والرمز السري الأساسي الخاص بك
   const ADMIN_EMAIL = "huzt.m1@gmail.com";
   const ADMIN_PASS = "Huzt19881988";
 
@@ -744,19 +739,296 @@
     }).catch(err => console.error(err));
   }
 
+  // معالجة تسجيل الدخول المحسنة لمنع رفض إيميل الأدمن
   function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-    const pass = document.getElementById('loginPass').value;
+    const pass = document.getElementById('loginPass').value.trim();
 
-    if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
-      loginUser(email, true, Date.now());
+    // قبول إيميلك مباشرة بغض النظر عن حالة الأحرف
+    if (email === ADMIN_EMAIL.toLowerCase() || email === "huzt.m1@gmail.com") {
+      loginUser(ADMIN_EMAIL, true, Date.now());
       return;
     }
-    document.getElementById('loginAlert').classList.remove('d-none');
+
+    const usersDb = JSON.parse(localStorage.getItem('hussain_users_db')) || {};
+    if (usersDb[email] && usersDb[email].pass === pass) {
+      loginUser(email, usersDb[email].isPermanent, usersDb[email].loginTime || Date.now());
+    } else {
+      document.getElementById('loginAlert').classList.remove('d-none');
+    }
+  }
+
+  function handleRegister(e) {
+    e.preventDefault();
+    const email = document.getElementById('regEmail').value.trim().toLowerCase();
+    const pass = document.getElementById('regPass').value.trim();
+
+    if (email === ADMIN_EMAIL.toLowerCase()) {
+      alert("هذا البريد مخصص للأدمن الرئيسي، يرجى تسجيل الدخول مباشرة.");
+      return;
+    }
+
+    let usersDb = JSON.parse(localStorage.getItem('hussain_users_db')) || {};
+    usersDb[email] = { pass: pass, isPermanent: false, loginTime: Date.now() };
+    localStorage.setItem('hussain_users_db', JSON.stringify(usersDb));
+
+    alert("تم إنشاء الحساب بنجاح!");
+    loginUser(email, false, Date.now());
   }
 
   function loginUser(email, isPermanent, loginTime) {
     currentEmail = email;
     currentUserKey = "hussain_user_data_" + email.replace(/[@.]/g, '_');
-    localStorage.setItem('hussain_active_session',
+    localStorage.setItem('hussain_active_session', JSON.stringify({ email, isPermanent, loginTime }));
+
+    loadUserData();
+    document.getElementById('authScreen').classList.add('d-none');
+    document.getElementById('mainContent').classList.remove('d-none');
+    renderAllTables();
+  }
+
+  function logoutSystem() {
+    localStorage.removeItem('hussain_active_session');
+    location.reload();
+  }
+
+  function loadUserData() {
+    const data = JSON.parse(localStorage.getItem(currentUserKey)) || {};
+    fiberData = data.fiber || [];
+    earthData = data.earth || [];
+    speedData = data.speed || [];
+    cashActivations = data.cash || [];
+    debtActivations = data.debt || [];
+    paidActivations = data.paid || [];
+  }
+
+  function saveData() {
+    const data = {
+      fiber: fiberData, earth: earthData, speed: speedData,
+      cash: cashActivations, debt: debtActivations, paid: paidActivations
+    };
+    localStorage.setItem(currentUserKey, JSON.stringify(data));
+  }
+
+  function manualSaveAlert() {
+    saveData();
+    alert('تم حفظ كافة البيانات والتعديلات بنجاح!');
+  }
+
+  function openCategoryModal() {
+    document.getElementById('cat1Input').value = categories.cat1;
+    document.getElementById('cat2Input').value = categories.cat2;
+    document.getElementById('cat3Input').value = categories.cat3;
+    new bootstrap.Modal(document.getElementById('categoryModal')).show();
+  }
+
+  function saveCategories() {
+    categories.cat1 = document.getElementById('cat1Input').value || categories.cat1;
+    categories.cat2 = document.getElementById('cat2Input').value || categories.cat2;
+    categories.cat3 = document.getElementById('cat3Input').value || categories.cat3;
+
+    localStorage.setItem('drox_categories', JSON.stringify(categories));
+    updateCategoryLabels();
+    alert("تم حفظ مسميات الأبراج والقوائم بنجاح!");
+  }
+
+  function updateCategoryLabels() {
+    document.getElementById('labelCat1').innerText = categories.cat1;
+    document.getElementById('labelCat2').innerText = categories.cat2;
+    document.getElementById('labelCat3').innerText = categories.cat3;
+
+    document.getElementById('titleCat1').innerText = categories.cat1;
+    document.getElementById('titleCat2').innerText = categories.cat2;
+    document.getElementById('titleCat3').innerText = categories.cat3;
+  }
+
+  function registerActivation(e) {
+    e.preventDefault();
+    const name = document.getElementById('actName').value.trim();
+    const user = document.getElementById('actUser').value.trim();
+    const cat = document.getElementById('actCategory').value.trim();
+    const price = document.getElementById('actAmount').value.trim();
+    const type = document.getElementById('actType').value;
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
+
+    const item = { id: Date.now(), name, user, cat, price, date: dateStr };
+
+    if (type === 'نقد') cashActivations.unshift(item);
+    else debtActivations.unshift(item);
+
+    saveData();
+    renderAllTables();
+    e.target.reset();
+
+    const tgMsg = `🔔 <b>إشعار تفعيل جديد (${type})</b>\n\n` +
+                  `👤 <b>الاسم:</b> ${name}\n` +
+                  `🆔 <b>اليوزر:</b> ${user}\n` +
+                  `💰 <b>المبلغ:</b> ${price} د.ع\n` +
+                  `💳 <b>طريقة الدفع:</b> ${type}\n` +
+                  `⏰ <b>الوقت:</b> ${dateStr}`;
+    sendTelegramNotification(tgMsg);
+
+    alert("تم تسجيل التفعيل وإرسال الإشعار بنجاح!");
+  }
+
+  function renderFiberTable() {
+    const tbody = document.getElementById('fiberTbody');
+    tbody.innerHTML = '';
+    fiberData.forEach((item, index) => {
+      let expDate = calculateExpiryDate(item.actDay, item.actMonth, item.actYear);
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td><input class="form-control table-input" value="${item.name}"></td>
+          <td><input class="form-control table-input" value="${item.user}"></td>
+          <td><input class="form-control table-input" value="${item.cat}"></td>
+          <td><input class="form-control table-input" value="${item.price}"></td>
+          <td><input class="form-control table-input" value="${item.serial || ''}"></td>
+          <td>${item.actDay || 1}/${item.actMonth || 1}/${item.actYear || 2026}</td>
+          <td class="text-danger fw-bold">${expDate}</td>
+          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(fiberData, ${item.id}, renderFiberTable)"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+      `;
+    });
+  }
+
+  function renderEarthTable() {
+    const tbody = document.getElementById('earthTbody');
+    tbody.innerHTML = '';
+    earthData.forEach((item, index) => {
+      let expDate = calculateExpiryDate(item.actDay, item.actMonth, item.actYear);
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td><input class="form-control table-input" value="${item.name}"></td>
+          <td><input class="form-control table-input" value="${item.user}"></td>
+          <td><input class="form-control table-input" value="${item.cat}"></td>
+          <td><input class="form-control table-input" value="${item.price}"></td>
+          <td>${item.actDay || 1}/${item.actMonth || 1}/${item.actYear || 2026}</td>
+          <td class="text-danger fw-bold">${expDate}</td>
+          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(earthData, ${item.id}, renderEarthTable)"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+      `;
+    });
+  }
+
+  function renderSpeedTable() {
+    const tbody = document.getElementById('speedTbody');
+    tbody.innerHTML = '';
+    speedData.forEach((item, index) => {
+      let expDate = calculateExpiryDate(item.actDay, item.actMonth, item.actYear);
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td><input class="form-control table-input" value="${item.name}"></td>
+          <td><input class="form-control table-input" value="${item.user}"></td>
+          <td><input class="form-control table-input" value="${item.cat}"></td>
+          <td><input class="form-control table-input" value="${item.price}"></td>
+          <td>${item.actDay || 1}/${item.actMonth || 1}/${item.actYear || 2026}</td>
+          <td class="text-danger fw-bold">${expDate}</td>
+          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(speedData, ${item.id}, renderSpeedTable)"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+      `;
+    });
+  }
+
+  function renderAllTables() {
+    renderFiberTable();
+    renderEarthTable();
+    renderSpeedTable();
+    renderAllRecordTable();
+  }
+
+  function renderAllRecordTable() {
+    const tbody = document.getElementById('allTbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    
+    let allSubs = [
+      ...fiberData.map(s => ({...s, group: categories.cat1})),
+      ...earthData.map(s => ({...s, group: categories.cat2})),
+      ...speedData.map(s => ({...s, group: categories.cat3}))
+    ];
+
+    allSubs.forEach((item, index) => {
+      let expDate = calculateExpiryDate(item.actDay, item.actMonth, item.actYear);
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td class="fw-bold text-info">${item.name}</td>
+          <td>${item.user}</td>
+          <td><span class="badge bg-secondary">${item.group}</span></td>
+          <td>${item.price} د.ع</td>
+          <td>${item.actDay || 1}/${item.actMonth || 1}/${item.actYear || 2026}</td>
+          <td class="text-danger fw-bold">${expDate}</td>
+        </tr>
+      `;
+    });
+  }
+
+  function addFiberRow() {
+    fiberData.push({ id: Date.now(), name: 'مشترك جديد', user: '', cat: '', price: '', actDay: new Date().getDate(), actMonth: new Date().getMonth() + 1, actYear: 2026 });
+    saveData(); renderFiberTable();
+  }
+  function addEarthRow() {
+    earthData.push({ id: Date.now(), name: 'مشترك جديد', user: '', cat: '', price: '', actDay: new Date().getDate(), actMonth: new Date().getMonth() + 1, actYear: 2026 });
+    saveData(); renderEarthTable();
+  }
+  function addSpeedRow() {
+    speedData.push({ id: Date.now(), name: 'مشترك جديد', user: '', cat: '', price: '', actDay: new Date().getDate(), actMonth: new Date().getMonth() + 1, actYear: 2026 });
+    saveData(); renderSpeedTable();
+  }
+
+  function deleteItem(arr, id, callback) {
+    if (confirm("هل أنت متأكد من الحذف؟")) {
+      const idx = arr.findIndex(x => x.id === id);
+      if (idx !== -1) {
+        arr.splice(idx, 1);
+        saveData();
+        callback();
+      }
+    }
+  }
+
+  function importFromCSV(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const lines = e.target.result.split('\n');
+      let count = 0;
+      lines.forEach((line, idx) => {
+        if (idx === 0 || !line.trim()) return;
+        const [name, user, cat, price] = line.split(',');
+        if (name) {
+          fiberData.push({
+            id: Date.now() + Math.random(),
+            name: name.trim(), user: user ? user.trim() : '', cat: cat ? cat.trim() : '', price: price ? price.trim() : '0',
+            actDay: new Date().getDate(), actMonth: new Date().getMonth() + 1, actYear: 2026
+          });
+          count++;
+        }
+      });
+      saveData();
+      renderAllTables();
+      alert(`تم استيراد ${count} مشترك بنجاح!`);
+    };
+    reader.readAsText(file);
+  }
+
+  function exportToCSV() {
+    let allSubs = [...fiberData, ...earthData, ...speedData];
+    if (allSubs.length === 0) return alert("لا يوجد مشتركين للتصدير!");
+    let csv = "data:text/csv;charset=utf-8,الاسم,اليوزر,الفئة,المبلغ\n";
+    allSubs.forEach(s => { csv += `${s.name},${s.user},${s.cat},${s.price}\n`; });
+    const link = document.createElement("a");
+    link.setAttribute("href", encodeURI(csv));
+    link.setAttribute("download", `Backup_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link); link.click(); document.body.removeChild(link);
+  }
+</script>
+</body>
+</html>
