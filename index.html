@@ -289,8 +289,8 @@
       <div class="tab-pane fade show active" id="loginTabPane">
         <form onsubmit="handleLogin(event)">
           <div class="mb-2 text-start">
-            <label class="small text-muted mb-1">اسم المستخدم / الحساب:</label>
-            <input type="text" id="loginEmail" class="form-control auth-input" placeholder="أدخل اسم الحساب" required autocomplete="off">
+            <label class="small text-muted mb-1">اسم الحساب / المستخدم:</label>
+            <input type="text" id="loginEmail" class="form-control auth-input" placeholder="اكتب اسم الحساب هنا" required autocomplete="off">
           </div>
           <div class="mb-3 text-start">
             <label class="small text-muted mb-1">الرمز السري:</label>
@@ -307,7 +307,7 @@
         <form onsubmit="handleRegister(event)">
           <div class="mb-2 text-start">
             <label class="small text-muted mb-1">اختر اسم حساب:</label>
-            <input type="text" id="regEmail" class="form-control auth-input" placeholder="اختر حساباً جديداً" required autocomplete="off">
+            <input type="text" id="regEmail" class="form-control auth-input" placeholder="اكتب اسم الحساب الجديد" required autocomplete="off">
           </div>
           <div class="mb-3 text-start">
             <label class="small text-muted mb-1">اختر رمزاً سرياً:</label>
@@ -788,7 +788,7 @@
     const pass = document.getElementById('loginPass').value.trim();
     const btn = document.getElementById('loginBtn');
 
-    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-1"></i> جاري الاتصال بالسحاب...`;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-1"></i> جاري الاتصال...`;
 
     if (user === ADMIN_USER && pass === ADMIN_PASS) {
       loginUser(ADMIN_USER, true, Date.now());
@@ -797,7 +797,6 @@
 
     let usersDb = JSON.parse(localStorage.getItem('hussain_users_db')) || {};
     
-    // محاولة جلب قاعدة البيانات من السحاب لضمان المزامنة التلقائية بين الأجهزة
     try {
       let cloudDbRes = await fetch('https://api.jsonbin.io/v3/b/661858a7e41b4d34e4e3201d/latest', {
         headers: { 'X-Master-Key': '$2a$10$7v1b2x3c4v5b6n7m8k9l0e1r2t3y4u5i6o7p8a9s0d1f2g3h4j5k6' }
@@ -811,7 +810,7 @@
       }
     } catch(err) {}
 
-    if (usersDb[user] && usersDb[user].pass === pass) {
+    if (usersDb[user] && String(usersDb[user].pass) === String(pass)) {
       await fetchUserDataCloud(user);
       loginUser(user, usersDb[user].isPermanent, usersDb[user].loginTime || Date.now());
     } else {
@@ -833,7 +832,7 @@
       return;
     }
 
-    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-1"></i> جاري إنشاء الحساب بالسحاب...`;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-1"></i> جاري إنشاء الحساب...`;
 
     let usersDb = JSON.parse(localStorage.getItem('hussain_users_db')) || {};
     const now = Date.now();
@@ -848,13 +847,23 @@
 
   async function syncUsersDbToCloud(usersDb) {
     try {
+      let res = await fetch(`https://api.jsonbin.io/v3/b/661858a7e41b4d34e4e3201d/latest`, {
+        headers: { 'X-Master-Key': '$2a$10$7v1b2x3c4v5b6n7m8k9l0e1r2t3y4u5i6o7p8a9s0d1f2g3h4j5k6' }
+      });
+      let fullDb = {};
+      if (res.ok) {
+        let json = await res.json();
+        if (json && json.record) fullDb = json.record;
+      }
+      fullDb.users = usersDb;
+
       await fetch('https://api.jsonbin.io/v3/b/661858a7e41b4d34e4e3201d', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'X-Master-Key': '$2a$10$7v1b2x3c4v5b6n7m8k9l0e1r2t3y4u5i6o7p8a9s0d1f2g3h4j5k6'
         },
-        body: JSON.stringify({ users: usersDb })
+        body: JSON.stringify(fullDb)
       });
     } catch(err) {}
   }
@@ -1003,7 +1012,7 @@
       cash: cashActivations, debt: debtActivations, paid: paidActivations
     };
     localStorage.setItem(currentUserKey, JSON.stringify(data));
-    saveDataCloud(data); // مزامنة فورية وسحابية تلقائية
+    saveDataCloud(data);
   }
 
   function manualSaveAlert() {
@@ -1352,7 +1361,7 @@
     earthData.push({ id: Date.now(), name: 'مشترك جديد', user: '', cat: categories.cat2, price: '', actDay: new Date().getDate(), actMonth: new Date().getMonth() + 1, actYear: 2026 });
     saveData(); renderEarthTable(); renderAllRecordTable();
   }
-  function addSpeedRow()  {
+  function addSpeedRow() {
     speedData.push({ id: Date.now(), name: 'مشترك جديد', user: '', cat: categories.cat3, price: '', actDay: new Date().getDate(), actMonth: new Date().getMonth() + 1, actYear: 2026 });
     saveData(); renderSpeedTable(); renderAllRecordTable();
   }
