@@ -300,16 +300,17 @@
     .modal-content-custom { background-color: #0f172a; border: 1px solid var(--border-color); color: var(--text-main); border-radius: 20px; }
     #printReportArea { display: none; }
 
+    /* تعديلات الطباعة لضمان الحفظ كملف PDF بشكل نظيف ومنسق */
     @media print {
-      @page { size: auto; margin: 15mm; }
+      @page { size: A4 portrait; margin: 10mm; }
       body { background: #fff !important; color: #000 !important; padding: 0 !important; background-image: none !important; }
-      #lockScreen, #mainContent, .modal { display: none !important; }
-      #printReportArea { display: block !important; padding: 10px; font-family: 'Cairo', sans-serif; direction: rtl; }
+      #lockScreen, #mainContent, .modal, .btn, .search-box { display: none !important; }
+      #printReportArea { display: block !important; width: 100% !important; padding: 0 !important; font-family: 'Cairo', sans-serif; direction: rtl; }
       .print-header { border-bottom: 3px solid #0f172a; padding-bottom: 12px; margin-bottom: 20px; }
-      .print-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-      .print-table th, .print-table td { border: 1px solid #cbd5e1; padding: 8px; text-align: center; font-size: 0.9rem; }
-      .print-table th { background-color: #f1f5f9; font-weight: bold; }
-      .print-total-box { background-color: #fffbe3; border: 2px dashed #d97706; border-radius: 12px; padding: 15px; text-align: center; font-size: 1.2rem; font-weight: bold; color: #b45309; }
+      .print-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+      .print-table th, .print-table td { border: 1px solid #333; padding: 8px; text-align: center; font-size: 12px; }
+      .print-table th { background-color: #e2e8f0 !important; font-weight: bold; -webkit-print-color-adjust: exact; }
+      .print-total-box { background-color: #fffbe3 !important; border: 2px dashed #d97706; border-radius: 12px; padding: 12px; text-align: center; font-size: 1.1rem; font-weight: bold; color: #b45309; -webkit-print-color-adjust: exact; }
     }
   </style>
 </head>
@@ -1521,7 +1522,7 @@
     document.getElementById('salesDebtTotal').innerText = total.toLocaleString();
   }
 
-  // دوال الطباعة والشاملة المتوافقة مع أندرويد APK
+  // دوال الطباعة والحفظ كملف PDF للأندرويد APK
   function printFiberTable() { printCustomList(tabNames.fiber, fiberData, 'price'); }
   function printEarthTable() { printCustomList(tabNames.earth, earthData, 'price'); }
   function printSpeedTable() { printCustomList(tabNames.speed, speedData, 'price'); }
@@ -1555,12 +1556,11 @@
     document.getElementById('printTotalAmount').innerText = total.toLocaleString();
     setupPrintHeaderDates();
 
-    // تشغيل الطباعة بطريقة متوافقة تماماً مع الـ APK وتطبيقات الاندرويد
+    // تشغيل أمر الطباعة في أندرويد APK لإظهار خيار حفظ PDF
     setTimeout(() => {
       try {
         window.print();
       } catch (err) {
-        // بديل متوافق في حال لم يدعم تطبيق الاندرويد الطباعة المباشرة
         const printContent = document.getElementById('printReportArea').innerHTML;
         const win = window.open('', '_blank');
         if (win) {
@@ -1568,10 +1568,10 @@
           win.document.close();
           win.print();
         } else {
-          alert('يرجى السماح بفتح النوافذ المنسدلة لطباعة التقرير أو حفظه.');
+          alert('يرجى السماح بفتح النوافذ المنسدلة لطباعة التقرير أو حفظه بصيغة PDF.');
         }
       }
-    }, 200);
+    }, 300);
   }
 
   function setupPrintHeaderDates() {
