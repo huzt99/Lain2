@@ -1060,7 +1060,6 @@
       tabNames: tabNames
     };
     
-    // Save locally immediately
     localStorage.setItem('hussain_fiber_db_' + currentEmailKey, JSON.stringify(fiberData));
     localStorage.setItem('hussain_earth_db_' + currentEmailKey, JSON.stringify(earthData));
     localStorage.setItem('hussain_speed_db_' + currentEmailKey, JSON.stringify(speedData));
@@ -1069,7 +1068,6 @@
     localStorage.setItem('hussain_paid_db_' + currentEmailKey, JSON.stringify(paidActivations));
     localStorage.setItem('hussain_names_' + currentEmailKey, JSON.stringify(tabNames));
 
-    // Save to Cloud JSONBin.io
     if (binId) {
       fetch(`${JSONBIN_MASTER_URL}/${binId}`, {
         method: 'PUT',
@@ -1168,11 +1166,9 @@
     const currentMonth = now.getMonth() + 1;
     const currentYear = now.getFullYear();
 
-    let found = false;
     let targetSection = '';
     const userLower = user.toLowerCase().trim();
 
-    // فحص الأنماط المطلوبة بدقة
     const isFiberPattern = /^mu\d+f\d+p\d+$/i.test(userLower);
     const isEarthPattern = /amjad\d*$/i.test(userLower);
     const isSpeedPattern = /spdn\d*$/i.test(userLower);
@@ -1181,36 +1177,34 @@
 
     if (isFiberPattern) {
       fiberData.unshift({ ...newSubscriber, serial: '' });
-      found = true; targetSection = tabNames.fiber;
+      targetSection = tabNames.fiber;
     } else if (isEarthPattern) {
       earthData.unshift(newSubscriber);
-      found = true; targetSection = tabNames.earth;
+      targetSection = tabNames.earth;
     } else if (isSpeedPattern) {
       speedData.unshift(newSubscriber);
-      found = true; targetSection = tabNames.speed;
+      targetSection = tabNames.speed;
     } else {
-      // بحث افتراضي لو لم يطابق تماماً
       const fiberMatch = fiberData.find(x => x.user.toLowerCase().trim() === userLower);
       if (fiberMatch) {
         fiberMatch.actDay = currentDay; fiberMatch.actMonth = currentMonth; fiberMatch.actYear = currentYear;
         if (price) fiberMatch.price = price; if (cat) fiberMatch.cat = cat;
-        found = true; targetSection = tabNames.fiber;
+        targetSection = tabNames.fiber;
       } else {
         const earthMatch = earthData.find(x => x.user.toLowerCase().trim() === userLower);
         if (earthMatch) {
           earthMatch.actDay = currentDay; earthMatch.actMonth = currentMonth; earthMatch.actYear = currentYear;
           if (price) earthMatch.price = price; if (cat) earthMatch.cat = cat;
-          found = true; targetSection = tabNames.earth;
+          targetSection = tabNames.earth;
         } else {
           const speedMatch = speedData.find(x => x.user.toLowerCase().trim() === userLower);
           if (speedMatch) {
             speedMatch.actDay = currentDay; speedMatch.actMonth = currentMonth; speedMatch.actYear = currentYear;
             if (price) speedMatch.price = price; if (cat) speedMatch.cat = cat;
-            found = true; targetSection = tabNames.speed;
+            targetSection = tabNames.speed;
           } else {
-            // افتراضي يذهب للكابل الضوئي لو لم يُعرف
             fiberData.unshift({ ...newSubscriber, serial: '' });
-            found = true; targetSection = tabNames.fiber;
+            targetSection = tabNames.fiber;
           }
         }
       }
@@ -1527,31 +1521,15 @@
     document.getElementById('salesDebtTotal').innerText = total.toLocaleString();
   }
 
-  // دوال الطباعة الشاملة
-  function printFiberTable() {
-    printCustomList(tabNames.fiber, fiberData, 'price');
-  }
-  function printEarthTable() {
-    printCustomList(tabNames.earth, earthData, 'price');
-  }
-  function printSpeedTable() {
-    printCustomList(tabNames.speed, speedData, 'price');
-  }
-  function printCashTable() {
-    printCustomList('قائمة تفعيلات النقد', cashActivations, 'price');
-  }
-  function printDebtPaneTable() {
-    printCustomList('قائمة تفعيلات الفقد (الآجل)', debtActivations, 'price');
-  }
-  function printPaidSales() {
-    printCustomList('سجل المبالغ المسددة', paidActivations, 'paidAmount');
-  }
-  function printTodaySales() {
-    printCustomList('قائمة مبيعات النقد', cashActivations, 'price');
-  }
-  function printDebtSales() {
-    printCustomList('قائمة مبيعات الفقد', debtActivations, 'price');
-  }
+  // دوال الطباعة والشاملة المتوافقة مع أندرويد APK
+  function printFiberTable() { printCustomList(tabNames.fiber, fiberData, 'price'); }
+  function printEarthTable() { printCustomList(tabNames.earth, earthData, 'price'); }
+  function printSpeedTable() { printCustomList(tabNames.speed, speedData, 'price'); }
+  function printCashTable() { printCustomList('قائمة تفعيلات النقد', cashActivations, 'price'); }
+  function printDebtPaneTable() { printCustomList('قائمة تفعيلات الفقد (الآجل)', debtActivations, 'price'); }
+  function printPaidSales() { printCustomList('سجل المبالغ المسددة', paidActivations, 'paidAmount'); }
+  function printTodaySales() { printCustomList('قائمة مبيعات النقد', cashActivations, 'price'); }
+  function printDebtSales() { printCustomList('قائمة مبيعات الفقد', debtActivations, 'price'); }
 
   function printCustomList(title, dataArray, priceField) {
     document.getElementById('printReportSubtitle').innerText = 'تقرير رسمي - ' + title;
@@ -1576,7 +1554,24 @@
     document.getElementById('printTotalLabel').innerText = 'إجمالي المبلغ الكلي:';
     document.getElementById('printTotalAmount').innerText = total.toLocaleString();
     setupPrintHeaderDates();
-    window.print();
+
+    // تشغيل الطباعة بطريقة متوافقة تماماً مع الـ APK وتطبيقات الاندرويد
+    setTimeout(() => {
+      try {
+        window.print();
+      } catch (err) {
+        // بديل متوافق في حال لم يدعم تطبيق الاندرويد الطباعة المباشرة
+        const printContent = document.getElementById('printReportArea').innerHTML;
+        const win = window.open('', '_blank');
+        if (win) {
+          win.document.write(`<!DOCTYPE html><html dir="rtl"><head><title>${title}</title><style>body{font-family:Cairo,sans-serif;padding:20px;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ccc;padding:8px;text-align:center;}th{background:#f1f5f9;}</style></head><body>${printContent}</body></html>`);
+          win.document.close();
+          win.print();
+        } else {
+          alert('يرجى السماح بفتح النوافذ المنسدلة لطباعة التقرير أو حفظه.');
+        }
+      }
+    }, 200);
   }
 
   function setupPrintHeaderDates() {
