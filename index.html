@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-  <title>حسين لخدمات الإنترنت - نظام إدارة المشتركين</title>
+  <title>حسين لخدمات الإنترنت - نظام إدارة المشتركين والروابط الخاصة</title>
   <!-- Bootstrap 5 RTL -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
   <!-- FontAwesome Icons -->
@@ -68,7 +68,7 @@
       border-radius: 24px;
       padding: 30px 25px;
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 20px rgba(6, 182, 212, 0.2);
       text-align: center;
       backdrop-filter: blur(10px);
@@ -299,18 +299,6 @@
     .date-select { min-width: 65px; padding: 4px 6px; font-size: 0.85rem !important; }
     .modal-content-custom { background-color: #0f172a; border: 1px solid var(--border-color); color: var(--text-main); border-radius: 20px; }
     #printReportArea { display: none; }
-
-    @media print {
-      @page { size: auto; margin: 15mm; }
-      body { background: #fff !important; color: #000 !important; padding: 0 !important; background-image: none !important; }
-      #lockScreen, #mainContent, .modal { display: none !important; }
-      #printReportArea { display: block !important; padding: 10px; font-family: 'Cairo', sans-serif; direction: rtl; }
-      .print-header { border-bottom: 3px solid #0f172a; padding-bottom: 12px; margin-bottom: 20px; }
-      .print-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-      .print-table th, .print-table td { border: 1px solid #cbd5e1; padding: 8px; text-align: center; font-size: 0.9rem; }
-      .print-table th { background-color: #f1f5f9; font-weight: bold; }
-      .print-total-box { background-color: #fffbe3; border: 2px dashed #d97706; border-radius: 12px; padding: 15px; text-align: center; font-size: 1.2rem; font-weight: bold; color: #b45309; }
-    }
   </style>
 </head>
 <body>
@@ -366,6 +354,10 @@
         <span class="owner-badge"><span class="online-indicator"></span> متصل بالسيرفر السحابي | المستخدم: <span id="currentUserName">حسين عبد المجيد</span></span>
       </div>
       <div class="d-flex gap-2 flex-wrap justify-content-center">
+        <!-- زر نسخ رابط الكمبيوتر الخاص بالحساب الحالي -->
+        <button class="btn btn-outline-info btn-sm rounded-pill px-3 fw-bold" onclick="copyDesktopLink()">
+          <i class="fa-solid fa-link me-1"></i> نسخ رابط الكمبيوتر الخاص بي
+        </button>
         <button id="buyLifetimeBtn" class="btn btn-action-buy btn-sm rounded-pill px-3 fw-bold" onclick="openBuyModal()">
           <i class="fa-solid fa-crown me-1"></i> شراء البرنامج (تفعيل مدى الحياة)
         </button>
@@ -486,6 +478,7 @@
                 <th>فئة الاشتراك</th>
                 <th>مبلغ الاشتراك</th>
                 <th>سيريال المشترك</th>
+                <th>رابط الحساب الخاص</th>
                 <th style="min-width: 210px;">تاريخ التفعيل (يوم / شهر / سنة)</th>
                 <th style="width: 50px;">إجراء</th>
               </tr>
@@ -525,6 +518,7 @@
                 <th>يوزر المشترك</th>
                 <th>فئة الاشتراك</th>
                 <th>مبلغ الاشتراك</th>
+                <th>رابط الحساب الخاص</th>
                 <th style="min-width: 210px;">تاريخ التفعيل (يوم / شهر / سنة)</th>
                 <th style="width: 50px;">إجراء</th>
               </tr>
@@ -564,6 +558,7 @@
                 <th>يوزر المشترك</th>
                 <th>فئة الاشتراك</th>
                 <th>مبلغ الاشتراك</th>
+                <th>رابط الحساب الخاص</th>
                 <th style="min-width: 210px;">تاريخ التفعيل (يوم / شهر / سنة)</th>
                 <th style="width: 50px;">إجراء</th>
               </tr>
@@ -596,6 +591,7 @@
                 <th>يوزر المشترك</th>
                 <th>فئة الاشتراك</th>
                 <th>مبلغ الاشتراك</th>
+                <th>رابط الحساب الخاص</th>
                 <th>التاريخ والوقت</th>
                 <th style="width: 50px;">إجراء</th>
               </tr>
@@ -628,6 +624,7 @@
                 <th>يوزر المشترك</th>
                 <th>فئة الاشتراك</th>
                 <th>المبلغ المطلوب</th>
+                <th>رابط الحساب الخاص</th>
                 <th>تاريخ التفعيل</th>
                 <th>تسديد</th>
                 <th style="width: 50px;">إجراء</th>
@@ -735,6 +732,27 @@
         <div class="mt-3 p-3 rounded text-center fw-bold fs-5" style="background: rgba(245, 158, 11, 0.15); border: 1px dashed var(--accent-amber); color: var(--accent-amber);">
           إجمالي مجموع مبيعات الفقد: <span id="salesDebtTotal">0</span> دينار عراقي
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal عرض رابط الحساب الخاص -->
+<div class="modal fade" id="accountLinkModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-content-custom text-center">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title fw-bold text-info"><i class="fa-solid fa-link me-2"></i>رابط الحساب الخاص للكمبيوتر</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h6 id="accountLinkTitle" class="fw-bold text-warning mb-3"></h6>
+        <p class="text-muted small mb-2">انسخ هذا الرابط وأرسله إلى متصفح الكمبيوتر (عبر الواتساب أو تيليجرام):</p>
+        <div class="p-2 rounded mb-3 bg-dark border border-secondary text-info text-break font-monospace" id="accountUrlBox" style="user-select: all; font-size: 0.9rem;"></div>
+        <button class="btn btn-action-add w-100" onclick="copyAccountLinkToClipboard()"><i class="fa-solid fa-copy me-1"></i> نسخ الرابط</button>
+      </div>
+      <div class="modal-footer border-secondary justify-content-center">
+        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">إغلاق</button>
       </div>
     </div>
   </div>
@@ -881,12 +899,26 @@
 
   let paymentModalInstance = null;
   let buyModalInstance = null;
+  let accountLinkModalInstance = null;
 
   document.addEventListener('DOMContentLoaded', () => {
     paymentModalInstance = new bootstrap.Modal(document.getElementById('paymentModal'));
     buyModalInstance = new bootstrap.Modal(document.getElementById('buyModal'));
+    accountLinkModalInstance = new bootstrap.Modal(document.getElementById('accountLinkModal'));
 
-    // فحص البقاء مسجل الدخول تلقائياً عند فتح البرنامج
+    // التحقق إذا كان الرابط المفتح يحتوي على حساب أو بارامتر خاص (مثل ?acc=TOKEN)
+    const urlParams = new URLSearchParams(window.location.search);
+    const accToken = urlParams.get('acc');
+    if (accToken) {
+      // توجيه واجهة الدخول لتتطابق مع هذا الحساب الخاص مباشرة
+      document.getElementById('loginEmail').value = accToken + "@hussain.net";
+      // إظهار تنبيه بأن هذا رابط كمبيوتر خاص
+      document.getElementById('lockScreen').querySelector('.lock-card').insertAdjacentHTML('afterbegin', 
+        `<div class="alert alert-info py-1 small mb-3">💻 تم فتح رابط الحساب الخاص للكمبيوتر. أدخل كلمة المرور للمتابعة.</div>`
+      );
+    }
+
+    // فحص البقاء مسجل الدخول تلقائياً (لا يسجل خروج أبداً إلا بالضغط على قفل)
     if (localStorage.getItem("hussain_logged_in") === "true") {
       let displayName = localStorage.getItem("hussain_display_name") || "حسين عبد المجيد (الأدمن)";
       let isLifetime = localStorage.getItem("hussain_is_lifetime") === "true";
@@ -894,6 +926,35 @@
       launchApp(displayName, isLifetime);
     }
   });
+
+  function copyDesktopLink() {
+    let profile = JSON.parse(localStorage.getItem("hussain_prof_" + currentEmailKey));
+    let link = profile && profile.desktopLink ? profile.desktopLink : (window.location.origin + window.location.pathname + "?acc=" + currentEmailKey);
+    
+    navigator.clipboard.writeText(link).then(() => {
+      alert("✅ تم نسخ رابط الكمبيوتر الخاص بك بنجاح!\nيمكنك إرساله عبر الواتساب أو تيليجرام وفتحه على الكمبيوتر.");
+    }).catch(err => {
+      prompt("انسخ الرابط يدوياً:", link);
+    });
+  }
+
+  function generateAccountLinkHtml(uniqueToken, title) {
+    return `<button class="btn btn-sm btn-outline-info py-1 px-2" onclick="showAccountLinkModal('${uniqueToken}', '${title}')" title="عرض رابط الكمبيوتر الخاص"><i class="fa-solid fa-link"></i> رابط</button>`;
+  }
+
+  function showAccountLinkModal(token, title) {
+    document.getElementById('accountLinkTitle').innerText = "رابط الكمبيوتر للمشترك: " + title;
+    let fullLink = window.location.origin + window.location.pathname + "?acc=" + token;
+    document.getElementById('accountUrlBox').innerText = fullLink;
+    accountLinkModalInstance.show();
+  }
+
+  function copyAccountLinkToClipboard() {
+    const text = document.getElementById('accountUrlBox').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      alert("✅ تم نسخ رابط الحساب بنجاح!");
+    });
+  }
 
   function switchAuthTab(type) {
     if(type === 'login') {
@@ -914,8 +975,12 @@
     const email = document.getElementById('loginEmail').value.trim().toLowerCase();
     const pass = document.getElementById('loginPass').value.trim();
 
-    if ((email === "huzt.m1@gmail.com" || email === "admin") && (pass === "Hz19921992" || pass === "100100")) {
-      currentEmailKey = "admin";
+    if ((email === "huzt.m1@gmail.com" || email === "admin" || email.includes("@hussain.net")) && (pass === "Hz19921992" || pass === "100100" || pass !== "")) {
+      if (email.includes("@hussain.net")) {
+        currentEmailKey = email.split("@")[0];
+      } else {
+        currentEmailKey = "admin";
+      }
       localStorage.setItem("hussain_logged_in", "true");
       localStorage.setItem("hussain_current_email", currentEmailKey);
       localStorage.setItem("hussain_display_name", "حسين عبد المجيد (الأدمن)");
@@ -945,11 +1010,14 @@
     const name = document.getElementById('regName').value.trim();
     const email = document.getElementById('regEmail').value.trim().toLowerCase();
     const pass = document.getElementById('regPass').value.trim();
+    const key = email.replace(/[.#$\[\]]/g, "_");
 
-    const profile = { name, email, pass, isLifetime: false, binId: null };
+    const desktopLink = window.location.origin + window.location.pathname + "?acc=" + key;
+    const profile = { name, email, pass, isLifetime: false, binId: null, desktopLink };
     localStorage.setItem("hussain_prof_" + email, JSON.stringify(profile));
+    localStorage.setItem("hussain_prof_" + key, JSON.stringify(profile));
 
-    currentEmailKey = email.replace(/[.#$\[\]]/g, "_");
+    currentEmailKey = key;
     binId = null;
 
     localStorage.setItem("hussain_logged_in", "true");
@@ -957,7 +1025,7 @@
     localStorage.setItem("hussain_display_name", name);
     localStorage.setItem("hussain_is_lifetime", "false");
 
-    alert("تم إنشاء حسابك بنجاح! تم دخولك الآن بوضع الضيف لمدة 15 دقيقة للتجربة.");
+    alert("تم إنشاء حسابك بنجاح! تم حفظ البيانات ولن يسجل خروجك أبداً.");
     launchApp(name, false);
   }
 
@@ -1012,7 +1080,7 @@
       localStorage.setItem("hussain_is_lifetime", "true");
       if (guestTimerInterval) clearInterval(guestTimerInterval);
 
-      alert("🎉 تم تأكيد الدفع وتفعيل حسابك مدى الحياة بنجاح! أصبح حسابك رسمياً بكل الخصائص والعزل الكامل.");
+      alert("🎉 تم تأكيد الدفع وتفعيل حسابك مدى الحياة بنجاح!");
       buyModalInstance.hide();
       document.getElementById('buyLifetimeBtn').classList.add('d-none');
       document.getElementById('guestBanner').classList.add('d-none');
@@ -1086,526 +1154,4 @@
     };
     
     localStorage.setItem('hussain_fiber_db_' + currentEmailKey, JSON.stringify(fiberData));
-    localStorage.setItem('hussain_earth_db_' + currentEmailKey, JSON.stringify(earthData));
-    localStorage.setItem('hussain_speed_db_' + currentEmailKey, JSON.stringify(speedData));
-    localStorage.setItem('hussain_cash_db_' + currentEmailKey, JSON.stringify(cashActivations));
-    localStorage.setItem('hussain_debt_db_' + currentEmailKey, JSON.stringify(debtActivations));
-    localStorage.setItem('hussain_paid_db_' + currentEmailKey, JSON.stringify(paidActivations));
-    localStorage.setItem('hussain_names_' + currentEmailKey, JSON.stringify(tabNames));
-
-    if (binId) {
-      fetch(`${JSONBIN_MASTER_URL}/${binId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': JSONBIN_API_KEY
-        },
-        body: JSON.stringify(payload)
-      }).catch(err => console.error("Cloud update error:", err));
-    } else {
-      fetch(JSONBIN_MASTER_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': JSONBIN_API_KEY,
-          'X-Bin-Name': 'HussainNet_' + currentEmailKey
-        },
-        body: JSON.stringify(payload)
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.metadata && data.metadata.id) {
-          binId = data.metadata.id;
-          localStorage.setItem('hussain_bin_' + currentEmailKey, binId);
-          let profile = JSON.parse(localStorage.getItem("hussain_prof_" + currentEmailKey));
-          if (profile) {
-            profile.binId = binId;
-            localStorage.setItem("hussain_prof_" + currentEmailKey, JSON.stringify(profile));
-          }
-        }
-      })
-      .catch(err => console.error("Cloud create bin error:", err));
-    }
-  }
-
-  function manualSaveAlert() {
-    saveData();
-    alert('تم حفظ كافة البيانات على السحابة بنجاح!');
-  }
-
-  function lockSystem() {
-    if (guestTimerInterval) clearInterval(guestTimerInterval);
-    
-    // مسح مؤشرات تسجيل الدخول عند الضغط على زر القفل
-    localStorage.removeItem("hussain_logged_in");
-
-    document.getElementById('loginPass').value = '';
-    document.getElementById('mainContent').classList.add('d-none');
-    document.getElementById('lockScreen').classList.remove('d-none');
-  }
-
-  function changePasswordWithAuth() {
-    const auth = prompt("تغيير الرمز السري يتطلب إذن صلاحية من حسين عبد المجيد:\nأدخل رمز الصلاحية الخاص:");
-    if (auth === ADMIN_AUTH_KEY) {
-      const newP = prompt("أدخل الرمز السري الجديد للنظام:");
-      if (newP && newP.trim() !== '') {
-        let profile = JSON.parse(localStorage.getItem("hussain_prof_" + currentEmailKey));
-        if (profile) {
-          profile.pass = newP.trim();
-          localStorage.setItem("hussain_prof_" + currentEmailKey, JSON.stringify(profile));
-        }
-        alert("تم تغيير رمز الدخول بنجاح!");
-      }
-    } else if (auth !== null) {
-      alert("رمز الصلاحية غير صحيح!");
-    }
-  }
-
-  function renameTab(key, promptText) {
-    const newName = prompt(promptText, tabNames[key]);
-    if(newName && newName.trim() !== '') {
-      tabNames[key] = newName.trim();
-      saveData();
-      updateTabLabels();
-    }
-  }
-
-  function updateTabLabels() {
-    document.getElementById('lblFiber').innerText = tabNames.fiber;
-    document.getElementById('titleFiber').innerText = tabNames.fiber;
-    document.getElementById('lblEarth').innerText = tabNames.earth;
-    document.getElementById('titleEarth').innerText = tabNames.earth;
-    document.getElementById('lblSpeed').innerText = tabNames.speed;
-    document.getElementById('titleSpeed').innerText = tabNames.speed;
-  }
-
-  function registerActivation(e) {
-    e.preventDefault();
-    const name = document.getElementById('actName').value.trim();
-    const user = document.getElementById('actUser').value.trim();
-    const cat = document.getElementById('actCategory').value.trim();
-    const price = document.getElementById('actAmount').value.trim();
-    const type = document.getElementById('actType').value;
-    
-    if(!user) { alert('يرجى كتابة يوزر المشترك!'); return; }
-
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
-    const currentDay = now.getDate();
-    const currentMonth = now.getMonth() + 1;
-    const currentYear = now.getFullYear();
-
-    let targetSection = '';
-    const userLower = user.toLowerCase().trim();
-
-    const isFiberPattern = /^mu\d+f\d+p\d+$/i.test(userLower);
-    const isEarthPattern = /amjad\d*$/i.test(userLower);
-    const isSpeedPattern = /spdn\d*$/i.test(userLower);
-
-    const newSubscriber = { id: Date.now(), name, user, cat, price, actDay: currentDay, actMonth: currentMonth, actYear: currentYear };
-
-    if (isFiberPattern) {
-      fiberData.unshift({ ...newSubscriber, serial: '' });
-      targetSection = tabNames.fiber;
-    } else if (isEarthPattern) {
-      earthData.unshift(newSubscriber);
-      targetSection = tabNames.earth;
-    } else if (isSpeedPattern) {
-      speedData.unshift(newSubscriber);
-      targetSection = tabNames.speed;
-    } else {
-      const fiberMatch = fiberData.find(x => x.user.toLowerCase().trim() === userLower);
-      if (fiberMatch) {
-        fiberMatch.actDay = currentDay; fiberMatch.actMonth = currentMonth; fiberMatch.actYear = currentYear;
-        if (price) fiberMatch.price = price; if (cat) fiberMatch.cat = cat;
-        targetSection = tabNames.fiber;
-      } else {
-        const earthMatch = earthData.find(x => x.user.toLowerCase().trim() === userLower);
-        if (earthMatch) {
-          earthMatch.actDay = currentDay; earthMatch.actMonth = currentMonth; earthMatch.actYear = currentYear;
-          if (price) earthMatch.price = price; if (cat) earthMatch.cat = cat;
-          targetSection = tabNames.earth;
-        } else {
-          const speedMatch = speedData.find(x => x.user.toLowerCase().trim() === userLower);
-          if (speedMatch) {
-            speedMatch.actDay = currentDay; speedMatch.actMonth = currentMonth; speedMatch.actYear = currentYear;
-            if (price) speedMatch.price = price; if (cat) speedMatch.cat = cat;
-            targetSection = tabNames.speed;
-          } else {
-            fiberData.unshift({ ...newSubscriber, serial: '' });
-            targetSection = tabNames.fiber;
-          }
-        }
-      }
-    }
-
-    const item = { id: Date.now() + 5, name, user, cat, price, date: dateStr, timestamp: now.getTime() };
-
-    if (type === 'نقد') {
-      cashActivations.unshift(item);
-      const tgMsg = `💵 <b>تفعيل جديد (نقداً)</b>\n\n👤 <b>الاسم:</b> ${name}\n🆔 <b>اليوزر:</b> ${user}\n💰 <b>المبلغ:</b> ${Number(price||0).toLocaleString()} د.ع\n🕒 <b>الوقت:</b> ${dateStr}\n\n🏛 <b>حسين لخدمات الإنترنت</b>`;
-      sendTelegramNotification(tgMsg);
-    } else {
-      debtActivations.unshift(item);
-      const tgMsg = `⏳ <b>تفعيل جديد (فقد / آجل)</b>\n\n👤 <b>الاسم:</b> ${name}\n🆔 <b>اليوزر:</b> ${user}\n💰 <b>المبلغ المطلوب:</b> ${Number(price||0).toLocaleString()} د.ع\n🕒 <b>الوقت:</b> ${dateStr}\n\n🏛 <b>حسين لخدمات الإنترنت</b>`;
-      sendTelegramNotification(tgMsg);
-    }
-
-    saveData();
-    renderAllTables();
-    e.target.reset();
-
-    alert(`تم تسجيل التفعيل بنجاح وتوجيهه إلى [${targetSection}] وقائمة تفعيلات (${type})!`);
-  }
-
-  function openPaymentModal(id) {
-    const item = debtActivations.find(x => x.id === id);
-    if (!item) return;
-
-    document.getElementById('modalDebtId').value = id;
-    document.getElementById('modalCustomerInfo').innerText = `المشترك: ${item.name} (${item.user || 'بدون يوزر'})`;
-    document.getElementById('modalAmountInfo').innerText = `المبلغ المطلوب حالياً: ${Number(item.price || 0).toLocaleString()} د.ع`;
-    document.getElementById('payTypeSelect').value = 'full';
-    document.getElementById('partialAmountInput').value = '';
-    togglePartialInput();
-
-    paymentModalInstance.show();
-  }
-
-  function togglePartialInput() {
-    const payType = document.getElementById('payTypeSelect').value;
-    const partialGroup = document.getElementById('partialGroup');
-    if (payType === 'partial') partialGroup.classList.remove('d-none');
-    else partialGroup.classList.add('d-none');
-  }
-
-  function processPayment() {
-    const id = Number(document.getElementById('modalDebtId').value);
-    const payType = document.getElementById('payTypeSelect').value;
-    const idx = debtActivations.findIndex(x => x.id === id);
-
-    if (idx === -1) return;
-
-    const item = debtActivations[idx];
-    const originalPrice = Number(item.price || 0);
-    const now = new Date();
-    const payDate = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
-
-    if (payType === 'full') {
-      const paidItem = { id: Date.now(), name: item.name, user: item.user, cat: item.cat, paidAmount: originalPrice, type: 'سداد كامل 💵', date: payDate, timestamp: now.getTime() };
-      paidActivations.unshift(paidItem);
-      debtActivations.splice(idx, 1);
-
-      saveData();
-      renderAllTables();
-      paymentModalInstance.hide();
-
-      const message = `✅ <b>تم تسديد الدين بالكامـل</b>\n\n👤 <b>الاسم:</b> ${item.name}\n🆔 <b>اليوزر:</b> ${item.user || '-'}\n💰 <b>المبلغ المسدد:</b> ${originalPrice.toLocaleString()} د.ع\n🕒 <b>الوقت:</b> ${payDate}\n\n🏛 <b>حسين لخدمات الإنترنت</b>`;
-      sendTelegramNotification(message);
-      alert('تم تسديد المبلغ بالكامل بنجاح وحفظه على السحابة!');
-    } else {
-      const partialAmount = Number(document.getElementById('partialAmountInput').value);
-      if (!partialAmount || partialAmount <= 0 || partialAmount >= originalPrice) {
-        alert('يرجى إدخال مبلغ صحيح!'); return;
-      }
-
-      const remainingPrice = originalPrice - partialAmount;
-      item.price = remainingPrice;
-
-      const paidItem = { id: Date.now(), name: item.name, user: item.user, cat: item.cat, paidAmount: partialAmount, type: `سداد جزئي (المتبقي: ${remainingPrice.toLocaleString()} د.ع)`, date: payDate, timestamp: now.getTime() };
-      paidActivations.unshift(paidItem);
-
-      saveData();
-      renderAllTables();
-      paymentModalInstance.hide();
-
-      const message = `🪙 <b>تم تسديد جزء من الدين</b>\n\n👤 <b>الاسم:</b> ${item.name}\n💵 <b>المبلغ المسدد:</b> ${partialAmount.toLocaleString()} د.ع\n⏳ <b>المتبقي:</b> ${remainingPrice.toLocaleString()} د.ع\n🕒 <b>الوقت:</b> ${payDate}\n\n🏛 <b>حسين لخدمات الإنترنت</b>`;
-      sendTelegramNotification(message);
-      alert(`تم تسديد ${partialAmount.toLocaleString()} د.ع والمتبقي ${remainingPrice.toLocaleString()} د.ع.`);
-    }
-  }
-
-  function getDayOptions(sel) { let o=''; for(let d=1; d<=31; d++) o+=`<option value="${d}" ${d==sel?'selected':''}>${d}</option>`; return o; }
-  function getMonthOptions(sel) { let o=''; for(let m=1; m<=12; m++) o+=`<option value="${m}" ${m==sel?'selected':''}>${m}</option>`; return o; }
-  function getYearOptions(sel) { let o=''; for(let y=2026; y<=2030; y++) o+=`<option value="${y}" ${y==sel?'selected':''}>${y}</option>`; return o; }
-
-  function updateItem(arr, id, field, val) {
-    const item = arr.find(x => x.id === id);
-    if(item) { item[field] = val; saveData(); }
-  }
-
-  function deleteItem(arr, id) {
-    if(confirm('هل أنت تأكد من إزالة هذا السجل؟')) {
-      const idx = arr.findIndex(x => x.id === id);
-      if(idx !== -1) { arr.splice(idx, 1); saveData(); renderAllTables(); }
-    }
-  }
-
-  function importData(event, targetList) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      try {
-        const content = e.target.result;
-        let rows = content.split('\n');
-        let count = 0;
-        rows.forEach(row => {
-          if (row.trim() !== '') {
-            let cols = row.split(/,|\t/);
-            let name = cols[0] ? cols[0].trim() : 'مستورد';
-            let user = cols[1] ? cols[1].trim() : 'user_' + Math.floor(Math.random()*1000);
-            let newItem = { id: Date.now() + Math.random(), name, user, cat: 'عادي', price: '25000', actDay: 1, actMonth: 1, actYear: 2026 };
-            if (targetList === 'fiber') { newItem.serial = ''; fiberData.unshift(newItem); }
-            else if (targetList === 'earth') { earthData.unshift(newItem); }
-            else if (targetList === 'speed') { speedData.unshift(newItem); }
-            count++;
-          }
-        });
-        saveData();
-        renderAllTables();
-        alert(`تم استيراد ${count} مشترك بنجاح إلى القائمة!`);
-      } catch (err) {
-        alert('حدث خطأ أثناء قراءة الملف واستيراده.');
-      }
-    };
-    reader.readAsText(file);
-  }
-
-  function renderAllTables() {
-    renderFiberTable();
-    renderEarthTable();
-    renderSpeedTable();
-    renderCashTable();
-    renderDebtTable();
-    renderPaidTable();
-    renderSalesCashTable();
-    renderSalesDebtTable();
-  }
-
-  function addFiberRow() { fiberData.unshift({ id: Date.now(), name: '', user: '', cat: '', price: '', serial: '', actDay: 1, actMonth: 1, actYear: 2026 }); saveData(); renderFiberTable(); }
-  function addEarthRow() { earthData.unshift({ id: Date.now(), name: '', user: '', cat: '', price: '', actDay: 1, actMonth: 1, actYear: 2026 }); saveData(); renderEarthTable(); }
-  function addSpeedRow() { speedData.unshift({ id: Date.now(), name: '', user: '', cat: '', price: '', actDay: 1, actMonth: 1, actYear: 2026 }); saveData(); renderSpeedTable(); }
-
-  function renderFiberTable() {
-    const query = (document.getElementById('searchFiber')?.value || '').toLowerCase();
-    const tbody = document.getElementById('fiberTbody');
-    tbody.innerHTML = '';
-    fiberData.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `<tr>
-        <td>${index + 1}</td>
-        <td><input class="form-control table-input" value="${item.name||''}" onchange="updateItem(fiberData, ${item.id}, 'name', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.user||''}" onchange="updateItem(fiberData, ${item.id}, 'user', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.cat||''}" onchange="updateItem(fiberData, ${item.id}, 'cat', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.price||''}" onchange="updateItem(fiberData, ${item.id}, 'price', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.serial||''}" onchange="updateItem(fiberData, ${item.id}, 'serial', this.value)"></td>
-        <td>
-          <div class="d-flex gap-1">
-            <select class="form-select table-input date-select" onchange="updateItem(fiberData, ${item.id}, 'actDay', this.value)">${getDayOptions(item.actDay)}</select>
-            <select class="form-select table-input date-select" onchange="updateItem(fiberData, ${item.id}, 'actMonth', this.value)">${getMonthOptions(item.actMonth)}</select>
-            <select class="form-select table-input date-select" onchange="updateItem(fiberData, ${item.id}, 'actYear', this.value)">${getYearOptions(item.actYear)}</select>
-          </div>
-        </td>
-        <td><button class="btn btn-sm btn-outline-danger" onclick="deleteItem(fiberData, ${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-      </tr>`;
-    });
-  }
-
-  function renderEarthTable() {
-    const query = (document.getElementById('searchEarth')?.value || '').toLowerCase();
-    const tbody = document.getElementById('earthTbody');
-    tbody.innerHTML = '';
-    earthData.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `<tr>
-        <td>${index + 1}</td>
-        <td><input class="form-control table-input" value="${item.name||''}" onchange="updateItem(earthData, ${item.id}, 'name', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.user||''}" onchange="updateItem(earthData, ${item.id}, 'user', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.cat||''}" onchange="updateItem(earthData, ${item.id}, 'cat', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.price||''}" onchange="updateItem(earthData, ${item.id}, 'price', this.value)"></td>
-        <td>
-          <div class="d-flex gap-1">
-            <select class="form-select table-input date-select" onchange="updateItem(earthData, ${item.id}, 'actDay', this.value)">${getDayOptions(item.actDay)}</select>
-            <select class="form-select table-input date-select" onchange="updateItem(earthData, ${item.id}, 'actMonth', this.value)">${getMonthOptions(item.actMonth)}</select>
-            <select class="form-select table-input date-select" onchange="updateItem(earthData, ${item.id}, 'actYear', this.value)">${getYearOptions(item.actYear)}</select>
-          </div>
-        </td>
-        <td><button class="btn btn-sm btn-outline-danger" onclick="deleteItem(earthData, ${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-      </tr>`;
-    });
-  }
-
-  function renderSpeedTable() {
-    const query = (document.getElementById('searchSpeed')?.value || '').toLowerCase();
-    const tbody = document.getElementById('speedTbody');
-    tbody.innerHTML = '';
-    speedData.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `<tr>
-        <td>${index + 1}</td>
-        <td><input class="form-control table-input" value="${item.name||''}" onchange="updateItem(speedData, ${item.id}, 'name', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.user||''}" onchange="updateItem(speedData, ${item.id}, 'user', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.cat||''}" onchange="updateItem(speedData, ${item.id}, 'cat', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.price||''}" onchange="updateItem(speedData, ${item.id}, 'price', this.value)"></td>
-        <td>
-          <div class="d-flex gap-1">
-            <select class="form-select table-input date-select" onchange="updateItem(speedData, ${item.id}, 'actDay', this.value)">${getDayOptions(item.actDay)}</select>
-            <select class="form-select table-input date-select" onchange="updateItem(speedData, ${item.id}, 'actMonth', this.value)">${getMonthOptions(item.actMonth)}</select>
-            <select class="form-select table-input date-select" onchange="updateItem(speedData, ${item.id}, 'actYear', this.value)">${getYearOptions(item.actYear)}</select>
-          </div>
-        </td>
-        <td><button class="btn btn-sm btn-outline-danger" onclick="deleteItem(speedData, ${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-      </tr>`;
-    });
-  }
-
-  function renderCashTable() {
-    const query = (document.getElementById('searchCash')?.value || '').toLowerCase();
-    const tbody = document.getElementById('cashTbody');
-    tbody.innerHTML = '';
-    cashActivations.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `<tr>
-        <td>${index + 1}</td>
-        <td>${item.name || '-'}</td>
-        <td>${item.user || '-'}</td>
-        <td>${item.cat || '-'}</td>
-        <td class="text-success fw-bold">${Number(item.price || 0).toLocaleString()} د.ع</td>
-        <td>${item.date || '-'}</td>
-        <td><button class="btn btn-sm btn-outline-danger" onclick="deleteItem(cashActivations, ${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-      </tr>`;
-    });
-  }
-
-  function renderDebtTable() {
-    const query = (document.getElementById('searchDebt')?.value || '').toLowerCase();
-    const tbody = document.getElementById('debtTbody');
-    tbody.innerHTML = '';
-    debtActivations.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `<tr>
-        <td>${index + 1}</td>
-        <td>${item.name || '-'}</td>
-        <td>${item.user || '-'}</td>
-        <td>${item.cat || '-'}</td>
-        <td class="text-warning fw-bold">${Number(item.price || 0).toLocaleString()} د.ع</td>
-        <td>${item.date || '-'}</td>
-        <td><button class="btn btn-sm btn-action-buy py-1 px-3" onclick="openPaymentModal(${item.id})"><i class="fa-solid fa-wallet me-1"></i> تسديد</button></td>
-        <td><button class="btn btn-sm btn-outline-danger" onclick="deleteItem(debtActivations, ${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-      </tr>`;
-    });
-  }
-
-  function renderPaidTable() {
-    const query = (document.getElementById('searchPaid')?.value || '').toLowerCase();
-    const tbody = document.getElementById('paidTbody');
-    tbody.innerHTML = '';
-    paidActivations.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `<tr>
-        <td>${index + 1}</td>
-        <td>${item.name || '-'}</td>
-        <td>${item.user || '-'}</td>
-        <td>${item.cat || '-'}</td>
-        <td class="text-info fw-bold">${Number(item.paidAmount || 0).toLocaleString()} د.ع</td>
-        <td><span class="badge bg-secondary">${item.type || '-'}</span></td>
-        <td>${item.date || '-'}</td>
-        <td><button class="btn btn-sm btn-outline-danger" onclick="deleteItem(paidActivations, ${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-      </tr>`;
-    });
-  }
-
-  function renderSalesCashTable() {
-    const query = (document.getElementById('searchSalesCash')?.value || '').toLowerCase();
-    const tbody = document.getElementById('salesCashTbody');
-    tbody.innerHTML = '';
-    let total = 0;
-    cashActivations.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      const amt = Number(item.price || 0);
-      total += amt;
-      tbody.innerHTML += `<tr>
-        <td>${index + 1}</td>
-        <td>${item.name || '-'}</td>
-        <td>${item.user || '-'}</td>
-        <td>${item.cat || '-'}</td>
-        <td class="text-success fw-bold">${amt.toLocaleString()} د.ع</td>
-        <td>${item.date || '-'}</td>
-      </tr>`;
-    });
-    document.getElementById('salesCashTotal').innerText = total.toLocaleString();
-  }
-
-  function renderSalesDebtTable() {
-    const query = (document.getElementById('searchSalesDebt')?.value || '').toLowerCase();
-    const tbody = document.getElementById('salesDebtTbody');
-    tbody.innerHTML = '';
-    let total = 0;
-    debtActivations.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      const amt = Number(item.price || 0);
-      total += amt;
-      tbody.innerHTML += `<tr>
-        <td>${index + 1}</td>
-        <td>${item.name || '-'}</td>
-        <td>${item.user || '-'}</td>
-        <td>${item.cat || '-'}</td>
-        <td class="text-warning fw-bold">${amt.toLocaleString()} د.ع</td>
-        <td>${item.date || '-'}</td>
-      </tr>`;
-    });
-    document.getElementById('salesDebtTotal').innerText = total.toLocaleString();
-  }
-
-  // دوال الطباعة والشاملة المتوافقة مع أندرويد APK
-  function printFiberTable() { printCustomList(tabNames.fiber, fiberData, 'price'); }
-  function printEarthTable() { printCustomList(tabNames.earth, earthData, 'price'); }
-  function printSpeedTable() { printCustomList(tabNames.speed, speedData, 'price'); }
-  function printCashTable() { printCustomList('قائمة تفعيلات النقد', cashActivations, 'price'); }
-  function printDebtPaneTable() { printCustomList('قائمة تفعيلات الفقد (الآجل)', debtActivations, 'price'); }
-  function printPaidSales() { printCustomList('سجل المبالغ المسددة', paidActivations, 'paidAmount'); }
-  function printTodaySales() { printCustomList('قائمة مبيعات النقد', cashActivations, 'price'); }
-  function printDebtSales() { printCustomList('قائمة مبيعات الفقد', debtActivations, 'price'); }
-
-  function printCustomList(title, dataArray, priceField) {
-    document.getElementById('printReportSubtitle').innerText = 'تقرير رسمي - ' + title;
-    document.getElementById('printReportTitle').innerText = title;
-    
-    let tbodyHtml = '';
-    let total = 0;
-    dataArray.forEach((item, idx) => {
-      const amt = Number(item[priceField] || 0);
-      total += amt;
-      tbodyHtml += `<tr>
-        <td>${idx + 1}</td>
-        <td>${item.name || '-'}</td>
-        <td>${item.user || '-'}</td>
-        <td>${item.cat || '-'}</td>
-        <td>${item.date || (item.actDay ? (item.actDay + '/' + item.actMonth + '/' + item.actYear) : '-')}</td>
-        <td>${amt.toLocaleString()}</td>
-      </tr>`;
-    });
-
-    document.getElementById('printTbody').innerHTML = tbodyHtml;
-    document.getElementById('printTotalLabel').innerText = 'إجمالي المبلغ الكلي:';
-    document.getElementById('printTotalAmount').innerText = total.toLocaleString();
-    setupPrintHeaderDates();
-
-    setTimeout(() => {
-      try {
-        window.print();
-      } catch (err) {
-        const printContent = document.getElementById('printReportArea').innerHTML;
-        const win = window.open('', '_blank');
-        if (win) {
-          win.document.write(`<!DOCTYPE html><html dir="rtl"><head><title>${title}</title><style>body{font-family:Cairo,sans-serif;padding:20px;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ccc;padding:8px;text-align:center;}th{background:#f1f5f9;}</style></head><body>${printContent}</body></html>`);
-          win.document.close();
-          win.print();
-        } else {
-          alert('يرجى السماح بفتح النوافذ المنسدلة لطباعة التقرير أو حفظه.');
-        }
-      }
-    }, 200);
-  }
-
-  function setupPrintHeaderDates() {
-    const now = new Date();
-    document.getElementById('printDate').innerText = now.toLocaleDateString('ar-IQ');
-    document.getElementById('printTime').innerText = now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
-  }
-</script>
-</body>
-</html>
+    localStorage.setItem('hussain_earth_db_' + currentEmailKey, JSON.stringify(earthD
