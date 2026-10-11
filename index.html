@@ -862,7 +862,7 @@
   const MASTER_ACTIVATION_CODE = "20319921992";
   const ADMIN_AUTH_KEY = '2031992';
 
-  let currentEmailKey = "admin";
+  let currentEmailKey = localStorage.getItem("hussain_current_email") || "admin";
   let binId = null;
   let guestTimerInterval = null;
 
@@ -885,6 +885,14 @@
   document.addEventListener('DOMContentLoaded', () => {
     paymentModalInstance = new bootstrap.Modal(document.getElementById('paymentModal'));
     buyModalInstance = new bootstrap.Modal(document.getElementById('buyModal'));
+
+    // فحص البقاء مسجل الدخول تلقائياً عند فتح البرنامج
+    if (localStorage.getItem("hussain_logged_in") === "true") {
+      let displayName = localStorage.getItem("hussain_display_name") || "حسين عبد المجيد (الأدمن)";
+      let isLifetime = localStorage.getItem("hussain_is_lifetime") === "true";
+      currentEmailKey = localStorage.getItem("hussain_current_email") || "admin";
+      launchApp(displayName, isLifetime);
+    }
   });
 
   function switchAuthTab(type) {
@@ -908,6 +916,10 @@
 
     if ((email === "huzt.m1@gmail.com" || email === "admin") && (pass === "Hz19921992" || pass === "100100")) {
       currentEmailKey = "admin";
+      localStorage.setItem("hussain_logged_in", "true");
+      localStorage.setItem("hussain_current_email", currentEmailKey);
+      localStorage.setItem("hussain_display_name", "حسين عبد المجيد (الأدمن)");
+      localStorage.setItem("hussain_is_lifetime", "true");
       launchApp("حسين عبد المجيد (الأدمن)", true);
       return;
     }
@@ -916,6 +928,12 @@
     if (userProfile && userProfile.pass === pass) {
       currentEmailKey = email.replace(/[.#$\[\]]/g, "_");
       binId = userProfile.binId || null;
+      
+      localStorage.setItem("hussain_logged_in", "true");
+      localStorage.setItem("hussain_current_email", currentEmailKey);
+      localStorage.setItem("hussain_display_name", userProfile.name);
+      localStorage.setItem("hussain_is_lifetime", userProfile.isLifetime ? "true" : "false");
+
       launchApp(userProfile.name, userProfile.isLifetime);
     } else {
       document.getElementById('loginAlert').classList.remove('d-none');
@@ -933,6 +951,12 @@
 
     currentEmailKey = email.replace(/[.#$\[\]]/g, "_");
     binId = null;
+
+    localStorage.setItem("hussain_logged_in", "true");
+    localStorage.setItem("hussain_current_email", currentEmailKey);
+    localStorage.setItem("hussain_display_name", name);
+    localStorage.setItem("hussain_is_lifetime", "false");
+
     alert("تم إنشاء حسابك بنجاح! تم دخولك الآن بوضع الضيف لمدة 15 دقيقة للتجربة.");
     launchApp(name, false);
   }
@@ -985,6 +1009,7 @@
         profile.isLifetime = true;
         localStorage.setItem("hussain_prof_" + currentEmailKey, JSON.stringify(profile));
       }
+      localStorage.setItem("hussain_is_lifetime", "true");
       if (guestTimerInterval) clearInterval(guestTimerInterval);
 
       alert("🎉 تم تأكيد الدفع وتفعيل حسابك مدى الحياة بنجاح! أصبح حسابك رسمياً بكل الخصائص والعزل الكامل.");
@@ -1110,6 +1135,10 @@
 
   function lockSystem() {
     if (guestTimerInterval) clearInterval(guestTimerInterval);
+    
+    // مسح مؤشرات تسجيل الدخول عند الضغط على زر القفل
+    localStorage.removeItem("hussain_logged_in");
+
     document.getElementById('loginPass').value = '';
     document.getElementById('mainContent').classList.add('d-none');
     document.getElementById('lockScreen').classList.remove('d-none');
@@ -1555,12 +1584,10 @@
     document.getElementById('printTotalAmount').innerText = total.toLocaleString();
     setupPrintHeaderDates();
 
-    // تشغيل الطباعة بطريقة متوافقة تماماً مع الـ APK وتطبيقات الاندرويد
     setTimeout(() => {
       try {
         window.print();
       } catch (err) {
-        // بديل متوافق في حال لم يدعم تطبيق الاندرويد الطباعة المباشرة
         const printContent = document.getElementById('printReportArea').innerHTML;
         const win = window.open('', '_blank');
         if (win) {
