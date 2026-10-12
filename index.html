@@ -1608,7 +1608,7 @@
   function printTodaySales() { printCustomList('قائمة مبيعات النقد', cashActivations, 'price'); }
   function printDebtSales() { printCustomList('قائمة مبيعات الفقد', debtActivations, 'price'); }
 
-  // دالة فتح التقرير في نافذة جديدة نظيفة لحفظه كـ PDF أو طباعته بسلاسة
+  // دالة الطباعة وتصدير PDF متوافقة مع Kodular والمتصفحات
   function printCustomList(title, dataArray, priceField) {
     let htmlContent = `
       <!DOCTYPE html>
