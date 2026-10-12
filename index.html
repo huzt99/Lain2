@@ -10,10 +10,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <!-- Google Fonts (Cairo) -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  
-  <!-- مكتبات jsPDF لتوليد وحفظ ملفات الـ PDF مباشرة -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 
   <style>
     :root {
@@ -462,7 +458,7 @@
             <div class="search-box flex-grow-1">
               <input type="text" id="searchFiber" placeholder="بحث عن اسم أو يوزر..." onkeyup="renderFiberTable()">
             </div>
-            <button class="btn btn-action-print btn-sm" onclick="printFiberTable()"><i class="fa-solid fa-file-pdf me-1"></i> حفظ PDF</button>
+            <button class="btn btn-action-print btn-sm" onclick="printFiberTable()"><i class="fa-solid fa-print me-1"></i> طباعة / حفظ PDF</button>
             <button class="btn btn-action-add btn-sm" onclick="addFiberRow()"><i class="fa-solid fa-plus me-1"></i> إضافة</button>
             <label class="btn btn-action-save btn-sm mb-0 cursor-pointer" title="استيراد اسماء">
               <i class="fa-solid fa-file-arrow-down me-1"></i> استيراد <input type="file" hidden onchange="importData(event, 'fiber')">
@@ -503,7 +499,7 @@
             <div class="search-box flex-grow-1">
               <input type="text" id="searchEarth" placeholder="بحث عن اسم أو يوزر..." onkeyup="renderEarthTable()">
             </div>
-            <button class="btn btn-action-print btn-sm" onclick="printEarthTable()"><i class="fa-solid fa-file-pdf me-1"></i> حفظ PDF</button>
+            <button class="btn btn-action-print btn-sm" onclick="printEarthTable()"><i class="fa-solid fa-print me-1"></i> طباعة / حفظ PDF</button>
             <button class="btn btn-action-add btn-sm" onclick="addEarthRow()"><i class="fa-solid fa-plus me-1"></i> إضافة</button>
             <label class="btn btn-action-save btn-sm mb-0 cursor-pointer" title="استيراد اسماء">
               <i class="fa-solid fa-file-arrow-down me-1"></i> استيراد <input type="file" hidden onchange="importData(event, 'earth')">
@@ -543,7 +539,7 @@
             <div class="search-box flex-grow-1">
               <input type="text" id="searchSpeed" placeholder="بحث عن اسم أو يوزر..." onkeyup="renderSpeedTable()">
             </div>
-            <button class="btn btn-action-print btn-sm" onclick="printSpeedTable()"><i class="fa-solid fa-file-pdf me-1"></i> حفظ PDF</button>
+            <button class="btn btn-action-print btn-sm" onclick="printSpeedTable()"><i class="fa-solid fa-print me-1"></i> طباعة / حفظ PDF</button>
             <button class="btn btn-action-add btn-sm" onclick="addSpeedRow()"><i class="fa-solid fa-plus me-1"></i> إضافة</button>
             <label class="btn btn-action-save btn-sm mb-0 cursor-pointer" title="استيراد اسماء">
               <i class="fa-solid fa-file-arrow-down me-1"></i> استيراد <input type="file" hidden onchange="importData(event, 'speed')">
@@ -580,7 +576,7 @@
             <div class="search-box flex-grow-1">
               <input type="text" id="searchCash" placeholder="بحث في تفعيلات النقد..." onkeyup="renderCashTable()">
             </div>
-            <button class="btn btn-action-print btn-sm" onclick="printCashTable()"><i class="fa-solid fa-file-pdf me-1"></i> حفظ PDF</button>
+            <button class="btn btn-action-print btn-sm" onclick="printCashTable()"><i class="fa-solid fa-print me-1"></i> طباعة التفعيلات</button>
             <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ سحابي</button>
           </div>
         </div>
@@ -613,7 +609,7 @@
             <div class="search-box flex-grow-1">
               <input type="text" id="searchDebt" placeholder="بحث في تفعيلات الفقد..." onkeyup="renderDebtTable()">
             </div>
-            <button class="btn btn-action-debt-print btn-sm" onclick="printDebtPaneTable()"><i class="fa-solid fa-file-pdf me-1"></i> حفظ PDF</button>
+            <button class="btn btn-action-debt-print btn-sm" onclick="printDebtPaneTable()"><i class="fa-solid fa-print me-1"></i> طباعة الفقد</button>
             <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ سحابي</button>
           </div>
         </div>
@@ -647,7 +643,7 @@
             <div class="search-box flex-grow-1">
               <input type="text" id="searchPaid" placeholder="بحث في المبالغ المسددة..." onkeyup="renderPaidTable()">
             </div>
-            <button class="btn btn-action-paid-print btn-sm" onclick="printPaidSales()"><i class="fa-solid fa-file-pdf me-1"></i> حفظ PDF</button>
+            <button class="btn btn-action-paid-print btn-sm" onclick="printPaidSales()"><i class="fa-solid fa-print me-1"></i> طباعة التسديدات</button>
             <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ سحابي</button>
           </div>
         </div>
@@ -680,7 +676,7 @@
             <div class="search-box flex-grow-1">
               <input type="text" id="searchSalesCash" placeholder="بحث في مبيعات النقد..." onkeyup="renderSalesCashTable()">
             </div>
-            <button class="btn btn-action-print btn-sm" onclick="printTodaySales()"><i class="fa-solid fa-file-pdf me-1"></i> حفظ PDF</button>
+            <button class="btn btn-action-print btn-sm" onclick="printTodaySales()"><i class="fa-solid fa-print me-1"></i> طباعة مبيعات النقد</button>
           </div>
         </div>
         <div class="table-responsive">
@@ -713,7 +709,7 @@
             <div class="search-box flex-grow-1">
               <input type="text" id="searchSalesDebt" placeholder="بحث في مبيعات الفقد..." onkeyup="renderSalesDebtTable()">
             </div>
-            <button class="btn btn-action-debt-print btn-sm" onclick="printDebtSales()"><i class="fa-solid fa-file-pdf me-1"></i> حفظ PDF</button>
+            <button class="btn btn-action-debt-print btn-sm" onclick="printDebtSales()"><i class="fa-solid fa-print me-1"></i> طباعة مبيعات الفقد</button>
           </div>
         </div>
         <div class="table-responsive">
@@ -1612,66 +1608,75 @@
   function printTodaySales() { printCustomList('قائمة مبيعات النقد', cashActivations, 'price'); }
   function printDebtSales() { printCustomList('قائمة مبيعات الفقد', debtActivations, 'price'); }
 
-  // دالة حفظ وحمل ملف PDF مباشرة بدلاً من window.print() لمعالجة مشكلة التطبيق المثبت
-  async function printCustomList(title, dataArray, priceField) {
-    if (typeof window.jspdf === 'undefined') {
-      alert('جاري تحميل مكتبة PDF، يرجى المحاولة بعد ثوانٍ...');
-      return;
-    }
+  // دالة فتح التقرير في نافذة جديدة نظيفة لحفظه كـ PDF أو طباعته بسلاسة
+  function printCustomList(title, dataArray, priceField) {
+    let htmlContent = `
+      <!DOCTYPE html>
+      <html lang="ar" dir="rtl">
+      <head>
+        <meta charset="UTF-8">
+        <title>${title}</title>
+        <style>
+          body { font-family: Tahoma, Arial, sans-serif; padding: 20px; background: #fff; color: #333; }
+          h2, h4 { text-align: center; color: #0284c7; margin: 5px 0; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid #cbd5e1; padding: 10px; text-align: center; font-size: 14px; }
+          th { background: #06b6d4; color: #fff; }
+          .total { margin-top: 20px; text-align: center; font-size: 18px; font-weight: bold; color: #b45309; }
+        </style>
+      </head>
+      <body>
+        <h2>حسين لخدمات الإنترنت</h2>
+        <h4>${title}</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>اسم المشترك</th>
+              <th>يوزر المشترك</th>
+              <th>فئة الاشتراك</th>
+              <th>التاريخ</th>
+              <th>المبلغ (د.ع)</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
 
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-
-    doc.setFont("helvetica", "normal");
-    
-    // الترويسة
-    doc.setFontSize(16);
-    doc.setTextColor(2, 132, 199);
-    doc.text("Hussain Internet Services - حسين لخدمات الإنترنت", 105, 15, { align: 'center' });
-
-    doc.setFontSize(12);
-    doc.setTextColor(71, 85, 105);
-    doc.text("تقرير رسمي: " + title, 105, 23, { align: 'center' });
-
-    const now = new Date();
-    doc.setFontSize(9);
-    doc.text(`تاريخ التقرير: ${now.toLocaleDateString('ar-IQ')} - ${now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' })}`, 15, 30);
-
-    let tableHeaders = [["#", "اسم المشترك", "يوزر المشترك", "فئة الاشتراك", "التاريخ", "المبلغ (د.ع)"]];
-    let tableBody = [];
     let total = 0;
-
     dataArray.forEach((item, idx) => {
       const amt = Number(item[priceField] || 0);
       total += amt;
-      tableBody.push([
-        idx + 1,
-        item.name || '-',
-        item.user || '-',
-        item.cat || '-',
-        item.date || (item.actDay ? (item.actDay + '/' + item.actMonth + '/' + item.actYear) : '-'),
-        amt.toLocaleString()
-      ]);
+      htmlContent += `
+        <tr>
+          <td>${idx + 1}</td>
+          <td>${item.name || '-'}</td>
+          <td>${item.user || '-'}</td>
+          <td>${item.cat || '-'}</td>
+          <td>${item.date || (item.actDay ? (item.actDay + '/' + item.actMonth + '/' + item.actYear) : '-')}</td>
+          <td>${amt.toLocaleString()}</td>
+        </tr>
+      `;
     });
 
-    doc.autoTable({
-      startY: 35,
-      head: tableHeaders,
-      body: tableBody,
-      styles: { font: 'helvetica', fontSize: 10, halign: 'center' },
-      headStyles: { fillColor: [6, 182, 212] },
-      theme: 'grid'
-    });
+    htmlContent += `
+          </tbody>
+        </table>
+        <div class="total">إجمالي المبلغ الكلي: ${total.toLocaleString()} دينار عراقي</div>
+        <script>
+          window.onload = function() {
+            window.print();
+          }
+        <\/script>
+      </body>
+      </html>
+    `;
 
-    let finalY = doc.lastAutoTable.finalY + 10;
-    doc.setFontSize(12);
-    doc.setTextColor(180, 83, 9);
-    doc.text(`إجمالي المبلغ الكلي: ${total.toLocaleString()} دينار عراقي`, 105, finalY, { align: 'center' });
-
-    try {
-      doc.save(`${title.replace(/\s+/g, '_')}_Report.pdf`);
-    } catch (err) {
-      alert('حدث خطأ أثناء حفظ ملف الـ PDF.');
+    const win = window.open('', '_blank');
+    if (win) {
+      win.document.write(htmlContent);
+      win.document.close();
+    } else {
+      alert('يرجى السماح بفتح النوافذ المنسدلة من إعدادات المتصفح.');
     }
   }
 </script>
