@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <!-- Google Fonts (Cairo) -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- QRCode.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <style>
     :root {
@@ -264,13 +266,31 @@
       box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4); cursor: pointer;
     }
 
+    .btn-pc-sync {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #fff; border: none; font-weight: 800; border-radius: 50rem; padding: 6px 18px;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-pc-sync:hover {
+      background: linear-gradient(135deg, #4f46e5, #4338ca);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
     .btn-telegram-action {
       background: linear-gradient(135deg, #0088cc, #006699);
-      color: #fff; border: none; font-weight: 700; border-radius: 50rem; padding: 8px 20px;
+      color: #fff; border: none; font-weight: 700; border-radius: 50rem; padding: 6px 16px;
       box-shadow: 0 4px 12px rgba(0, 136, 204, 0.35); cursor: pointer;
     }
-    .btn-telegram-action:hover {
-      background: linear-gradient(135deg, #0099ee, #0077bb);
+
+    .btn-print-action {
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+      color: #fff; border: none; font-weight: 700; border-radius: 50rem; padding: 6px 16px;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35); cursor: pointer;
+    }
+    .btn-print-action:hover {
+      background: linear-gradient(135deg, #7c3aed, #5b21b6);
       color: #fff;
     }
 
@@ -290,6 +310,12 @@
 
     .date-select { min-width: 65px; padding: 4px 6px; font-size: 0.85rem !important; }
     .modal-content-custom { background-color: #0f172a; border: 1px solid var(--border-color); color: var(--text-main); border-radius: 20px; }
+    
+    #qrcodeContainer canvas, #qrcodeContainer img {
+      margin: 0 auto;
+      border: 6px solid #ffffff;
+      border-radius: 12px;
+    }
   </style>
 </head>
 <body>
@@ -345,6 +371,9 @@
         <span class="owner-badge"><span class="online-indicator"></span> متصل بـ JSONbin السحابي | المستخدم: <span id="currentUserName">حسين عبد المجيد</span></span>
       </div>
       <div class="d-flex gap-2 flex-wrap justify-content-center">
+        <button class="btn btn-pc-sync btn-sm rounded-pill px-3 fw-bold" onclick="openDesktopModal()">
+          <i class="fa-solid fa-desktop me-1"></i> فتح حسابك على الكمبيوتر
+        </button>
         <button id="buyLifetimeBtn" class="btn btn-action-buy btn-sm rounded-pill px-3 fw-bold" onclick="openBuyModal()">
           <i class="fa-solid fa-crown me-1"></i> شراء البرنامج (تفعيل مدى الحياة)
         </button>
@@ -375,10 +404,10 @@
         <input type="text" id="actUser" class="form-control table-input" placeholder="يوزر المشترك" required>
       </div>
       <div class="col-6 col-md-2">
-        <input type="text" id="actCategory" class="form-control table-input" placeholder="فئة الاشتراك">
+        <input type="text" id="actCategory" class="form-control table-input" placeholder="نوع الاشتراك">
       </div>
       <div class="col-6 col-md-2">
-        <input type="number" id="actAmount" class="form-control table-input" placeholder="المبلغ (د.ع)" required>
+        <input type="number" id="actAmount" class="form-control table-input" placeholder="سعر الاشتراك (د.ع)" required>
       </div>
       <div class="col-8 col-md-2">
         <select id="actType" class="form-select table-input" required>
@@ -451,8 +480,8 @@
                 <th style="width: 40px;">#</th>
                 <th>اسم المشترك</th>
                 <th>يوزر المشترك</th>
-                <th>فئة الاشتراك</th>
-                <th>مبلغ الاشتراك</th>
+                <th>نوع الاشتراك</th>
+                <th>سعر الاشتراك</th>
                 <th>سيريال المشترك</th>
                 <th style="min-width: 210px;">تاريخ التفعيل (يوم / شهر / سنة)</th>
                 <th style="width: 50px;">إجراء</th>
@@ -487,8 +516,8 @@
                 <th style="width: 40px;">#</th>
                 <th>اسم المشترك</th>
                 <th>يوزر المشترك</th>
-                <th>فئة الاشتراك</th>
-                <th>مبلغ الاشتراك</th>
+                <th>نوع الاشتراك</th>
+                <th>سعر الاشتراك</th>
                 <th style="min-width: 210px;">تاريخ التفعيل (يوم / شهر / سنة)</th>
                 <th style="width: 50px;">إجراء</th>
               </tr>
@@ -512,7 +541,8 @@
               <input type="text" id="searchSpeed" placeholder="بحث عن اسم أو يوزر..." onkeyup="renderSpeedTable()">
             </div>
             <button class="btn btn-action-add btn-sm" onclick="addSpeedRow()"><i class="fa-solid fa-plus me-1"></i> إضافة</button>
-            <button class="btn btn-telegram-action btn-sm" onclick="sendSpeedTableToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال الجدول لتلجرام</button>
+            <button class="btn btn-telegram-action btn-sm" onclick="sendSpeedTableToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال لتلجرام</button>
+            <button class="btn btn-print-action btn-sm" onclick="printReport('تقرير مشتركين أبراج سبيد', speedData, false)"><i class="fa-solid fa-file-pdf me-1"></i> طباعة / حفظ PDF</button>
             <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
           </div>
         </div>
@@ -523,8 +553,8 @@
                 <th style="width: 40px;">#</th>
                 <th>اسم المشترك</th>
                 <th>يوزر المشترك</th>
-                <th>فئة الاشتراك</th>
-                <th>مبلغ الاشتراك</th>
+                <th>نوع الاشتراك</th>
+                <th>سعر الاشتراك</th>
                 <th style="min-width: 210px;">تاريخ التفعيل (يوم / شهر / سنة)</th>
                 <th style="width: 50px;">إجراء</th>
               </tr>
@@ -539,12 +569,13 @@
     <div class="tab-pane fade" id="cash-pane">
       <div class="content-card">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-          <h5 class="fw-bold text-success mb-0"><i class="fa-solid fa-circle-check me-2"></i>تفعيلات النقد</h5>
+          <h5 class="fw-bold text-success mb-0"><i class="fa-solid fa-circle-check me-2"></i>تفعيلات النقد (جدول المبيعات)</h5>
           <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
             <div class="search-box flex-grow-1">
               <input type="text" id="searchCash" placeholder="بحث..." onkeyup="renderCashTable()">
             </div>
-            <button class="btn btn-telegram-action btn-sm" onclick="sendTodaySalesToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال الجدول لتلجرام</button>
+            <button class="btn btn-telegram-action btn-sm" onclick="sendTodaySalesToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال لتلجرام</button>
+            <button class="btn btn-print-action btn-sm" onclick="printReport('تقرير تفعيلات النقد', cashActivations, false)"><i class="fa-solid fa-file-pdf me-1"></i> طباعة / حفظ PDF</button>
             <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
           </div>
         </div>
@@ -552,12 +583,13 @@
           <table class="table table-dark-custom text-center align-middle">
             <thead>
               <tr>
-                <th style="width: 40px;">#</th>
-                <th>اسم المشترك</th>
-                <th>يوزر المشترك</th>
-                <th>فئة الاشتراك</th>
-                <th>مبلغ الاشتراك</th>
-                <th>التاريخ والوقت</th>
+                <th style="width: 40px;">ت</th>
+                <th>1. اسم المشترك</th>
+                <th>2. نوع الاشتراك</th>
+                <th>3. يوزر المشترك</th>
+                <th>4. سعر الاشتراك</th>
+                <th>5. نقد / فقد</th>
+                <th>6. المجموع</th>
                 <th style="width: 50px;">إجراء</th>
               </tr>
             </thead>
@@ -576,7 +608,8 @@
             <div class="search-box flex-grow-1">
               <input type="text" id="searchDebt" placeholder="بحث..." onkeyup="renderDebtTable()">
             </div>
-            <button class="btn btn-telegram-action btn-sm" onclick="sendDebtSalesToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال الجدول لتلجرام</button>
+            <button class="btn btn-telegram-action btn-sm" onclick="sendDebtSalesToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال لتلجرام</button>
+            <button class="btn btn-print-action btn-sm" onclick="printReport('تقرير تفعيلات الفقد', debtActivations, false)"><i class="fa-solid fa-file-pdf me-1"></i> طباعة / حفظ PDF</button>
             <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
           </div>
         </div>
@@ -584,12 +617,13 @@
           <table class="table table-dark-custom text-center align-middle">
             <thead>
               <tr>
-                <th style="width: 40px;">#</th>
-                <th>اسم المشترك</th>
-                <th>يوزر المشترك</th>
-                <th>فئة الاشتراك</th>
-                <th>المبلغ المطلوب</th>
-                <th>تاريخ التفعيل</th>
+                <th style="width: 40px;">ت</th>
+                <th>1. اسم المشترك</th>
+                <th>2. نوع الاشتراك</th>
+                <th>3. يوزر المشترك</th>
+                <th>4. سعر الاشتراك</th>
+                <th>5. نقد / فقد</th>
+                <th>6. المجموع</th>
                 <th>تسديد</th>
                 <th style="width: 50px;">إجراء</th>
               </tr>
@@ -604,12 +638,13 @@
     <div class="tab-pane fade" id="paid-pane">
       <div class="content-card">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-          <h5 class="fw-bold text-info mb-0"><i class="fa-solid fa-receipt me-2"></i>المبالغ المسددة</h5>
+          <h5 class="fw-bold text-info mb-0"><i class="fa-solid fa-receipt me-2"></i>المبالغ المسددة (تقارير التسديد)</h5>
           <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
             <div class="search-box flex-grow-1">
               <input type="text" id="searchPaid" placeholder="بحث..." onkeyup="renderPaidTable()">
             </div>
             <button class="btn btn-telegram-action btn-sm" onclick="sendPaidSalesToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال لتلجرام</button>
+            <button class="btn btn-print-action btn-sm" onclick="printReport('جدول تقارير التسديد', paidActivations, true)"><i class="fa-solid fa-file-pdf me-1"></i> طباعة / حفظ PDF</button>
             <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
           </div>
         </div>
@@ -617,19 +652,55 @@
           <table class="table table-dark-custom text-center align-middle">
             <thead>
               <tr>
-                <th style="width: 40px;">#</th>
-                <th>اسم المشترك</th>
-                <th>يوزر المشترك</th>
-                <th>فئة الاشتراك</th>
-                <th>المبلغ المسدد</th>
-                <th>نوع التسديد</th>
-                <th>التاريخ والوقت</th>
+                <th style="width: 40px;">ت</th>
+                <th>1. اسم المشترك</th>
+                <th>2. نوع التسديد</th>
+                <th>3. يوزر المشترك</th>
+                <th>4. المبلغ المسدد</th>
+                <th>5. الحالة</th>
+                <th>6. المجموع</th>
                 <th style="width: 50px;">إجراء</th>
               </tr>
             </thead>
             <tbody id="paidTbody"></tbody>
           </table>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal فتح حسابك على الكمبيوتر -->
+<div class="modal fade" id="desktopModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-content-custom">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title fw-bold text-info"><i class="fa-solid fa-desktop me-2"></i>فتح حسابك على متصفح الكمبيوتر</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="text-light small mb-3">يمكنك الدخول إلى حسابك المعزول من متصفح الكمبيوتر عبر:</p>
+        <div class="p-3 mb-3 style-box rounded-3" style="background: rgba(2, 6, 23, 0.6); border: 1px solid var(--border-color);">
+          <label class="form-label text-warning font-bold mb-1"><i class="fa-solid fa-envelope me-1"></i> البريد المربوط:</label>
+          <div class="fw-bold text-cyan fs-5" id="pcAccountEmailDisplay">---</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-light font-bold mb-1"><i class="fa-solid fa-link me-1"></i> رابط البرنامج المباشر:</label>
+          <div class="input-group">
+            <input type="text" id="pcLinkInput" class="form-control table-input text-center" readonly>
+            <button class="btn btn-action-add" onclick="copyPcLink()"><i class="fa-solid fa-copy me-1"></i> نسخ الرابط</button>
+          </div>
+        </div>
+        <div class="my-3">
+          <span class="text-muted small d-block mb-2"><i class="fa-solid fa-qrcode me-1"></i> مسح كود QR:</span>
+          <div id="qrcodeContainer" class="d-flex justify-content-center"></div>
+        </div>
+      </div>
+      <div class="modal-footer border-secondary justify-content-between">
+        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">إغلاق</button>
+        <a id="openDirectPcBtn" href="#" target="_blank" class="btn btn-pc-sync rounded-pill px-4">
+          <i class="fa-solid fa-external-link me-1"></i> فتح في متصفح جديد الآن
+        </a>
       </div>
     </div>
   </div>
@@ -759,15 +830,46 @@
   let paymentModalInstance = null;
   let buyModalInstance = null;
   let telegramModalInstance = null;
+  let desktopModalInstance = null;
 
   window.addEventListener('DOMContentLoaded', () => {
     paymentModalInstance = new bootstrap.Modal(document.getElementById('paymentModal'));
     buyModalInstance = new bootstrap.Modal(document.getElementById('buyModal'));
     telegramModalInstance = new bootstrap.Modal(document.getElementById('telegramModal'));
+    desktopModalInstance = new bootstrap.Modal(document.getElementById('desktopModal'));
     
     document.getElementById('loginEmail').value = "huzt.m1@gmail.com";
     loadTelegramSettings();
   });
+
+  function openDesktopModal() {
+    document.getElementById('pcAccountEmailDisplay').innerText = currentEmailKey;
+    const appUrl = window.location.href.split('#')[0];
+    document.getElementById('pcLinkInput').value = appUrl;
+    document.getElementById('openDirectPcBtn').href = appUrl;
+
+    const qrContainer = document.getElementById('qrcodeContainer');
+    qrContainer.innerHTML = '';
+    new QRCode(qrContainer, {
+      text: appUrl,
+      width: 140,
+      height: 140,
+      colorDark : "#020617",
+      colorLight : "#ffffff",
+      correctLevel : QRCode.CorrectLevel.H
+    });
+
+    desktopModalInstance.show();
+  }
+
+  function copyPcLink() {
+    const input = document.getElementById('pcLinkInput');
+    input.select();
+    input.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(input.value).then(() => {
+      alert("تم نسخ رابط متصفح الكمبيوتر بنجاح!");
+    });
+  }
 
   function renameTableTitle(type) {
     let currentName = "";
@@ -981,7 +1083,6 @@
     .then(res => res.json())
     .then(data => {
       let allUsersData = data.record || {};
-      
       allUsersData[currentEmailKey] = {
         fiberData,
         earthData,
@@ -1014,7 +1115,7 @@
     const type = document.getElementById('actType').value;
     const nowStr = new Date().toLocaleString('ar-IQ');
 
-    const item = { id: Date.now(), name, user, category: cat, amount, date: nowStr, day: '', month: '', year: '', serial: '' };
+    const item = { id: Date.now(), name, user, category: cat, amount, type, date: nowStr, day: '', month: '', year: '', serial: '' };
 
     const userLower = user.toLowerCase();
     const fiberRegex = /^mu\d+f\d+p\d+/i;
@@ -1031,10 +1132,10 @@
 
     if (type === 'نقد') {
       cashActivations.push(item);
-      sendTelegramNotification(`💵 <b>تفعيل نقد جديد:</b>\nالاسم: ${name}\nاليوزر: ${user}\nالمبلغ: ${amount} د.ع`);
+      sendTelegramNotification(`💵 <b>تفعيل نقد جديد:</b>\n1. اسم المشترك: ${name}\n2. نوع الاشتراك: ${cat}\n3. يوزر المشترك: ${user}\n4. سعر الاشتراك: ${amount} د.ع\n5. نوعه: نقد`);
     } else {
       debtActivations.push(item);
-      sendTelegramNotification(`⏳ <b>تفعيل فقد جديد:</b>\nالاسم: ${name}\nاليوزر: ${user}\nالمبلغ: ${amount} د.ع`);
+      sendTelegramNotification(`⏳ <b>تفعيل فقد جديد:</b>\n1. اسم المشترك: ${name}\n2. نوع الاشتراك: ${cat}\n3. يوزر المشترك: ${user}\n4. سعر الاشتراك: ${amount} د.ع\n5. نوعه: فقد`);
     }
 
     e.target.reset();
@@ -1186,10 +1287,11 @@
         <tr>
           <td>${index + 1}</td>
           <td>${item.name}</td>
+          <td>${item.category || 'عام'}</td>
           <td>${item.user}</td>
-          <td>${item.category}</td>
           <td class="text-success fw-bold">${item.amount} د.ع</td>
-          <td>${item.date}</td>
+          <td><span class="badge bg-success">نقد</span></td>
+          <td class="fw-bold">${item.amount} د.ع</td>
           <td><button class="btn btn-outline-danger btn-sm" onclick="deleteCash(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
         </tr>`;
     });
@@ -1211,10 +1313,11 @@
         <tr>
           <td>${index + 1}</td>
           <td>${item.name}</td>
+          <td>${item.category || 'عام'}</td>
           <td>${item.user}</td>
-          <td>${item.category}</td>
           <td class="text-warning fw-bold">${item.amount} د.ع</td>
-          <td>${item.date}</td>
+          <td><span class="badge bg-warning text-dark">فقد</span></td>
+          <td class="fw-bold">${item.amount} د.ع</td>
           <td><button class="btn btn-action-add btn-sm py-1" onclick="openPaymentModal(${item.id})">تسديد</button></td>
           <td><button class="btn btn-outline-danger btn-sm" onclick="deleteDebt(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
         </tr>`;
@@ -1284,7 +1387,7 @@
     paymentModalInstance.hide();
     renderAllTables();
     saveDataToCloud();
-    sendTelegramNotification(`💰 <b>عملية تسديد جديدة:</b>\nالاسم: ${debt.name}\nالمبلغ المسدد: ${paidAmount} د.ع`);
+    sendTelegramNotification(`💰 <b>تسديد جديد:</b>\n1. اسم المشترك: ${debt.name}\n2. نوع التسديد: ${payType}\n3. يوزر المشترك: ${debt.user}\n4. المبلغ المسدد: ${paidAmount} د.ع\n5. الحالة: مسدد\n6. المجموع: ${paidAmount} د.ع`);
     alert('تم إتمام التسديد بنجاح!');
   }
 
@@ -1298,11 +1401,11 @@
         <tr>
           <td>${index + 1}</td>
           <td>${item.name}</td>
+          <td>${item.type}</td>
           <td>${item.user}</td>
-          <td>${item.category}</td>
           <td class="text-info fw-bold">${item.amount} د.ع</td>
-          <td><span class="badge bg-secondary">${item.type}</span></td>
-          <td>${item.date}</td>
+          <td><span class="badge bg-secondary">مسدد</span></td>
+          <td class="fw-bold">${item.amount} د.ع</td>
           <td><button class="btn btn-outline-danger btn-sm" onclick="deletePaid(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
         </tr>`;
     });
@@ -1314,106 +1417,140 @@
     saveDataToCloud();
   }
 
-  function generateTableReportMessage(title, headers, rowsData, totalLabel, totalValue) {
+  /* دالة إرسال التقرير النصي المرتب إلى تلجرام حسب الترتيب العمودي المطلوب تماماً */
+  function sendListReportToTelegram(title, dataRows, isPayment = false) {
+    if (dataRows.length === 0) {
+      alert("لا توجد بيانات لإرسالها!");
+      return;
+    }
+
     let msg = `📊 <b>${title}</b>\n`;
     msg += `📅 التاريخ: ${new Date().toLocaleDateString('ar-IQ')}\n`;
-    msg += `<code>┌─────┬──────────────────────┬──────────────┬──────────────┐</code>\n`;
-    msg += `<code>│  #  │     اسم المشترك      │    اليوزر    │   المبلغ     │</code>\n`;
-    msg += `<code>├─────┼──────────────────────┼──────────────┼──────────────┤</code>\n`;
-    
-    rowsData.forEach((item, i) => {
-      let num = (i + 1).toString().padEnd(3, ' ');
-      let name = (item.name || '---').substring(0, 18).padEnd(18, ' ');
-      let user = (item.user || '---').substring(0, 12).padEnd(12, ' ');
-      let amt = (item.amount || '0') + ' د.ع';
-      amt = amt.padEnd(12, ' ');
-      msg += `<code>│ ${num} │ ${name} │ ${user} │ ${amt} │</code>\n`;
+    msg += `-----------------------------------\n`;
+
+    let total = 0;
+    dataRows.forEach((item, index) => {
+      let amt = parseFloat(item.amount) || 0;
+      total += amt;
+      
+      msg += `<b># الترتيب (${index + 1})</b>\n`;
+      msg += `1. اسم المشترك: ${item.name || '---'}\n`;
+      if (!isPayment) {
+        msg += `2. نوع الاشتراك: ${item.category || 'عام'}\n`;
+        msg += `3. يوزر المشترك: ${item.user || '---'}\n`;
+        msg += `4. سعر الاشتراك: ${amt} د.ع\n`;
+        msg += `5. نوعه: ${item.type || 'نقد'}\n`;
+      } else {
+        msg += `2. نوع التسديد: ${item.type || 'تسديد'}\n`;
+        msg += `3. يوزر المشترك: ${item.user || '---'}\n`;
+        msg += `4. المبلغ المسدد: ${amt} د.ع\n`;
+        msg += `5. الحالة: مسدد\n`;
+      }
+      msg += `6. المجموع: ${amt} د.ع\n`;
+      msg += `-----------------------------------\n`;
     });
-    
-    msg += `<code>└─────┴──────────────────────┴──────────────┴──────────────┘</code>\n`;
-    msg += `📌 <b>${totalLabel}:</b> ${totalValue.toLocaleString()} دينار عراقي`;
-    return msg;
+
+    msg += `📌 <b>المجموع الكلي للتقرير:</b> ${total.toLocaleString()} دينار عراقي`;
+
+    sendTelegramNotification(msg);
+    alert(`تم إرسال تقرير (${title}) إلى تلجرام بالترتيب المطلوب بنجاح!`);
   }
 
   function sendSpeedTableToTelegram() {
-    if (speedData.length === 0) {
-      alert("لا توجد بيانات في جدول ابراج سبيد لإرسالها!");
-      return;
-    }
-    let total = 0;
-    speedData.forEach(item => total += parseFloat(item.amount) || 0);
-    
-    let msg = generateTableReportMessage(
-      "تقرير مشتركين أبراج سبيد", 
-      ["#", "الاسم", "اليوزر", "المبلغ"], 
-      speedData, 
-      "إجمالي المبالغ", 
-      total
-    );
-    sendTelegramNotification(msg);
-    alert("تم إرسال جدول مشتركين أبراج سبيد كتقرير منسق إلى تلجرام بنجاح!");
+    sendListReportToTelegram("تقرير مشتركين أبراج سبيد", speedData, false);
   }
 
   function sendTodaySalesToTelegram() {
-    if (cashActivations.length === 0) {
-      alert("لا توجد مبيعات نقدية لإرسالها!");
-      return;
-    }
-    let total = 0;
-    cashActivations.forEach(item => total += parseFloat(item.amount) || 0);
-
-    let msg = generateTableReportMessage(
-      "تقرير تفعيلات النقد اليومية", 
-      ["#", "الاسم", "اليوزر", "المبلغ"], 
-      cashActivations, 
-      "إجمالي المبلغ النقدي", 
-      total
-    );
-    sendTelegramNotification(msg);
-    alert("تم إرسال جدول تفعيلات النقد إلى تلجرام بنجاح!");
+    sendListReportToTelegram("تقرير تفعيلات النقد", cashActivations, false);
   }
 
   function sendDebtSalesToTelegram() {
-    if (debtActivations.length === 0) {
-      alert("لا توجد تفعيلات فقد لإرسالها!");
-      return;
-    }
-    let total = 0;
-    debtActivations.forEach(item => total += parseFloat(item.amount) || 0);
-
-    let msg = generateTableReportMessage(
-      "تقرير تفعيلات الفقد (الآجل)", 
-      ["#", "الاسم", "اليوزر", "المبلغ"], 
-      debtActivations, 
-      "إجمالي الديون المطلوبة", 
-      total
-    );
-    sendTelegramNotification(msg);
-    alert("تم إرسال جدول تفعيلات الفقد إلى تلجرام بنجاح!");
+    sendListReportToTelegram("تقرير تفعيلات الفقد", debtActivations, false);
   }
 
   function sendPaidSalesToTelegram() {
-    if (paidActivations.length === 0) {
-      alert("لا توجد مبالغ مسددة لإرسالها!");
+    sendListReportToTelegram("جدول تقارير التسديد", paidActivations, true);
+  }
+
+  /* دالة الطباعة الاحترافية وحفظ PDF */
+  function printReport(title, dataRows, isPayment = false) {
+    if (dataRows.length === 0) {
+      alert("لا توجد بيانات لطباعتها!");
       return;
     }
+
+    let printWindow = window.open('', '_blank');
+    let html = `
+      <html lang="ar" dir="rtl">
+      <head>
+        <meta charset="UTF-8">
+        <title>${title}</title>
+        <style>
+          body { font-family: 'Cairo', Tahoma, Arial, sans-serif; padding: 20px; color: #000; direction: rtl; }
+          h2 { text-align: center; margin-bottom: 5px; color: #0f172a; }
+          .date { text-align: center; font-size: 14px; color: #555; margin-bottom: 20px; }
+          table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+          th, td { border: 1px solid #333; padding: 10px; text-align: center; font-size: 14px; }
+          th { background-color: #f1f5f9; color: #000; font-weight: bold; }
+          .total-box { margin-top: 20px; text-align: left; font-size: 16px; font-weight: bold; }
+          @media print {
+            body { padding: 0; }
+            button { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <h2>حسين لخدمات الإنترنت - ${title}</h2>
+        <div class="date">تاريخ التقرير: ${new Date().toLocaleDateString('ar-IQ')}</div>
+        <table>
+          <thead>
+            <tr>
+              <th>ت</th>
+              <th>1. اسم المشترك</th>
+              <th>2. ${isPayment ? 'نوع التسديد' : 'نوع الاشتراك'}</th>
+              <th>3. يوزر المشترك</th>
+              <th>4. ${isPayment ? 'المبلغ المسدد' : 'سعر الاشتراك'}</th>
+              <th>5. ${isPayment ? 'الحالة' : 'نقد / فقد'}</th>
+              <th>6. المجموع</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+
     let total = 0;
-    paidActivations.forEach((item, i) => {
-      total += parseFloat(item.amount) || 0;
+    dataRows.forEach((item, index) => {
+      let amt = parseFloat(item.amount) || 0;
+      total += amt;
+      html += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.name || '---'}</td>
+          <td>${item.category || item.type || '---'}</td>
+          <td>${item.user || '---'}</td>
+          <td>${amt.toLocaleString()} د.ع</td>
+          <td>${isPayment ? 'مسدد' : (item.type || 'نقد')}</td>
+          <td><b>${amt.toLocaleString()} د.ع</b></td>
+        </tr>
+      `;
     });
-    
-    let msg = generateTableReportMessage(
-      "سجل المبالغ المسددة", 
-      ["#", "الاسم", "اليوزر", "المبلغ"], 
-      paidActivations, 
-      "إجمالي المبالغ المسددة", 
-      total
-    );
-    sendTelegramNotification(msg);
-    alert("تم إرسال سجل التسديدات إلى تلجرام بنجاح!");
+
+    html += `
+          </tbody>
+        </table>
+        <div class="total-box">
+          المجموع الكلي: ${total.toLocaleString()} دينار عراقي
+        </div>
+        <div style="margin-top: 30px; text-align: center;">
+          <button onclick="window.print()" style="padding: 10px 25px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">طباعة أو حفظ PDF</button>
+        </div>
+      </body>
+      </html>
+    `;
+
+    printWindow.document.write(html);
+    printWindow.document.close();
   }
 </script>
 
 </body>
 </html>
-```[cite: 1]
