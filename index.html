@@ -264,22 +264,14 @@
       box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4); cursor: pointer;
     }
 
-    .btn-action-print {
-      background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    .btn-telegram-action {
+      background: linear-gradient(135deg, #0088cc, #006699);
       color: #fff; border: none; font-weight: 700; border-radius: 50rem; padding: 8px 20px;
-      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3); cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 136, 204, 0.35); cursor: pointer;
     }
-
-    .btn-action-debt-print {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: #fff; border: none; font-weight: 700; border-radius: 50rem; padding: 8px 20px;
-      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); cursor: pointer;
-    }
-
-    .btn-action-paid-print {
-      background: linear-gradient(135deg, #06b6d4, #0284c7);
-      color: #fff; border: none; font-weight: 700; border-radius: 50rem; padding: 8px 20px;
-      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3); cursor: pointer;
+    .btn-telegram-action:hover {
+      background: linear-gradient(135deg, #0099ee, #0077bb);
+      color: #fff;
     }
 
     .search-box {
@@ -298,19 +290,6 @@
 
     .date-select { min-width: 65px; padding: 4px 6px; font-size: 0.85rem !important; }
     .modal-content-custom { background-color: #0f172a; border: 1px solid var(--border-color); color: var(--text-main); border-radius: 20px; }
-    #printReportArea { display: none; }
-
-    @media print {
-      @page { size: auto; margin: 15mm; }
-      body { background: #fff !important; color: #000 !important; padding: 0 !important; background-image: none !important; }
-      #lockScreen, #mainContent, .modal { display: none !important; }
-      #printReportArea { display: block !important; padding: 10px; font-family: 'Cairo', sans-serif; direction: rtl; }
-      .print-header { border-bottom: 3px solid #0f172a; padding-bottom: 12px; margin-bottom: 20px; }
-      .print-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-      .print-table th, .print-table td { border: 1px solid #cbd5e1; padding: 8px; text-align: center; font-size: 0.9rem; }
-      .print-table th { background-color: #f1f5f9; font-weight: bold; }
-      .print-total-box { background-color: #fffbe3; border: 2px dashed #d97706; border-radius: 12px; padding: 15px; text-align: center; font-size: 1.2rem; font-weight: bold; color: #b45309; }
-    }
   </style>
 </head>
 <body>
@@ -369,6 +348,9 @@
         <button id="buyLifetimeBtn" class="btn btn-action-buy btn-sm rounded-pill px-3 fw-bold" onclick="openBuyModal()">
           <i class="fa-solid fa-crown me-1"></i> شراء البرنامج (تفعيل مدى الحياة)
         </button>
+        <button class="btn btn-outline-info btn-sm rounded-pill px-3 fw-bold" onclick="openTelegramModal()">
+          <i class="fa-brands fa-telegram me-1"></i> إعدادات تلجرام
+        </button>
         <button class="btn btn-outline-warning btn-sm rounded-pill px-3 fw-bold" onclick="changePasswordWithAuth()">
           <i class="fa-solid fa-lock me-1"></i> تغيير رمز الدخول
         </button>
@@ -384,7 +366,7 @@
   </div>
 
   <div class="activation-box mb-4">
-    <h6 class="fw-bold text-info mb-3"><i class="fa-solid fa-bolt me-2"></i>تسجيل وتفعيل اشتراك (نقد / فقد):</h6>
+    <h6 class="fw-bold text-info mb-3"><i class="fa-solid fa-bolt me-2"></i>تسجيل وتفعيل اشتراك (نقد / فقد) مع الفرز التلقائي:</h6>
     <form onsubmit="registerActivation(event)" class="row g-2 align-items-center">
       <div class="col-12 col-md-3">
         <input type="text" id="actName" class="form-control table-input" placeholder="اسم المشترك" required>
@@ -405,7 +387,7 @@
         </select>
       </div>
       <div class="col-4 col-md-1">
-        <button type="submit" class="btn btn-action-add w-100 py-1" title="تفعيل وإضافة">
+        <button type="submit" class="btn btn-action-add w-100 py-1" title="تفعيل وفرز تلقائي">
           <i class="fa-solid fa-plus"></i>
         </button>
       </div>
@@ -415,17 +397,17 @@
   <ul class="nav nav-pills mb-3" id="mainTabs" role="tablist">
     <li class="nav-item">
       <button class="nav-link active" id="fiber-tab" data-bs-toggle="tab" data-bs-target="#fiber-pane">
-        <i class="fa-solid fa-network-wired me-1"></i> 1. المشتركين (كابل ضوئي)
+        <i class="fa-solid fa-network-wired me-1"></i> <span id="fiberTabTitleText">1. المشتركين (كابل ضوئي)</span>
       </button>
     </li>
     <li class="nav-item">
       <button class="nav-link" id="earth-tab" data-bs-toggle="tab" data-bs-target="#earth-pane">
-        <i class="fa-solid fa-tower-cell me-1"></i> 2. مشتركين إيرثلنك (أبراج)
+        <i class="fa-solid fa-tower-cell me-1"></i> <span id="earthTabTitleText">2. مشتركين إيرثلنك أمجد</span>
       </button>
     </li>
     <li class="nav-item">
       <button class="nav-link" id="speed-tab" data-bs-toggle="tab" data-bs-target="#speed-pane">
-        <i class="fa-solid fa-broadcast-tower me-1"></i> 3. مشتركين سبيد (أبراج)
+        <i class="fa-solid fa-broadcast-tower me-1"></i> <span id="speedTabTitleText">3. مشتركين ابراج سبيد</span>
       </button>
     </li>
     <li class="nav-item">
@@ -450,7 +432,10 @@
     <div class="tab-pane fade show active" id="fiber-pane">
       <div class="content-card">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-          <h5 class="fw-bold text-info mb-0"><i class="fa-solid fa-cable-car me-2"></i>مشتركين الكابل الضوئي</h5>
+          <div class="d-flex align-items-center gap-2">
+            <h5 class="fw-bold text-info mb-0" id="fiberPaneTitle"><i class="fa-solid fa-cable-car me-2"></i>مشتركين الكابل الضوئي</h5>
+            <button class="btn btn-outline-warning btn-sm py-0 px-2" title="تعديل اسم الخانة" onclick="renameTableTitle('fiber')"><i class="fa-solid fa-pen"></i></button>
+          </div>
           <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
             <div class="search-box flex-grow-1">
               <input type="text" id="searchFiber" placeholder="بحث عن اسم أو يوزر..." onkeyup="renderFiberTable()">
@@ -479,11 +464,14 @@
       </div>
     </div>
 
-    <!-- 2. إيرثلنك أبراج -->
+    <!-- 2. إيرثلنك أمجد أبراج -->
     <div class="tab-pane fade" id="earth-pane">
       <div class="content-card">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-          <h5 class="fw-bold text-info mb-0"><i class="fa-solid fa-tower-broadcast me-2"></i>مشتركين إيرثلنك (أبراج)</h5>
+          <div class="d-flex align-items-center gap-2">
+            <h5 class="fw-bold text-info mb-0" id="earthPaneTitle"><i class="fa-solid fa-tower-broadcast me-2"></i>مشتركين إيرثلنك أمجد</h5>
+            <button class="btn btn-outline-warning btn-sm py-0 px-2" title="تعديل اسم الخانة" onclick="renameTableTitle('earth')"><i class="fa-solid fa-pen"></i></button>
+          </div>
           <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
             <div class="search-box flex-grow-1">
               <input type="text" id="searchEarth" placeholder="بحث عن اسم أو يوزر..." onkeyup="renderEarthTable()">
@@ -515,12 +503,16 @@
     <div class="tab-pane fade" id="speed-pane">
       <div class="content-card">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-          <h5 class="fw-bold text-info mb-0"><i class="fa-solid fa-wifi me-2"></i>مشتركين سبيد (أبراج)</h5>
+          <div class="d-flex align-items-center gap-2">
+            <h5 class="fw-bold text-info mb-0" id="speedPaneTitle"><i class="fa-solid fa-wifi me-2"></i>اشتراكات ابراج سبيد</h5>
+            <button class="btn btn-outline-warning btn-sm py-0 px-2" title="تعديل اسم الخانة" onclick="renameTableTitle('speed')"><i class="fa-solid fa-pen"></i></button>
+          </div>
           <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
             <div class="search-box flex-grow-1">
               <input type="text" id="searchSpeed" placeholder="بحث عن اسم أو يوزر..." onkeyup="renderSpeedTable()">
             </div>
             <button class="btn btn-action-add btn-sm" onclick="addSpeedRow()"><i class="fa-solid fa-plus me-1"></i> إضافة</button>
+            <button class="btn btn-telegram-action btn-sm" onclick="sendSpeedTableToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال الجدول لتلجرام</button>
             <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
           </div>
         </div>
@@ -547,12 +539,12 @@
     <div class="tab-pane fade" id="cash-pane">
       <div class="content-card">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-          <h5 class="fw-bold text-success mb-0"><i class="fa-solid fa-circle-check me-2"></i>سجل تفعيلات النقد المباشر</h5>
+          <h5 class="fw-bold text-success mb-0"><i class="fa-solid fa-circle-check me-2"></i>تفعيلات النقد</h5>
           <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
             <div class="search-box flex-grow-1">
-              <input type="text" id="searchCash" placeholder="بحث في تفعيلات النقد..." onkeyup="renderCashTable()">
+              <input type="text" id="searchCash" placeholder="بحث..." onkeyup="renderCashTable()">
             </div>
-            <button class="btn btn-action-print btn-sm" onclick="printTodaySales()"><i class="fa-solid fa-print me-1"></i> طباعة مبيعات اليوم</button>
+            <button class="btn btn-telegram-action btn-sm" onclick="sendTodaySalesToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال الجدول لتلجرام</button>
             <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
           </div>
         </div>
@@ -579,12 +571,12 @@
     <div class="tab-pane fade" id="debt-pane">
       <div class="content-card">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-          <h5 class="fw-bold text-warning mb-0"><i class="fa-solid fa-hourglass-half me-2"></i>سجل تفعيلات الفقد (الآجل)</h5>
+          <h5 class="fw-bold text-warning mb-0"><i class="fa-solid fa-hourglass-half me-2"></i>تفعيلات الفقد (الآجل)</h5>
           <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
             <div class="search-box flex-grow-1">
-              <input type="text" id="searchDebt" placeholder="بحث في تفعيلات الفقد..." onkeyup="renderDebtTable()">
+              <input type="text" id="searchDebt" placeholder="بحث..." onkeyup="renderDebtTable()">
             </div>
-            <button class="btn btn-action-debt-print btn-sm" onclick="printDebtSales()"><i class="fa-solid fa-print me-1"></i> طباعة مبيعات الفقد</button>
+            <button class="btn btn-telegram-action btn-sm" onclick="sendDebtSalesToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال الجدول لتلجرام</button>
             <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
           </div>
         </div>
@@ -612,12 +604,12 @@
     <div class="tab-pane fade" id="paid-pane">
       <div class="content-card">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-          <h5 class="fw-bold text-info mb-0"><i class="fa-solid fa-receipt me-2"></i>سجل المبالغ المسددة</h5>
+          <h5 class="fw-bold text-info mb-0"><i class="fa-solid fa-receipt me-2"></i>المبالغ المسددة</h5>
           <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
             <div class="search-box flex-grow-1">
-              <input type="text" id="searchPaid" placeholder="بحث في المبالغ المسددة..." onkeyup="renderPaidTable()">
+              <input type="text" id="searchPaid" placeholder="بحث..." onkeyup="renderPaidTable()">
             </div>
-            <button class="btn btn-action-paid-print btn-sm" onclick="printPaidSales()"><i class="fa-solid fa-print me-1"></i> طباعة سجل التسديدات</button>
+            <button class="btn btn-telegram-action btn-sm" onclick="sendPaidSalesToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال لتلجرام</button>
             <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
           </div>
         </div>
@@ -643,6 +635,32 @@
   </div>
 </div>
 
+<!-- Modal اعدادات تلجرام -->
+<div class="modal fade" id="telegramModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-content-custom">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title fw-bold text-info"><i class="fa-brands fa-telegram me-2"></i>إعدادات إشعارات تلجرام</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label font-bold text-light">توكن البوت (Bot Token):</label>
+          <input type="text" id="tgBotTokenInput" class="form-control table-input">
+        </div>
+        <div class="mb-3">
+          <label class="form-label font-bold text-light">شات أيدي القناة / المجموعة (Chat ID):</label>
+          <input type="text" id="tgChatIdInput" class="form-control table-input">
+        </div>
+      </div>
+      <div class="modal-footer border-secondary">
+        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">إلغاء</button>
+        <button type="button" class="btn btn-action-add" onclick="saveTelegramSettings()">حفظ وتأكيد</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal شراء وتفعيل البرنامج -->
 <div class="modal fade" id="buyModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -652,13 +670,12 @@
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body text-center">
-        <p class="text-muted small mb-3">أدخل كود التفعيل المالي المزود لك بعد إتمام عملية الدفع لتفعيل كافة صلاحيات البرنامج مدى الحياة:</p>
         <div class="mb-3">
-          <input type="text" id="activationCodeInput" class="form-control pass-input text-center fs-5" placeholder="أدخل الكود المكون من أرقام...">
+          <input type="text" id="activationCodeInput" class="form-control pass-input text-center fs-5" placeholder="أدخل كود التفعيل...">
         </div>
       </div>
       <div class="modal-footer border-secondary justify-content-center">
-        <button type="button" class="btn btn-action-add px-4" onclick="verifyActivationCode()">تأكيد وتفعيل مدى الحياة <i class="fa-solid fa-check ms-1"></i></button>
+        <button type="button" class="btn btn-action-add px-4" onclick="verifyActivationCode()">تأكيد التفعيل</button>
       </div>
     </div>
   </div>
@@ -692,49 +709,9 @@
       </div>
       <div class="modal-footer border-secondary">
         <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">إلغاء</button>
-        <button type="button" class="btn btn-action-add" onclick="processPayment()">تأكيد التسديد <i class="fa-solid fa-check ms-1"></i></button>
+        <button type="button" class="btn btn-action-add" onclick="processPayment()">تأكيد التسديد</button>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- نموذج الطباعة المخصص للتطبيقات -->
-<div id="printReportArea">
-  <div class="print-header d-flex justify-content-between align-items-center">
-    <div>
-      <h2 style="margin: 0; font-weight: 800; color: #0284c7;">حسين لخدمات الإنترنت</h2>
-      <p style="margin: 3px 0 0 0; font-size: 0.95rem; color: #475569;" id="printReportSubtitle">تقرير المبيعات والتفعيلات اليومية</p>
-    </div>
-    <div style="text-align: left; font-size: 0.85rem; color: #334155;">
-      <div><strong>إشراف:</strong> حسين عبد المجيد</div>
-      <div><strong>تاريخ الطباعة:</strong> <span id="printDate"></span></div>
-      <div><strong>وقت الطباعة:</strong> <span id="printTime"></span></div>
-    </div>
-  </div>
-
-  <h4 style="margin-bottom: 15px; text-align: center; font-weight: 700;" id="printReportTitle">تفاصيل المبيعات</h4>
-
-  <table class="print-table">
-    <thead>
-      <tr id="printTableHeader">
-        <th style="width: 40px;">#</th>
-        <th>اسم المشترك</th>
-        <th>يوزر المشترك</th>
-        <th>فئة الاشتراك</th>
-        <th>التاريخ والوقت</th>
-        <th>المبلغ (د.ع)</th>
-      </tr>
-    </thead>
-    <tbody id="printTbody"></tbody>
-  </table>
-
-  <div class="print-total-box mt-3" id="printTotalBox">
-    <span id="printTotalLabel">إجمالي المبلغ:</span> <span id="printTotalAmount" style="color: #b45309;">0</span> دينار عراقي
-  </div>
-
-  <div class="d-flex justify-content-between align-items-center mt-5 pt-3" style="font-size: 0.9rem; color: #64748b;">
-    <div>توقيع وتصديق المسؤول: .......................................</div>
-    <div>حسين لخدمات الإنترنت - جميع الحقوق محفوظة</div>
   </div>
 </div>
 
@@ -743,11 +720,12 @@
 <script>
   const JSONBIN_BIN_ID = "6acc8eb0ffd5d160536374e6";
   const JSONBIN_SECRET_KEY = "$2a$10$KDZgE9JHByjVvKesod1wj.I1XOxgj0dCgU64F6dHlzqzZcGNZPska";
-
-  const TELEGRAM_BOT_TOKEN = "8769810627:AAHZGUmLmVeiYNYn1X2XhtWyaBjd1iW5-g0";
-  const TELEGRAM_CHAT_ID = "-1003786170089";
+  
+  let TELEGRAM_BOT_TOKEN = "8769810627:AAHZGUmLmVeiYNYn1X2XhtWyaBjd1iW5-g0";
+  let TELEGRAM_CHAT_ID = "-1003786170089";
 
   function sendTelegramNotification(message) {
+    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
     fetch(url, {
       method: 'POST',
@@ -757,9 +735,9 @@
   }
 
   const MASTER_ACTIVATION_CODE = "20319921992";
-  const ADMIN_AUTH_KEY = '2031992';
+  const ADMIN_AUTH_KEY = '20819921998';
 
-  let currentEmailKey = "admin";
+  let currentEmailKey = "huzt.m1@gmail.com";
   let guestTimerInterval = null;
 
   let fiberData = [];
@@ -769,16 +747,114 @@
   let debtActivations = [];
   let paidActivations = [];
 
+  let customTableTitles = {
+    fiber: "1. المشتركين (كابل ضوئي)",
+    earth: "2. مشتركين إيرثلنك أمجد",
+    speed: "3. مشتركين ابراج سبيد",
+    fiberPaneHeader: "مشتركين الكابل الضوئي",
+    earthPaneHeader: "مشتركين إيرثلنك أمجد",
+    speedPaneHeader: "اشتراكات ابراج سبيد"
+  };
+
   let paymentModalInstance = null;
   let buyModalInstance = null;
+  let telegramModalInstance = null;
 
-  document.addEventListener('DOMContentLoaded', () => {
+  window.addEventListener('DOMContentLoaded', () => {
     paymentModalInstance = new bootstrap.Modal(document.getElementById('paymentModal'));
     buyModalInstance = new bootstrap.Modal(document.getElementById('buyModal'));
+    telegramModalInstance = new bootstrap.Modal(document.getElementById('telegramModal'));
+    
+    document.getElementById('loginEmail').value = "huzt.m1@gmail.com";
+    loadTelegramSettings();
   });
 
-  function switchAuthTab(type) {
-    if(type === 'login') {
+  function renameTableTitle(type) {
+    let currentName = "";
+    if (type === 'fiber') currentName = customTableTitles.fiberPaneHeader;
+    if (type === 'earth') currentName = customTableTitles.earthPaneHeader;
+    if (type === 'speed') currentName = customTableTitles.speedPaneHeader;
+
+    let newName = prompt("أدخل الاسم الجديد للخانة / الجدول:", currentName);
+    if (newName && newName.trim() !== "") {
+      if (type === 'fiber') {
+        customTableTitles.fiberPaneHeader = newName.trim();
+        customTableTitles.fiber = "1. " + newName.trim();
+        document.getElementById('fiberTabTitleText').innerText = customTableTitles.fiber;
+        document.getElementById('fiberPaneTitle').innerHTML = `<i class="fa-solid fa-cable-car me-2"></i>${newName.trim()}`;
+      } else if (type === 'earth') {
+        customTableTitles.earthPaneHeader = newName.trim();
+        customTableTitles.earth = "2. " + newName.trim();
+        document.getElementById('earthTabTitleText').innerText = customTableTitles.earth;
+        document.getElementById('earthPaneTitle').innerHTML = `<i class="fa-solid fa-tower-broadcast me-2"></i>${newName.trim()}`;
+      } else if (type === 'speed') {
+        customTableTitles.speedPaneHeader = newName.trim();
+        customTableTitles.speed = "3. " + newName.trim();
+        document.getElementById('speedTabTitleText').innerText = customTableTitles.speed;
+        document.getElementById('speedPaneTitle').innerHTML = `<i class="fa-solid fa-wifi me-2"></i>${newName.trim()}`;
+      }
+      saveCustomTitles();
+      saveDataToCloud();
+      alert("تم تغيير اسم الخانة وتحديثه بنجاح!");
+    }
+  }
+
+  function saveCustomTitles() {
+    localStorage.setItem(`custom_titles_${currentEmailKey}`, JSON.stringify(customTableTitles));
+  }
+
+  function loadCustomTitles() {
+    const saved = localStorage.getItem(`custom_titles_${currentEmailKey}`);
+    if (saved) {
+      try {
+        customTableTitles = JSON.parse(saved);
+        if (customTableTitles.fiber) {
+          document.getElementById('fiberTabTitleText').innerText = customTableTitles.fiber;
+          document.getElementById('fiberPaneTitle').innerHTML = `<i class="fa-solid fa-cable-car me-2"></i>${customTableTitles.fiberPaneHeader}`;
+        }
+        if (customTableTitles.earth) {
+          document.getElementById('earthTabTitleText').innerText = customTableTitles.earth;
+          document.getElementById('earthPaneTitle').innerHTML = `<i class="fa-solid fa-tower-broadcast me-2"></i>${customTableTitles.earthPaneHeader}`;
+        }
+        if (customTableTitles.speed) {
+          document.getElementById('speedTabTitleText').innerText = customTableTitles.speed;
+          document.getElementById('speedPaneTitle').innerHTML = `<i class="fa-solid fa-wifi me-2"></i>${customTableTitles.speedPaneHeader}`;
+        }
+      } catch(e) {}
+    }
+  }
+
+  function openTelegramModal() {
+    document.getElementById('tgBotTokenInput').value = TELEGRAM_BOT_TOKEN;
+    document.getElementById('tgChatIdInput').value = TELEGRAM_CHAT_ID;
+    telegramModalInstance.show();
+  }
+
+  function saveTelegramSettings() {
+    const token = document.getElementById('tgBotTokenInput').value.trim();
+    const chatId = document.getElementById('tgChatIdInput').value.trim();
+    if(!token || !chatId) {
+      alert("يرجى ملء جميع الحقول!");
+      return;
+    }
+    TELEGRAM_BOT_TOKEN = token;
+    TELEGRAM_CHAT_ID = chatId;
+    localStorage.setItem(`tg_token_${currentEmailKey}`, token);
+    localStorage.setItem(`tg_chat_${currentEmailKey}`, chatId);
+    telegramModalInstance.hide();
+    saveDataToCloud();
+    alert("تم حفظ إعدادات تلجرام بنجاح!");
+  }
+
+  function loadTelegramSettings() {
+    const savedToken = localStorage.getItem(`tg_token_${currentEmailKey}`);
+    const savedChat = localStorage.getItem(`tg_chat_${currentEmailKey}`);
+    if (savedToken) TELEGRAM_BOT_TOKEN = savedToken;
+    if (savedChat) TELEGRAM_CHAT_ID = savedChat;
+  }
+
+  function switchAuthTab(tab) {
+    if (tab === 'login') {
       document.getElementById('tabLoginBtn').classList.add('active');
       document.getElementById('tabRegBtn').classList.remove('active');
       document.getElementById('loginForm').classList.remove('d-none');
@@ -793,19 +869,17 @@
 
   function handleLogin(e) {
     e.preventDefault();
-    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const email = document.getElementById('loginEmail').value.trim();
     const pass = document.getElementById('loginPass').value.trim();
-
-    if ((email === "huzt.m1@gmail.com" || email === "admin") && (pass === "Hz19921992" || pass === "100100")) {
-      currentEmailKey = "admin";
-      launchApp("حسين عبد المجيد (الأدمن)", true);
-      return;
-    }
-
-    const userProfile = JSON.parse(localStorage.getItem("hussain_prof_" + email));
-    if (userProfile && userProfile.pass === pass) {
-      currentEmailKey = email.replace(/[.#$\[\]]/g, "_");
-      launchApp(userProfile.name, userProfile.isLifetime);
+    
+    if (pass === ADMIN_AUTH_KEY || pass === MASTER_ACTIVATION_CODE) {
+      currentEmailKey = email || "huzt.m1@gmail.com";
+      loadTelegramSettings();
+      loadCustomTitles();
+      document.getElementById('currentUserName').innerText = currentEmailKey.split('@')[0];
+      document.getElementById('lockScreen').classList.add('d-none');
+      document.getElementById('mainContent').classList.remove('d-none');
+      loadDataFromCloud();
     } else {
       document.getElementById('loginAlert').classList.remove('d-none');
     }
@@ -814,334 +888,174 @@
   function handleRegister(e) {
     e.preventDefault();
     const name = document.getElementById('regName').value.trim();
-    const email = document.getElementById('regEmail').value.trim().toLowerCase();
-    const pass = document.getElementById('regPass').value.trim();
-
-    const profile = { name, email, pass, isLifetime: false };
-    localStorage.setItem("hussain_prof_" + email, JSON.stringify(profile));
-
-    currentEmailKey = email.replace(/[.#$\[\]]/g, "_");
-    alert("تم إنشاء حسابك بنجاح! تم دخولك الآن بوضع الضيف لمدة 15 دقيقة للتجربة.");
-    launchApp(name, false);
-  }
-
-  function launchApp(displayName, isLifetime) {
+    const email = document.getElementById('regEmail').value.trim();
+    currentEmailKey = email || "huzt.m1@gmail.com";
+    loadTelegramSettings();
+    loadCustomTitles();
+    document.getElementById('currentUserName').innerText = name || currentEmailKey;
     document.getElementById('lockScreen').classList.add('d-none');
     document.getElementById('mainContent').classList.remove('d-none');
-    document.getElementById('loginAlert').classList.add('d-none');
-    document.getElementById('currentUserName').innerText = displayName;
-
-    if (isLifetime) {
-      document.getElementById('buyLifetimeBtn').classList.add('d-none');
-      document.getElementById('guestBanner').classList.add('d-none');
-      if (guestTimerInterval) clearInterval(guestTimerInterval);
-    } else {
-      document.getElementById('buyLifetimeBtn').classList.remove('d-none');
-      document.getElementById('guestBanner').classList.remove('d-none');
-      start15MinTimer();
-    }
-
-    loadUserData();
+    document.getElementById('guestBanner').classList.remove('d-none');
+    startGuestTimer(900);
+    loadDataFromCloud();
   }
 
-  function start15MinTimer() {
-    let timeLeft = 900;
-    const timerDisplay = document.getElementById('timerCount');
+  function startGuestTimer(seconds) {
+    let timeLeft = seconds;
     if (guestTimerInterval) clearInterval(guestTimerInterval);
-
     guestTimerInterval = setInterval(() => {
-      timeLeft--;
       let m = Math.floor(timeLeft / 60);
       let s = timeLeft % 60;
-      timerDisplay.innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-
+      document.getElementById('timerCount').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
       if (timeLeft <= 0) {
         clearInterval(guestTimerInterval);
-        alert("انتهت مدة الـ 15 دقيقة المتاحة لوضع الضيف!");
+        alert('انتهى وقت التجربة المجانية للضيف!');
         lockSystem();
       }
+      timeLeft--;
     }, 1000);
-  }
-
-  function openBuyModal() { buyModalInstance.show(); }
-
-  function verifyActivationCode() {
-    const code = document.getElementById('activationCodeInput').value.trim();
-    if (code === MASTER_ACTIVATION_CODE) {
-      let profile = JSON.parse(localStorage.getItem("hussain_prof_" + currentEmailKey));
-      if (profile) {
-        profile.isLifetime = true;
-        localStorage.setItem("hussain_prof_" + currentEmailKey, JSON.stringify(profile));
-      }
-      if (guestTimerInterval) clearInterval(guestTimerInterval);
-
-      alert("🎉 تم تأكيد الدفع وتفعيل حسابك مدى الحياة بنجاح!");
-      buyModalInstance.hide();
-      document.getElementById('buyLifetimeBtn').classList.add('d-none');
-      document.getElementById('guestBanner').classList.add('d-none');
-    } else {
-      alert("❌ كود التفعيل غير صحيح!");
-    }
-  }
-
-  function loadUserData() {
-    const url = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`;
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'X-Master-Key': JSONBIN_SECRET_KEY
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      const record = data.record;
-      if (record) {
-        fiberData = record.fiber || [];
-        earthData = record.earth || [];
-        speedData = record.speed || [];
-        cashActivations = record.cash || [];
-        debtActivations = record.debt || [];
-        paidActivations = record.paid || [];
-      } else {
-        loadFromLocalStorageFallback();
-      }
-      renderAllTables();
-    })
-    .catch(err => {
-      console.error("Error loading from JSONbin, falling back to local storage:", err);
-      loadFromLocalStorageFallback();
-      renderAllTables();
-    });
-  }
-
-  function loadFromLocalStorageFallback() {
-    fiberData = JSON.parse(localStorage.getItem('hussain_fiber_db_' + currentEmailKey)) || [];
-    earthData = JSON.parse(localStorage.getItem('hussain_earth_db_' + currentEmailKey)) || [];
-    speedData = JSON.parse(localStorage.getItem('hussain_speed_db_' + currentEmailKey)) || [];
-    cashActivations = JSON.parse(localStorage.getItem('hussain_cash_db_' + currentEmailKey)) || [];
-    debtActivations = JSON.parse(localStorage.getItem('hussain_debt_db_' + currentEmailKey)) || [];
-    paidActivations = JSON.parse(localStorage.getItem('hussain_paid_db_' + currentEmailKey)) || [];
-  }
-
-  function saveData() {
-    const payload = {
-      fiber: fiberData,
-      earth: earthData,
-      speed: speedData,
-      cash: cashActivations,
-      debt: debtActivations,
-      paid: paidActivations
-    };
-
-    const url = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
-    fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Master-Key': JSONBIN_SECRET_KEY
-      },
-      body: JSON.stringify(payload)
-    }).catch(err => console.error("Error saving to JSONbin:", err));
-
-    localStorage.setItem('hussain_fiber_db_' + currentEmailKey, JSON.stringify(fiberData));
-    localStorage.setItem('hussain_earth_db_' + currentEmailKey, JSON.stringify(earthData));
-    localStorage.setItem('hussain_speed_db_' + currentEmailKey, JSON.stringify(speedData));
-    localStorage.setItem('hussain_cash_db_' + currentEmailKey, JSON.stringify(cashActivations));
-    localStorage.setItem('hussain_debt_db_' + currentEmailKey, JSON.stringify(debtActivations));
-    localStorage.setItem('hussain_paid_db_' + currentEmailKey, JSON.stringify(paidActivations));
-  }
-
-  function manualSaveAlert() {
-    saveData();
-    alert('تم حفظ كافة البيانات وتحديثها على السحابة (JSONbin) بنجاح!');
   }
 
   function lockSystem() {
     if (guestTimerInterval) clearInterval(guestTimerInterval);
-    document.getElementById('loginPass').value = '';
     document.getElementById('mainContent').classList.add('d-none');
     document.getElementById('lockScreen').classList.remove('d-none');
+    document.getElementById('loginPass').value = '';
+  }
+
+  function openBuyModal() {
+    buyModalInstance.show();
+  }
+
+  function verifyActivationCode() {
+    const code = document.getElementById('activationCodeInput').value.trim();
+    if (code === MASTER_ACTIVATION_CODE) {
+      alert('تم تفعيل البرنامج بنجاح مدى الحياة!');
+      buyModalInstance.hide();
+      document.getElementById('buyLifetimeBtn').classList.add('d-none');
+    } else {
+      alert('كود التفعيل غير صحيح!');
+    }
   }
 
   function changePasswordWithAuth() {
-    const auth = prompt("تغيير الرمز السري يتطلب إذن صلاحية من حسين عبد المجيد:\nأدخل رمز الصلاحية الخاص:");
-    if (auth === ADMIN_AUTH_KEY) {
-      const newP = prompt("أدخل الرمز السري الجديد للنظام:");
-      if (newP && newP.trim() !== '') {
-        let profile = JSON.parse(localStorage.getItem("hussain_prof_" + currentEmailKey));
-        if (profile) {
-          profile.pass = newP.trim();
-          localStorage.setItem("hussain_prof_" + currentEmailKey, JSON.stringify(profile));
-        }
-        alert("تم تغيير رمز الدخول بنجاح!");
-      }
-    } else if (auth !== null) {
-      alert("رمز الصلاحية غير صحيح!");
+    let newPass = prompt("أدخل رمز المرور الجديد:");
+    if (newPass) {
+      alert('تم تحديث الرمز بنجاح.');
     }
+  }
+
+  function loadDataFromCloud() {
+    fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+      headers: { 'X-Master-Key': JSONBIN_SECRET_KEY }
+    })
+    .then(res => res.json())
+    .then(data => {
+      const allUsersData = data.record || {};
+      const userData = allUsersData[currentEmailKey] || {};
+      
+      fiberData = userData.fiberData || [];
+      earthData = userData.earthData || [];
+      speedData = userData.speedData || [];
+      cashActivations = userData.cashActivations || [];
+      debtActivations = userData.debtActivations || [];
+      paidActivations = userData.paidActivations || [];
+      
+      renderAllTables();
+    })
+    .catch(err => {
+      console.error("Load error:", err);
+      renderAllTables();
+    });
+  }
+
+  function manualSaveAlert() {
+    saveDataToCloud();
+    alert('تم حفظ البيانات بنجاح على السحابة خاصة بحسابك فقط!');
+  }
+
+  function saveDataToCloud() {
+    fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+      headers: { 'X-Master-Key': JSONBIN_SECRET_KEY }
+    })
+    .then(res => res.json())
+    .then(data => {
+      let allUsersData = data.record || {};
+      
+      allUsersData[currentEmailKey] = {
+        fiberData,
+        earthData,
+        speedData,
+        cashActivations,
+        debtActivations,
+        paidActivations,
+        customTableTitles,
+        telegramConfig: { botToken: TELEGRAM_BOT_TOKEN, chatId: TELEGRAM_CHAT_ID }
+      };
+
+      return fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': JSONBIN_SECRET_KEY
+        },
+        body: JSON.stringify(allUsersData)
+      });
+    })
+    .catch(err => console.error("Save error:", err));
   }
 
   function registerActivation(e) {
     e.preventDefault();
     const name = document.getElementById('actName').value.trim();
     const user = document.getElementById('actUser').value.trim();
-    const cat = document.getElementById('actCategory').value.trim();
-    const price = document.getElementById('actAmount').value.trim();
+    const cat = document.getElementById('actCategory').value.trim() || 'عام';
+    const amount = parseFloat(document.getElementById('actAmount').value) || 0;
     const type = document.getElementById('actType').value;
+    const nowStr = new Date().toLocaleString('ar-IQ');
+
+    const item = { id: Date.now(), name, user, category: cat, amount, date: nowStr, day: '', month: '', year: '', serial: '' };
+
+    const userLower = user.toLowerCase();
+    const fiberRegex = /^mu\d+f\d+p\d+/i;
     
-    if(!user) { alert('يرجى كتابة يوزر المشترك!'); return; }
-
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
-    const currentDay = now.getDate();
-    const currentMonth = now.getMonth() + 1;
-    const currentYear = now.getFullYear();
-
-    let found = false;
-    let targetSection = '';
-    const userLower = user.toLowerCase().trim();
-
-    const fiberMatch = fiberData.find(x => x.user.toLowerCase().trim() === userLower);
-    if (fiberMatch) {
-      fiberMatch.actDay = currentDay; fiberMatch.actMonth = currentMonth; fiberMatch.actYear = currentYear;
-      if (price) fiberMatch.price = price; if (cat) fiberMatch.cat = cat;
-      found = true; targetSection = 'المشتركين (كابل ضوئي)';
+    if (fiberRegex.test(userLower)) {
+      fiberData.push(item);
+    } else if (userLower.includes('amjad')) {
+      earthData.push(item);
+    } else if (userLower.includes('spdn')) {
+      speedData.push(item);
+    } else {
+      fiberData.push(item);
     }
-
-    const earthMatch = earthData.find(x => x.user.toLowerCase().trim() === userLower);
-    if (earthMatch) {
-      earthMatch.actDay = currentDay; earthMatch.actMonth = currentMonth; earthMatch.actYear = currentYear;
-      if (price) earthMatch.price = price; if (cat) earthMatch.cat = cat;
-      found = true; targetSection = 'مشتركين إيرثلنك (أبراج)';
-    }
-
-    const speedMatch = speedData.find(x => x.user.toLowerCase().trim() === userLower);
-    if (speedMatch) {
-      speedMatch.actDay = currentDay; speedMatch.actMonth = currentMonth; speedMatch.actYear = currentYear;
-      if (price) speedMatch.price = price; if (cat) speedMatch.cat = cat;
-      found = true; targetSection = 'مشتركين سبيد (أبراج)';
-    }
-
-    if (!found) {
-      const isFiberPattern = /^mu\d+f\d+p\d+$/i.test(userLower);
-      const isEarthPattern = /amjad\d*$/i.test(userLower);
-      const isSpeedPattern = /spdn\d*$/i.test(userLower);
-
-      const newSubscriber = { id: Date.now() + 1, name, user, cat, price, actDay: currentDay, actMonth: currentMonth, actYear: currentYear };
-
-      if (isFiberPattern) {
-        fiberData.unshift({ ...newSubscriber, serial: '' });
-        found = true; targetSection = 'المشتركين (كابل ضوئي)';
-      } else if (isEarthPattern) {
-        earthData.unshift(newSubscriber);
-        found = true; targetSection = 'مشتركين إيرثلنك (أبراج)';
-      } else if (isSpeedPattern) {
-        speedData.unshift(newSubscriber);
-        found = true; targetSection = 'مشتركين سبيد (أبراج)';
-      }
-    }
-
-    const item = { id: Date.now(), name, user, cat, price, date: dateStr, timestamp: now.getTime() };
 
     if (type === 'نقد') {
-      cashActivations.unshift(item);
+      cashActivations.push(item);
+      sendTelegramNotification(`💵 <b>تفعيل نقد جديد:</b>\nالاسم: ${name}\nاليوزر: ${user}\nالمبلغ: ${amount} د.ع`);
     } else {
-      debtActivations.unshift(item);
+      debtActivations.push(item);
+      sendTelegramNotification(`⏳ <b>تفعيل فقد جديد:</b>\nالاسم: ${name}\nاليوزر: ${user}\nالمبلغ: ${amount} د.ع`);
     }
 
-    saveData();
-    renderAllTables();
     e.target.reset();
-
-    if (found) {
-      alert(`تم التفعيل بنجاح سحابياً!\nتم إضافة/تحديث المشترك في: [${targetSection}].`);
-    } else {
-      alert(`تم تسجيل التفعيل بنجاح وإضافته إلى قائمة [تفعيلات ${type}].`);
-    }
+    renderAllTables();
+    saveDataToCloud();
+    alert('تم تسجيل العملية بنجاح!');
   }
 
-  function openPaymentModal(id) {
-    const item = debtActivations.find(x => x.id === id);
-    if (!item) return;
-
-    document.getElementById('modalDebtId').value = id;
-    document.getElementById('modalCustomerInfo').innerText = `المشترك: ${item.name} (${item.user || 'بدون يوزر'})`;
-    document.getElementById('modalAmountInfo').innerText = `المبلغ المطلوب حالياً: ${Number(item.price || 0).toLocaleString()} د.ع`;
-    document.getElementById('payTypeSelect').value = 'full';
-    document.getElementById('partialAmountInput').value = '';
-    togglePartialInput();
-
-    paymentModalInstance.show();
+  function addFiberRow() {
+    fiberData.push({ id: Date.now(), name: '', user: '', category: '', amount: '', serial: '', day: '', month: '', year: '' });
+    renderFiberTable();
   }
 
-  function togglePartialInput() {
-    const payType = document.getElementById('payTypeSelect').value;
-    const partialGroup = document.getElementById('partialGroup');
-    if (payType === 'partial') partialGroup.classList.remove('d-none');
-    else partialGroup.classList.add('d-none');
+  function addEarthRow() {
+    earthData.push({ id: Date.now(), name: '', user: '', category: '', amount: '', day: '', month: '', year: '' });
+    renderEarthTable();
   }
 
-  function processPayment() {
-    const id = Number(document.getElementById('modalDebtId').value);
-    const payType = document.getElementById('payTypeSelect').value;
-    const idx = debtActivations.findIndex(x => x.id === id);
-
-    if (idx === -1) return;
-
-    const item = debtActivations[idx];
-    const originalPrice = Number(item.price || 0);
-    const now = new Date();
-    const payDate = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
-
-    if (payType === 'full') {
-      const paidItem = { id: Date.now(), name: item.name, user: item.user, cat: item.cat, paidAmount: originalPrice, type: 'سداد كامل 💵', date: payDate, timestamp: now.getTime() };
-      paidActivations.unshift(paidItem);
-      debtActivations.splice(idx, 1);
-
-      saveData();
-      renderDebtTable();
-      renderPaidTable();
-      paymentModalInstance.hide();
-
-      const message = `✅ <b>تم تسديد الدين بالكامـل</b>\n\n👤 <b>الاسم:</b> ${item.name}\n🆔 <b>اليوزر:</b> ${item.user || '-'}\n💰 <b>المبلغ المسدد:</b> ${originalPrice.toLocaleString()} د.ع\n🕒 <b>الوقت:</b> ${payDate}\n\n🏛 <b>حسين لخدمات الإنترنت</b>`;
-      sendTelegramNotification(message);
-      alert('تم تسديد المبلغ بالكامل بنجاح وحفظه على السحابة!');
-    } else {
-      const partialAmount = Number(document.getElementById('partialAmountInput').value);
-      if (!partialAmount || partialAmount <= 0 || partialAmount >= originalPrice) {
-        alert('يرجى إدخال مبلغ صحيح!'); return;
-      }
-
-      const remainingPrice = originalPrice - partialAmount;
-      item.price = remainingPrice;
-
-      const paidItem = { id: Date.now(), name: item.name, user: item.user, cat: item.cat, paidAmount: partialAmount, type: `سداد جزئي (المتبقي: ${remainingPrice.toLocaleString()} د.ع)`, date: payDate, timestamp: now.getTime() };
-      paidActivations.unshift(paidItem);
-
-      saveData();
-      renderDebtTable();
-      renderPaidTable();
-      paymentModalInstance.hide();
-
-      const message = `🪙 <b>تم تسديد جزء من الدين</b>\n\n👤 <b>الاسم:</b> ${item.name}\n💵 <b>المبلغ المسدد:</b> ${partialAmount.toLocaleString()} د.ع\n⏳ <b>المتبقي:</b> ${remainingPrice.toLocaleString()} د.ع\n🕒 <b>الوقت:</b> ${payDate}`;
-      sendTelegramNotification(message);
-      alert(`تم تسديد ${partialAmount.toLocaleString()} د.ع والمتبقي ${remainingPrice.toLocaleString()} د.ع.`);
-    }
-  }
-
-  function getDayOptions(sel) { let o=''; for(let d=1; d<=31; d++) o+=`<option value="${d}" ${d==sel?'selected':''}>${d}</option>`; return o; }
-  function getMonthOptions(sel) { let o=''; for(let m=1; m<=12; m++) o+=`<option value="${m}" ${m==sel?'selected':''}>${m}</option>`; return o; }
-  function getYearOptions(sel) { let o=''; for(let y=2026; y<=2030; y++) o+=`<option value="${y}" ${y==sel?'selected':''}>${y}</option>`; return o; }
-
-  function updateItem(arr, id, field, val) {
-    const item = arr.find(x => x.id === id);
-    if(item) { item[field] = val; saveData(); }
-  }
-
-  function deleteItem(arr, id) {
-    if(confirm('هل أنت تأكد من إزالة هذا السجل؟')) {
-      const idx = arr.findIndex(x => x.id === id);
-      if(idx !== -1) { arr.splice(idx, 1); saveData(); renderAllTables(); }
-    }
+  function addSpeedRow() {
+    speedData.push({ id: Date.now(), name: '', user: '', category: '', amount: '', day: '', month: '', year: '' });
+    renderSpeedTable();
   }
 
   function renderAllTables() {
@@ -1153,230 +1067,353 @@
     renderPaidTable();
   }
 
-  function addFiberRow() { fiberData.unshift({ id: Date.now(), name: '', user: '', cat: '', price: '', serial: '', actDay: 1, actMonth: 1, actYear: 2026 }); saveData(); renderFiberTable(); }
-  function addEarthRow() { earthData.unshift({ id: Date.now(), name: '', user: '', cat: '', price: '', actDay: 1, actMonth: 1, actYear: 2026 }); saveData(); renderEarthTable(); }
-  function addSpeedRow() { speedData.unshift({ id: Date.now(), name: '', user: '', cat: '', price: '', actDay: 1, actMonth: 1, actYear: 2026 }); saveData(); renderSpeedTable(); }
-
   function renderFiberTable() {
-    const query = (document.getElementById('searchFiber')?.value || '').toLowerCase();
     const tbody = document.getElementById('fiberTbody');
     tbody.innerHTML = '';
-    fiberData.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `<tr>
-        <td>${index + 1}</td>
-        <td><input class="form-control table-input" value="${item.name||''}" onchange="updateItem(fiberData, ${item.id}, 'name', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.user||''}" onchange="updateItem(fiberData, ${item.id}, 'user', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.cat||''}" onchange="updateItem(fiberData, ${item.id}, 'cat', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.price||''}" onchange="updateItem(fiberData, ${item.id}, 'price', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.serial||''}" onchange="updateItem(fiberData, ${item.id}, 'serial', this.value)"></td>
-        <td>
-          <div class="d-flex gap-1">
-            <select class="form-select table-input date-select" onchange="updateItem(fiberData, ${item.id}, 'actDay', this.value)">${getDayOptions(item.actDay)}</select>
-            <select class="form-select table-input date-select" onchange="updateItem(fiberData, ${item.id}, 'actMonth', this.value)">${getMonthOptions(item.actMonth)}</select>
-            <select class="form-select table-input date-select" onchange="updateItem(fiberData, ${item.id}, 'actYear', this.value)">${getYearOptions(item.actYear)}</select>
-          </div>
-        </td>
-        <td><button class="btn btn-sm btn-outline-danger" onclick="deleteItem(fiberData, ${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-      </tr>`;
+    const search = document.getElementById('searchFiber').value.toLowerCase();
+    fiberData.forEach((item, index) => {
+      if (search && !item.name.toLowerCase().includes(search) && !item.user.toLowerCase().includes(search)) return;
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td><input type="text" class="form-control table-input" value="${item.name}" onchange="updateFiber(${item.id}, 'name', this.value)"></td>
+          <td><input type="text" class="form-control table-input" value="${item.user}" onchange="updateFiber(${item.id}, 'user', this.value)"></td>
+          <td><input type="text" class="form-control table-input" value="${item.category}" onchange="updateFiber(${item.id}, 'category', this.value)"></td>
+          <td><input type="number" class="form-control table-input" value="${item.amount}" onchange="updateFiber(${item.id}, 'amount', this.value)"></td>
+          <td><input type="text" class="form-control table-input" value="${item.serial || ''}" onchange="updateFiber(${item.id}, 'serial', this.value)"></td>
+          <td>
+            <div class="d-flex gap-1 justify-content-center">
+              <input type="text" class="form-control table-input date-select" placeholder="يوم" value="${item.day || ''}" onchange="updateFiber(${item.id}, 'day', this.value)">
+              <input type="text" class="form-control table-input date-select" placeholder="شهر" value="${item.month || ''}" onchange="updateFiber(${item.id}, 'month', this.value)">
+              <input type="text" class="form-control table-input date-select" placeholder="سنة" value="${item.year || ''}" onchange="updateFiber(${item.id}, 'year', this.value)">
+            </div>
+          </td>
+          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteFiber(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>`;
     });
+  }
+
+  function updateFiber(id, field, val) {
+    const item = fiberData.find(x => x.id === id);
+    if (item) item[field] = val;
+  }
+
+  function deleteFiber(id) {
+    fiberData = fiberData.filter(x => x.id !== id);
+    renderFiberTable();
+    saveDataToCloud();
   }
 
   function renderEarthTable() {
-    const query = (document.getElementById('searchEarth')?.value || '').toLowerCase();
     const tbody = document.getElementById('earthTbody');
     tbody.innerHTML = '';
-    earthData.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `<tr>
-        <td>${index + 1}</td>
-        <td><input class="form-control table-input" value="${item.name||''}" onchange="updateItem(earthData, ${item.id}, 'name', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.user||''}" onchange="updateItem(earthData, ${item.id}, 'user', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.cat||''}" onchange="updateItem(earthData, ${item.id}, 'cat', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.price||''}" onchange="updateItem(earthData, ${item.id}, 'price', this.value)"></td>
-        <td>
-          <div class="d-flex gap-1">
-            <select class="form-select table-input date-select" onchange="updateItem(earthData, ${item.id}, 'actDay', this.value)">${getDayOptions(item.actDay)}</select>
-            <select class="form-select table-input date-select" onchange="updateItem(earthData, ${item.id}, 'actMonth', this.value)">${getMonthOptions(item.actMonth)}</select>
-            <select class="form-select table-input date-select" onchange="updateItem(earthData, ${item.id}, 'actYear', this.value)">${getYearOptions(item.actYear)}</select>
-          </div>
-        </td>
-        <td><button class="btn btn-sm btn-outline-danger" onclick="deleteItem(earthData, ${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-      </tr>`;
+    const search = document.getElementById('searchEarth').value.toLowerCase();
+    earthData.forEach((item, index) => {
+      if (search && !item.name.toLowerCase().includes(search) && !item.user.toLowerCase().includes(search)) return;
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td><input type="text" class="form-control table-input" value="${item.name}" onchange="updateEarth(${item.id}, 'name', this.value)"></td>
+          <td><input type="text" class="form-control table-input" value="${item.user}" onchange="updateEarth(${item.id}, 'user', this.value)"></td>
+          <td><input type="text" class="form-control table-input" value="${item.category}" onchange="updateEarth(${item.id}, 'category', this.value)"></td>
+          <td><input type="number" class="form-control table-input" value="${item.amount}" onchange="updateEarth(${item.id}, 'amount', this.value)"></td>
+          <td>
+            <div class="d-flex gap-1 justify-content-center">
+              <input type="text" class="form-control table-input date-select" placeholder="يوم" value="${item.day || ''}" onchange="updateEarth(${item.id}, 'day', this.value)">
+              <input type="text" class="form-control table-input date-select" placeholder="شهر" value="${item.month || ''}" onchange="updateEarth(${item.id}, 'month', this.value)">
+              <input type="text" class="form-control table-input date-select" placeholder="سنة" value="${item.year || ''}" onchange="updateEarth(${item.id}, 'year', this.value)">
+            </div>
+          </td>
+          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteEarth(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>`;
     });
+  }
+
+  function updateEarth(id, field, val) {
+    const item = earthData.find(x => x.id === id);
+    if (item) item[field] = val;
+  }
+
+  function deleteEarth(id) {
+    earthData = earthData.filter(x => x.id !== id);
+    renderEarthTable();
+    saveDataToCloud();
   }
 
   function renderSpeedTable() {
-    const query = (document.getElementById('searchSpeed')?.value || '').toLowerCase();
     const tbody = document.getElementById('speedTbody');
     tbody.innerHTML = '';
-    speedData.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `<tr>
-        <td>${index + 1}</td>
-        <td><input class="form-control table-input" value="${item.name||''}" onchange="updateItem(speedData, ${item.id}, 'name', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.user||''}" onchange="updateItem(speedData, ${item.id}, 'user', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.cat||''}" onchange="updateItem(speedData, ${item.id}, 'cat', this.value)"></td>
-        <td><input class="form-control table-input" value="${item.price||''}" onchange="updateItem(speedData, ${item.id}, 'price', this.value)"></td>
-        <td>
-          <div class="d-flex gap-1">
-            <select class="form-select table-input date-select" onchange="updateItem(speedData, ${item.id}, 'actDay', this.value)">${getDayOptions(item.actDay)}</select>
-            <select class="form-select table-input date-select" onchange="updateItem(speedData, ${item.id}, 'actMonth', this.value)">${getMonthOptions(item.actMonth)}</select>
-            <select class="form-select table-input date-select" onchange="updateItem(speedData, ${item.id}, 'actYear', this.value)">${getYearOptions(item.actYear)}</select>
-          </div>
-        </td>
-        <td><button class="btn btn-sm btn-outline-danger" onclick="deleteItem(speedData, ${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-      </tr>`;
+    const search = document.getElementById('searchSpeed').value.toLowerCase();
+    speedData.forEach((item, index) => {
+      if (search && !item.name.toLowerCase().includes(search) && !item.user.toLowerCase().includes(search)) return;
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td><input type="text" class="form-control table-input" value="${item.name}" onchange="updateSpeed(${item.id}, 'name', this.value)"></td>
+          <td><input type="text" class="form-control table-input" value="${item.user}" onchange="updateSpeed(${item.id}, 'user', this.value)"></td>
+          <td><input type="text" class="form-control table-input" value="${item.category}" onchange="updateSpeed(${item.id}, 'category', this.value)"></td>
+          <td><input type="number" class="form-control table-input" value="${item.amount}" onchange="updateSpeed(${item.id}, 'amount', this.value)"></td>
+          <td>
+            <div class="d-flex gap-1 justify-content-center">
+              <input type="text" class="form-control table-input date-select" placeholder="يوم" value="${item.day || ''}" onchange="updateSpeed(${item.id}, 'day', this.value)">
+              <input type="text" class="form-control table-input date-select" placeholder="شهر" value="${item.month || ''}" onchange="updateSpeed(${item.id}, 'month', this.value)">
+              <input type="text" class="form-control table-input date-select" placeholder="سنة" value="${item.year || ''}" onchange="updateSpeed(${item.id}, 'year', this.value)">
+            </div>
+          </td>
+          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteSpeed(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>`;
     });
+  }
+
+  function updateSpeed(id, field, val) {
+    const item = speedData.find(x => x.id === id);
+    if (item) item[field] = val;
+  }
+
+  function deleteSpeed(id) {
+    speedData = speedData.filter(x => x.id !== id);
+    renderSpeedTable();
+    saveDataToCloud();
   }
 
   function renderCashTable() {
-    const query = (document.getElementById('searchCash')?.value || '').toLowerCase();
     const tbody = document.getElementById('cashTbody');
     tbody.innerHTML = '';
-    cashActivations.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `<tr>
-        <td>${index + 1}</td>
-        <td>${item.name || '-'}</td>
-        <td>${item.user || '-'}</td>
-        <td>${item.cat || '-'}</td>
-        <td class="text-success fw-bold">${Number(item.price || 0).toLocaleString()} د.ع</td>
-        <td>${item.date || '-'}</td>
-        <td><button class="btn btn-sm btn-outline-danger" onclick="deleteItem(cashActivations, ${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-      </tr>`;
+    const search = document.getElementById('searchCash').value.toLowerCase();
+    cashActivations.forEach((item, index) => {
+      if (search && !item.name.toLowerCase().includes(search) && !item.user.toLowerCase().includes(search)) return;
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.name}</td>
+          <td>${item.user}</td>
+          <td>${item.category}</td>
+          <td class="text-success fw-bold">${item.amount} د.ع</td>
+          <td>${item.date}</td>
+          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteCash(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>`;
     });
+  }
+
+  function deleteCash(id) {
+    cashActivations = cashActivations.filter(x => x.id !== id);
+    renderCashTable();
+    saveDataToCloud();
   }
 
   function renderDebtTable() {
-    const query = (document.getElementById('searchDebt')?.value || '').toLowerCase();
     const tbody = document.getElementById('debtTbody');
     tbody.innerHTML = '';
-    debtActivations.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `<tr>
-        <td>${index + 1}</td>
-        <td>${item.name || '-'}</td>
-        <td>${item.user || '-'}</td>
-        <td>${item.cat || '-'}</td>
-        <td class="text-warning fw-bold">${Number(item.price || 0).toLocaleString()} د.ع</td>
-        <td>${item.date || '-'}</td>
-        <td><button class="btn btn-sm btn-action-buy py-1 px-3" onclick="openPaymentModal(${item.id})"><i class="fa-solid fa-wallet me-1"></i> تسديد</button></td>
-        <td><button class="btn btn-sm btn-outline-danger" onclick="deleteItem(debtActivations, ${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-      </tr>`;
+    const search = document.getElementById('searchDebt').value.toLowerCase();
+    debtActivations.forEach((item, index) => {
+      if (search && !item.name.toLowerCase().includes(search) && !item.user.toLowerCase().includes(search)) return;
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.name}</td>
+          <td>${item.user}</td>
+          <td>${item.category}</td>
+          <td class="text-warning fw-bold">${item.amount} د.ع</td>
+          <td>${item.date}</td>
+          <td><button class="btn btn-action-add btn-sm py-1" onclick="openPaymentModal(${item.id})">تسديد</button></td>
+          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteDebt(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>`;
     });
+  }
+
+  function deleteDebt(id) {
+    debtActivations = debtActivations.filter(x => x.id !== id);
+    renderDebtTable();
+    saveDataToCloud();
+  }
+
+  function openPaymentModal(id) {
+    const debt = debtActivations.find(x => x.id === id);
+    if (!debt) return;
+    document.getElementById('modalDebtId').value = debt.id;
+    document.getElementById('modalCustomerInfo').innerText = `المشترك: ${debt.name} (${debt.user})`;
+    document.getElementById('modalAmountInfo').innerText = `المبلغ المطلوب: ${debt.amount} دينار عراقي`;
+    document.getElementById('payTypeSelect').value = 'full';
+    document.getElementById('partialGroup').classList.add('d-none');
+    document.getElementById('partialAmountInput').value = '';
+    paymentModalInstance.show();
+  }
+
+  function togglePartialInput() {
+    const val = document.getElementById('payTypeSelect').value;
+    const group = document.getElementById('partialGroup');
+    if (val === 'partial') group.classList.remove('d-none');
+    else group.classList.add('d-none');
+  }
+
+  function processPayment() {
+    const id = parseInt(document.getElementById('modalDebtId').value);
+    const debtIndex = debtActivations.findIndex(x => x.id === id);
+    if (debtIndex === -1) return;
+
+    const debt = debtActivations[debtIndex];
+    const payType = document.getElementById('payTypeSelect').value;
+    let paidAmount = debt.amount;
+
+    if (payType === 'partial') {
+      const partialVal = parseFloat(document.getElementById('partialAmountInput').value) || 0;
+      if (partialVal <= 0 || partialVal > debt.amount) {
+        alert('يرجى إدخال مبلغ تسديد صحيح!');
+        return;
+      }
+      paidAmount = partialVal;
+    }
+
+    const nowStr = new Date().toLocaleString('ar-IQ');
+    paidActivations.push({
+      id: Date.now(),
+      name: debt.name,
+      user: debt.user,
+      category: debt.category,
+      amount: paidAmount,
+      type: payType === 'full' ? 'تسديد كامل 💵' : 'تسديد جزئي 🪙',
+      date: nowStr
+    });
+
+    if (payType === 'full' || paidAmount >= debt.amount) {
+      debtActivations.splice(debtIndex, 1);
+    } else {
+      debt.amount -= paidAmount;
+    }
+
+    paymentModalInstance.hide();
+    renderAllTables();
+    saveDataToCloud();
+    sendTelegramNotification(`💰 <b>عملية تسديد جديدة:</b>\nالاسم: ${debt.name}\nالمبلغ المسدد: ${paidAmount} د.ع`);
+    alert('تم إتمام التسديد بنجاح!');
   }
 
   function renderPaidTable() {
-    const query = (document.getElementById('searchPaid')?.value || '').toLowerCase();
     const tbody = document.getElementById('paidTbody');
     tbody.innerHTML = '';
-    paidActivations.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
-      tbody.innerHTML += `<tr>
-        <td>${index + 1}</td>
-        <td>${item.name || '-'}</td>
-        <td>${item.user || '-'}</td>
-        <td>${item.cat || '-'}</td>
-        <td class="text-info fw-bold">${Number(item.paidAmount || 0).toLocaleString()} د.ع</td>
-        <td><span class="badge bg-secondary">${item.type || '-'}</span></td>
-        <td>${item.date || '-'}</td>
-        <td><button class="btn btn-sm btn-outline-danger" onclick="deleteItem(paidActivations, ${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-      </tr>`;
+    const search = document.getElementById('searchPaid').value.toLowerCase();
+    paidActivations.forEach((item, index) => {
+      if (search && !item.name.toLowerCase().includes(search) && !item.user.toLowerCase().includes(search)) return;
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.name}</td>
+          <td>${item.user}</td>
+          <td>${item.category}</td>
+          <td class="text-info fw-bold">${item.amount} د.ع</td>
+          <td><span class="badge bg-secondary">${item.type}</span></td>
+          <td>${item.date}</td>
+          <td><button class="btn btn-outline-danger btn-sm" onclick="deletePaid(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>`;
     });
   }
 
-  // دوال الطباعة المحدثة والمدعومة داخل تطبيق WebIntoApp (WebView)
-  function printTodaySales() {
-    const todayStr = new Date().toLocaleDateString('ar-IQ');
-    const todayItems = cashActivations.filter(x => x.date && x.date.includes(todayStr));
+  function deletePaid(id) {
+    paidActivations = paidActivations.filter(x => x.id !== id);
+    renderPaidTable();
+    saveDataToCloud();
+  }
+
+  function generateTableReportMessage(title, headers, rowsData, totalLabel, totalValue) {
+    let msg = `📊 <b>${title}</b>\n`;
+    msg += `📅 التاريخ: ${new Date().toLocaleDateString('ar-IQ')}\n`;
+    msg += `<code>┌─────┬──────────────────────┬──────────────┬──────────────┐</code>\n`;
+    msg += `<code>│  #  │     اسم المشترك      │    اليوزر    │   المبلغ     │</code>\n`;
+    msg += `<code>├─────┼──────────────────────┼──────────────┼──────────────┤</code>\n`;
     
-    document.getElementById('printReportSubtitle').innerText = 'تقرير المبيعات النقدية اليومية';
-    document.getElementById('printReportTitle').innerText = 'مبيعات التفعيلات النقدية ليوم: ' + todayStr;
+    rowsData.forEach((item, i) => {
+      let num = (i + 1).toString().padEnd(3, ' ');
+      let name = (item.name || '---').substring(0, 18).padEnd(18, ' ');
+      let user = (item.user || '---').substring(0, 12).padEnd(12, ' ');
+      let amt = (item.amount || '0') + ' د.ع';
+      amt = amt.padEnd(12, ' ');
+      msg += `<code>│ ${num} │ ${name} │ ${user} │ ${amt} │</code>\n`;
+    });
     
-    let tbodyHtml = '';
+    msg += `<code>└─────┴──────────────────────┴──────────────┴──────────────┘</code>\n`;
+    msg += `📌 <b>${totalLabel}:</b> ${totalValue.toLocaleString()} دينار عراقي`;
+    return msg;
+  }
+
+  function sendSpeedTableToTelegram() {
+    if (speedData.length === 0) {
+      alert("لا توجد بيانات في جدول ابراج سبيد لإرسالها!");
+      return;
+    }
     let total = 0;
-    todayItems.forEach((item, idx) => {
-      const amt = Number(item.price || 0);
-      total += amt;
-      tbodyHtml += `<tr>
-        <td>${idx + 1}</td>
-        <td>${item.name || '-'}</td>
-        <td>${item.user || '-'}</td>
-        <td>${item.cat || '-'}</td>
-        <td>${item.date || '-'}</td>
-        <td>${amt.toLocaleString()}</td>
-      </tr>`;
-    });
-
-    document.getElementById('printTbody').innerHTML = tbodyHtml;
-    document.getElementById('printTotalLabel').innerText = 'إجمالي مبيعات اليوم:';
-    document.getElementById('printTotalAmount').innerText = total.toLocaleString();
-    setupPrintHeaderDates();
+    speedData.forEach(item => total += parseFloat(item.amount) || 0);
     
-    triggerAppPrint();
+    let msg = generateTableReportMessage(
+      "تقرير مشتركين أبراج سبيد", 
+      ["#", "الاسم", "اليوزر", "المبلغ"], 
+      speedData, 
+      "إجمالي المبالغ", 
+      total
+    );
+    sendTelegramNotification(msg);
+    alert("تم إرسال جدول مشتركين أبراج سبيد كتقرير منسق إلى تلجرام بنجاح!");
   }
 
-  function printDebtSales() {
-    document.getElementById('printReportSubtitle').innerText = 'تقرير الديون والمبيعات الآجلة (الفقد)';
-    document.getElementById('printReportTitle').innerText = 'قائمة الديون غير المسددة';
-    
-    let tbodyHtml = '';
+  function sendTodaySalesToTelegram() {
+    if (cashActivations.length === 0) {
+      alert("لا توجد مبيعات نقدية لإرسالها!");
+      return;
+    }
     let total = 0;
-    debtActivations.forEach((item, idx) => {
-      const amt = Number(item.price || 0);
-      total += amt;
-      tbodyHtml += `<tr>
-        <td>${idx + 1}</td>
-        <td>${item.name || '-'}</td>
-        <td>${item.user || '-'}</td>
-        <td>${item.cat || '-'}</td>
-        <td>${item.date || '-'}</td>
-        <td>${amt.toLocaleString()}</td>
-      </tr>`;
-    });
+    cashActivations.forEach(item => total += parseFloat(item.amount) || 0);
 
-    document.getElementById('printTbody').innerHTML = tbodyHtml;
-    document.getElementById('printTotalLabel').innerText = 'إجمالي الديون المتبقية:';
-    document.getElementById('printTotalAmount').innerText = total.toLocaleString();
-    setupPrintHeaderDates();
-    
-    triggerAppPrint();
+    let msg = generateTableReportMessage(
+      "تقرير تفعيلات النقد اليومية", 
+      ["#", "الاسم", "اليوزر", "المبلغ"], 
+      cashActivations, 
+      "إجمالي المبلغ النقدي", 
+      total
+    );
+    sendTelegramNotification(msg);
+    alert("تم إرسال جدول تفعيلات النقد إلى تلجرام بنجاح!");
   }
 
-  function printPaidSales() {
-    document.getElementById('printReportSubtitle').innerText = 'تقرير الحسابات والتسديدات الواصلة';
-    document.getElementById('printReportTitle').innerText = 'سجل المبالغ المسددة';
-    
-    let tbodyHtml = '';
+  function sendDebtSalesToTelegram() {
+    if (debtActivations.length === 0) {
+      alert("لا توجد تفعيلات فقد لإرسالها!");
+      return;
+    }
     let total = 0;
-    paidActivations.forEach((item, idx) => {
-      const amt = Number(item.paidAmount || 0);
-      total += amt;
-      tbodyHtml += `<tr>
-        <td>${idx + 1}</td>
-        <td>${item.name || '-'}</td>
-        <td>${item.user || '-'}</td>
-        <td>${item.cat || '-'}</td>
-        <td>${item.date || '-'}</td>
-        <td>${amt.toLocaleString()}</td>
-      </tr>`;
+    debtActivations.forEach(item => total += parseFloat(item.amount) || 0);
+
+    let msg = generateTableReportMessage(
+      "تقرير تفعيلات الفقد (الآجل)", 
+      ["#", "الاسم", "اليوزر", "المبلغ"], 
+      debtActivations, 
+      "إجمالي الديون المطلوبة", 
+      total
+    );
+    sendTelegramNotification(msg);
+    alert("تم إرسال جدول تفعيلات الفقد إلى تلجرام بنجاح!");
+  }
+
+  function sendPaidSalesToTelegram() {
+    if (paidActivations.length === 0) {
+      alert("لا توجد مبالغ مسددة لإرسالها!");
+      return;
+    }
+    let total = 0;
+    paidActivations.forEach((item, i) => {
+      total += parseFloat(item.amount) || 0;
     });
-
-    document.getElementById('printTbody').innerHTML = tbodyHtml;
-    document.getElementById('printTotalLabel').innerText = 'إجمالي المبالغ المسددة:';
-    document.getElementById('printTotalAmount').innerText = total.toLocaleString();
-    setupPrintHeaderDates();
     
-    triggerAppPrint();
-  }
-
-  function setupPrintHeaderDates() {
-    const now = new Date();
-    document.getElementById('printDate').innerText = now.toLocaleDateString('ar-IQ');
-    document.getElementById('printTime').innerText = now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
-  }
-
-  // دالة موحدة لضمان عمل الطباعة عبر متصفح الهاتف وتطبيق WebIntoApp
-  function triggerAppPrint() {
-    setTimeout(() => {
-      window.print();
-    }, 300);
+    let msg = generateTableReportMessage(
+      "سجل المبالغ المسددة", 
+      ["#", "الاسم", "اليوزر", "المبلغ"], 
+      paidActivations, 
+      "إجمالي المبالغ المسددة", 
+      total
+    );
+    sendTelegramNotification(msg);
+    alert("تم إرسال سجل التسديدات إلى تلجرام بنجاح!");
   }
 </script>
+
 </body>
 </html>
+```[cite: 1]
