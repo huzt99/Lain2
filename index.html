@@ -148,18 +148,6 @@
       box-shadow: 0 0 8px #10b981;
     }
 
-    .guest-timer-banner {
-      background: linear-gradient(135deg, #d29922, #f59e0b);
-      color: #000;
-      padding: 8px 15px;
-      border-radius: 12px;
-      font-weight: 800;
-      font-size: 0.9rem;
-      text-align: center;
-      margin-top: 12px;
-      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-    }
-
     .nav-pills {
       gap: 8px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -388,10 +376,6 @@
         </button>
       </div>
     </div>
-
-    <div id="guestBanner" class="guest-timer-banner d-none">
-      ⏳ أنت الآن بوضع الضيف التجريبي لمشاهدة البرنامج (الوقت المتبقي: <span id="timerCount">15:00</span>)
-    </div>
   </div>
 
   <div class="activation-box mb-4">
@@ -574,8 +558,8 @@
             <div class="search-box flex-grow-1">
               <input type="text" id="searchCash" placeholder="بحث..." onkeyup="renderCashTable()">
             </div>
-            <button class="btn btn-telegram-action btn-sm" onclick="sendTodaySalesToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال لتلجرام</button>
-            <button class="btn btn-print-action btn-sm" onclick="printReport('تقرير تفعيلات النقد', cashActivations, false)"><i class="fa-solid fa-file-pdf me-1"></i> طباعة / حفظ PDF</button>
+            <!-- زر الطباعة للكمبيوتر فقط -->
+            <button class="btn btn-print-action btn-sm desktop-only-btn d-none" onclick="printReport('تقرير تفعيلات النقد', cashActivations, false)"><i class="fa-solid fa-print me-1"></i> طباعة تقرير النقد</button>
             <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
           </div>
         </div>
@@ -608,8 +592,8 @@
             <div class="search-box flex-grow-1">
               <input type="text" id="searchDebt" placeholder="بحث..." onkeyup="renderDebtTable()">
             </div>
-            <button class="btn btn-telegram-action btn-sm" onclick="sendDebtSalesToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال لتلجرام</button>
-            <button class="btn btn-print-action btn-sm" onclick="printReport('تقرير تفعيلات الفقد', debtActivations, false)"><i class="fa-solid fa-file-pdf me-1"></i> طباعة / حفظ PDF</button>
+            <!-- زر الطباعة للكمبيوتر فقط -->
+            <button class="btn btn-print-action btn-sm desktop-only-btn d-none" onclick="printReport('تقرير تفعيلات الفقد', debtActivations, false)"><i class="fa-solid fa-print me-1"></i> طباعة تقرير الفقد</button>
             <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
           </div>
         </div>
@@ -643,8 +627,8 @@
             <div class="search-box flex-grow-1">
               <input type="text" id="searchPaid" placeholder="بحث..." onkeyup="renderPaidTable()">
             </div>
-            <button class="btn btn-telegram-action btn-sm" onclick="sendPaidSalesToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال لتلجرام</button>
-            <button class="btn btn-print-action btn-sm" onclick="printReport('جدول تقارير التسديد', paidActivations, true)"><i class="fa-solid fa-file-pdf me-1"></i> طباعة / حفظ PDF</button>
+            <!-- زر الطباعة للكمبيوتر فقط -->
+            <button class="btn btn-print-action btn-sm desktop-only-btn d-none" onclick="printReport('جدول تقارير التسديد', paidActivations, true)"><i class="fa-solid fa-print me-1"></i> طباعة تقرير التسديد</button>
             <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
           </div>
         </div>
@@ -809,7 +793,6 @@
   const ADMIN_AUTH_KEY = '20819921998';
 
   let currentEmailKey = "huzt.m1@gmail.com";
-  let guestTimerInterval = null;
 
   let fiberData = [];
   let earthData = [];
@@ -840,7 +823,36 @@
     
     document.getElementById('loginEmail').value = "huzt.m1@gmail.com";
     loadTelegramSettings();
+
+    // التحقق مما إذا كان الفتح يتم عبر متصفح كمبيوتر أم تطبيق هاتف
+    checkPlatformAndShowPrintButtons();
+
+    // منع تسجيل الخروج المفاجئ والاحتفاظ بالجلسة مسجلة طوال اليوم
+    checkExistingSession();
   });
+
+  function checkPlatformAndShowPrintButtons() {
+    const isDesktop = !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    if (isDesktop) {
+      // إظهار أزرار الطباعة في القوائم 4 و 5 و 6 عند الفتح من الكمبيوتر
+      document.querySelectorAll('.desktop-only-btn').forEach(btn => {
+        btn.classList.remove('d-none');
+      });
+    }
+  }
+
+  function checkExistingSession() {
+    const savedUser = localStorage.getItem('active_session_user');
+    if (savedUser) {
+      currentEmailKey = savedUser;
+      loadTelegramSettings();
+      loadCustomTitles();
+      document.getElementById('currentUserName').innerText = currentEmailKey.split('@')[0];
+      document.getElementById('lockScreen').classList.add('d-none');
+      document.getElementById('mainContent').classList.remove('d-none');
+      loadDataFromCloud();
+    }
+  }
 
   function openDesktopModal() {
     document.getElementById('pcAccountEmailDisplay').innerText = currentEmailKey;
@@ -976,6 +988,7 @@
     
     if (pass === ADMIN_AUTH_KEY || pass === MASTER_ACTIVATION_CODE) {
       currentEmailKey = email || "huzt.m1@gmail.com";
+      localStorage.setItem('active_session_user', currentEmailKey);
       loadTelegramSettings();
       loadCustomTitles();
       document.getElementById('currentUserName').innerText = currentEmailKey.split('@')[0];
@@ -992,34 +1005,17 @@
     const name = document.getElementById('regName').value.trim();
     const email = document.getElementById('regEmail').value.trim();
     currentEmailKey = email || "huzt.m1@gmail.com";
+    localStorage.setItem('active_session_user', currentEmailKey);
     loadTelegramSettings();
     loadCustomTitles();
     document.getElementById('currentUserName').innerText = name || currentEmailKey;
     document.getElementById('lockScreen').classList.add('d-none');
     document.getElementById('mainContent').classList.remove('d-none');
-    document.getElementById('guestBanner').classList.remove('d-none');
-    startGuestTimer(900);
     loadDataFromCloud();
   }
 
-  function startGuestTimer(seconds) {
-    let timeLeft = seconds;
-    if (guestTimerInterval) clearInterval(guestTimerInterval);
-    guestTimerInterval = setInterval(() => {
-      let m = Math.floor(timeLeft / 60);
-      let s = timeLeft % 60;
-      document.getElementById('timerCount').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-      if (timeLeft <= 0) {
-        clearInterval(guestTimerInterval);
-        alert('انتهى وقت التجربة المجانية للضيف!');
-        lockSystem();
-      }
-      timeLeft--;
-    }, 1000);
-  }
-
   function lockSystem() {
-    if (guestTimerInterval) clearInterval(guestTimerInterval);
+    localStorage.removeItem('active_session_user');
     document.getElementById('mainContent').classList.add('d-none');
     document.getElementById('lockScreen').classList.remove('d-none');
     document.getElementById('loginPass').value = '';
@@ -1132,10 +1128,8 @@
 
     if (type === 'نقد') {
       cashActivations.push(item);
-      sendTelegramNotification(`💵 <b>تفعيل نقد جديد:</b>\n1. اسم المشترك: ${name}\n2. نوع الاشتراك: ${cat}\n3. يوزر المشترك: ${user}\n4. سعر الاشتراك: ${amount} د.ع\n5. نوعه: نقد`);
     } else {
       debtActivations.push(item);
-      sendTelegramNotification(`⏳ <b>تفعيل فقد جديد:</b>\n1. اسم المشترك: ${name}\n2. نوع الاشتراك: ${cat}\n3. يوزر المشترك: ${user}\n4. سعر الاشتراك: ${amount} د.ع\n5. نوعه: فقد`);
     }
 
     e.target.reset();
@@ -1189,368 +1183,4 @@
               <input type="text" class="form-control table-input date-select" placeholder="سنة" value="${item.year || ''}" onchange="updateFiber(${item.id}, 'year', this.value)">
             </div>
           </td>
-          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteFiber(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-        </tr>`;
-    });
-  }
-
-  function updateFiber(id, field, val) {
-    const item = fiberData.find(x => x.id === id);
-    if (item) item[field] = val;
-  }
-
-  function deleteFiber(id) {
-    fiberData = fiberData.filter(x => x.id !== id);
-    renderFiberTable();
-    saveDataToCloud();
-  }
-
-  function renderEarthTable() {
-    const tbody = document.getElementById('earthTbody');
-    tbody.innerHTML = '';
-    const search = document.getElementById('searchEarth').value.toLowerCase();
-    earthData.forEach((item, index) => {
-      if (search && !item.name.toLowerCase().includes(search) && !item.user.toLowerCase().includes(search)) return;
-      tbody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td><input type="text" class="form-control table-input" value="${item.name}" onchange="updateEarth(${item.id}, 'name', this.value)"></td>
-          <td><input type="text" class="form-control table-input" value="${item.user}" onchange="updateEarth(${item.id}, 'user', this.value)"></td>
-          <td><input type="text" class="form-control table-input" value="${item.category}" onchange="updateEarth(${item.id}, 'category', this.value)"></td>
-          <td><input type="number" class="form-control table-input" value="${item.amount}" onchange="updateEarth(${item.id}, 'amount', this.value)"></td>
-          <td>
-            <div class="d-flex gap-1 justify-content-center">
-              <input type="text" class="form-control table-input date-select" placeholder="يوم" value="${item.day || ''}" onchange="updateEarth(${item.id}, 'day', this.value)">
-              <input type="text" class="form-control table-input date-select" placeholder="شهر" value="${item.month || ''}" onchange="updateEarth(${item.id}, 'month', this.value)">
-              <input type="text" class="form-control table-input date-select" placeholder="سنة" value="${item.year || ''}" onchange="updateEarth(${item.id}, 'year', this.value)">
-            </div>
-          </td>
-          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteEarth(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-        </tr>`;
-    });
-  }
-
-  function updateEarth(id, field, val) {
-    const item = earthData.find(x => x.id === id);
-    if (item) item[field] = val;
-  }
-
-  function deleteEarth(id) {
-    earthData = earthData.filter(x => x.id !== id);
-    renderEarthTable();
-    saveDataToCloud();
-  }
-
-  function renderSpeedTable() {
-    const tbody = document.getElementById('speedTbody');
-    tbody.innerHTML = '';
-    const search = document.getElementById('searchSpeed').value.toLowerCase();
-    speedData.forEach((item, index) => {
-      if (search && !item.name.toLowerCase().includes(search) && !item.user.toLowerCase().includes(search)) return;
-      tbody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td><input type="text" class="form-control table-input" value="${item.name}" onchange="updateSpeed(${item.id}, 'name', this.value)"></td>
-          <td><input type="text" class="form-control table-input" value="${item.user}" onchange="updateSpeed(${item.id}, 'user', this.value)"></td>
-          <td><input type="text" class="form-control table-input" value="${item.category}" onchange="updateSpeed(${item.id}, 'category', this.value)"></td>
-          <td><input type="number" class="form-control table-input" value="${item.amount}" onchange="updateSpeed(${item.id}, 'amount', this.value)"></td>
-          <td>
-            <div class="d-flex gap-1 justify-content-center">
-              <input type="text" class="form-control table-input date-select" placeholder="يوم" value="${item.day || ''}" onchange="updateSpeed(${item.id}, 'day', this.value)">
-              <input type="text" class="form-control table-input date-select" placeholder="شهر" value="${item.month || ''}" onchange="updateSpeed(${item.id}, 'month', this.value)">
-              <input type="text" class="form-control table-input date-select" placeholder="سنة" value="${item.year || ''}" onchange="updateSpeed(${item.id}, 'year', this.value)">
-            </div>
-          </td>
-          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteSpeed(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-        </tr>`;
-    });
-  }
-
-  function updateSpeed(id, field, val) {
-    const item = speedData.find(x => x.id === id);
-    if (item) item[field] = val;
-  }
-
-  function deleteSpeed(id) {
-    speedData = speedData.filter(x => x.id !== id);
-    renderSpeedTable();
-    saveDataToCloud();
-  }
-
-  function renderCashTable() {
-    const tbody = document.getElementById('cashTbody');
-    tbody.innerHTML = '';
-    const search = document.getElementById('searchCash').value.toLowerCase();
-    cashActivations.forEach((item, index) => {
-      if (search && !item.name.toLowerCase().includes(search) && !item.user.toLowerCase().includes(search)) return;
-      tbody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${item.name}</td>
-          <td>${item.category || 'عام'}</td>
-          <td>${item.user}</td>
-          <td class="text-success fw-bold">${item.amount} د.ع</td>
-          <td><span class="badge bg-success">نقد</span></td>
-          <td class="fw-bold">${item.amount} د.ع</td>
-          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteCash(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-        </tr>`;
-    });
-  }
-
-  function deleteCash(id) {
-    cashActivations = cashActivations.filter(x => x.id !== id);
-    renderCashTable();
-    saveDataToCloud();
-  }
-
-  function renderDebtTable() {
-    const tbody = document.getElementById('debtTbody');
-    tbody.innerHTML = '';
-    const search = document.getElementById('searchDebt').value.toLowerCase();
-    debtActivations.forEach((item, index) => {
-      if (search && !item.name.toLowerCase().includes(search) && !item.user.toLowerCase().includes(search)) return;
-      tbody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${item.name}</td>
-          <td>${item.category || 'عام'}</td>
-          <td>${item.user}</td>
-          <td class="text-warning fw-bold">${item.amount} د.ع</td>
-          <td><span class="badge bg-warning text-dark">فقد</span></td>
-          <td class="fw-bold">${item.amount} د.ع</td>
-          <td><button class="btn btn-action-add btn-sm py-1" onclick="openPaymentModal(${item.id})">تسديد</button></td>
-          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteDebt(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-        </tr>`;
-    });
-  }
-
-  function deleteDebt(id) {
-    debtActivations = debtActivations.filter(x => x.id !== id);
-    renderDebtTable();
-    saveDataToCloud();
-  }
-
-  function openPaymentModal(id) {
-    const debt = debtActivations.find(x => x.id === id);
-    if (!debt) return;
-    document.getElementById('modalDebtId').value = debt.id;
-    document.getElementById('modalCustomerInfo').innerText = `المشترك: ${debt.name} (${debt.user})`;
-    document.getElementById('modalAmountInfo').innerText = `المبلغ المطلوب: ${debt.amount} دينار عراقي`;
-    document.getElementById('payTypeSelect').value = 'full';
-    document.getElementById('partialGroup').classList.add('d-none');
-    document.getElementById('partialAmountInput').value = '';
-    paymentModalInstance.show();
-  }
-
-  function togglePartialInput() {
-    const val = document.getElementById('payTypeSelect').value;
-    const group = document.getElementById('partialGroup');
-    if (val === 'partial') group.classList.remove('d-none');
-    else group.classList.add('d-none');
-  }
-
-  function processPayment() {
-    const id = parseInt(document.getElementById('modalDebtId').value);
-    const debtIndex = debtActivations.findIndex(x => x.id === id);
-    if (debtIndex === -1) return;
-
-    const debt = debtActivations[debtIndex];
-    const payType = document.getElementById('payTypeSelect').value;
-    let paidAmount = debt.amount;
-
-    if (payType === 'partial') {
-      const partialVal = parseFloat(document.getElementById('partialAmountInput').value) || 0;
-      if (partialVal <= 0 || partialVal > debt.amount) {
-        alert('يرجى إدخال مبلغ تسديد صحيح!');
-        return;
-      }
-      paidAmount = partialVal;
-    }
-
-    const nowStr = new Date().toLocaleString('ar-IQ');
-    paidActivations.push({
-      id: Date.now(),
-      name: debt.name,
-      user: debt.user,
-      category: debt.category,
-      amount: paidAmount,
-      type: payType === 'full' ? 'تسديد كامل 💵' : 'تسديد جزئي 🪙',
-      date: nowStr
-    });
-
-    if (payType === 'full' || paidAmount >= debt.amount) {
-      debtActivations.splice(debtIndex, 1);
-    } else {
-      debt.amount -= paidAmount;
-    }
-
-    paymentModalInstance.hide();
-    renderAllTables();
-    saveDataToCloud();
-    sendTelegramNotification(`💰 <b>تسديد جديد:</b>\n1. اسم المشترك: ${debt.name}\n2. نوع التسديد: ${payType}\n3. يوزر المشترك: ${debt.user}\n4. المبلغ المسدد: ${paidAmount} د.ع\n5. الحالة: مسدد\n6. المجموع: ${paidAmount} د.ع`);
-    alert('تم إتمام التسديد بنجاح!');
-  }
-
-  function renderPaidTable() {
-    const tbody = document.getElementById('paidTbody');
-    tbody.innerHTML = '';
-    const search = document.getElementById('searchPaid').value.toLowerCase();
-    paidActivations.forEach((item, index) => {
-      if (search && !item.name.toLowerCase().includes(search) && !item.user.toLowerCase().includes(search)) return;
-      tbody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${item.name}</td>
-          <td>${item.type}</td>
-          <td>${item.user}</td>
-          <td class="text-info fw-bold">${item.amount} د.ع</td>
-          <td><span class="badge bg-secondary">مسدد</span></td>
-          <td class="fw-bold">${item.amount} د.ع</td>
-          <td><button class="btn btn-outline-danger btn-sm" onclick="deletePaid(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-        </tr>`;
-    });
-  }
-
-  function deletePaid(id) {
-    paidActivations = paidActivations.filter(x => x.id !== id);
-    renderPaidTable();
-    saveDataToCloud();
-  }
-
-  /* دالة إرسال التقرير النصي المرتب إلى تلجرام حسب الترتيب العمودي المطلوب تماماً */
-  function sendListReportToTelegram(title, dataRows, isPayment = false) {
-    if (dataRows.length === 0) {
-      alert("لا توجد بيانات لإرسالها!");
-      return;
-    }
-
-    let msg = `📊 <b>${title}</b>\n`;
-    msg += `📅 التاريخ: ${new Date().toLocaleDateString('ar-IQ')}\n`;
-    msg += `-----------------------------------\n`;
-
-    let total = 0;
-    dataRows.forEach((item, index) => {
-      let amt = parseFloat(item.amount) || 0;
-      total += amt;
-      
-      msg += `<b># الترتيب (${index + 1})</b>\n`;
-      msg += `1. اسم المشترك: ${item.name || '---'}\n`;
-      if (!isPayment) {
-        msg += `2. نوع الاشتراك: ${item.category || 'عام'}\n`;
-        msg += `3. يوزر المشترك: ${item.user || '---'}\n`;
-        msg += `4. سعر الاشتراك: ${amt} د.ع\n`;
-        msg += `5. نوعه: ${item.type || 'نقد'}\n`;
-      } else {
-        msg += `2. نوع التسديد: ${item.type || 'تسديد'}\n`;
-        msg += `3. يوزر المشترك: ${item.user || '---'}\n`;
-        msg += `4. المبلغ المسدد: ${amt} د.ع\n`;
-        msg += `5. الحالة: مسدد\n`;
-      }
-      msg += `6. المجموع: ${amt} د.ع\n`;
-      msg += `-----------------------------------\n`;
-    });
-
-    msg += `📌 <b>المجموع الكلي للتقرير:</b> ${total.toLocaleString()} دينار عراقي`;
-
-    sendTelegramNotification(msg);
-    alert(`تم إرسال تقرير (${title}) إلى تلجرام بالترتيب المطلوب بنجاح!`);
-  }
-
-  function sendSpeedTableToTelegram() {
-    sendListReportToTelegram("تقرير مشتركين أبراج سبيد", speedData, false);
-  }
-
-  function sendTodaySalesToTelegram() {
-    sendListReportToTelegram("تقرير تفعيلات النقد", cashActivations, false);
-  }
-
-  function sendDebtSalesToTelegram() {
-    sendListReportToTelegram("تقرير تفعيلات الفقد", debtActivations, false);
-  }
-
-  function sendPaidSalesToTelegram() {
-    sendListReportToTelegram("جدول تقارير التسديد", paidActivations, true);
-  }
-
-  /* دالة الطباعة الاحترافية وحفظ PDF */
-  function printReport(title, dataRows, isPayment = false) {
-    if (dataRows.length === 0) {
-      alert("لا توجد بيانات لطباعتها!");
-      return;
-    }
-
-    let printWindow = window.open('', '_blank');
-    let html = `
-      <html lang="ar" dir="rtl">
-      <head>
-        <meta charset="UTF-8">
-        <title>${title}</title>
-        <style>
-          body { font-family: 'Cairo', Tahoma, Arial, sans-serif; padding: 20px; color: #000; direction: rtl; }
-          h2 { text-align: center; margin-bottom: 5px; color: #0f172a; }
-          .date { text-align: center; font-size: 14px; color: #555; margin-bottom: 20px; }
-          table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-          th, td { border: 1px solid #333; padding: 10px; text-align: center; font-size: 14px; }
-          th { background-color: #f1f5f9; color: #000; font-weight: bold; }
-          .total-box { margin-top: 20px; text-align: left; font-size: 16px; font-weight: bold; }
-          @media print {
-            body { padding: 0; }
-            button { display: none; }
-          }
-        </style>
-      </head>
-      <body>
-        <h2>حسين لخدمات الإنترنت - ${title}</h2>
-        <div class="date">تاريخ التقرير: ${new Date().toLocaleDateString('ar-IQ')}</div>
-        <table>
-          <thead>
-            <tr>
-              <th>ت</th>
-              <th>1. اسم المشترك</th>
-              <th>2. ${isPayment ? 'نوع التسديد' : 'نوع الاشتراك'}</th>
-              <th>3. يوزر المشترك</th>
-              <th>4. ${isPayment ? 'المبلغ المسدد' : 'سعر الاشتراك'}</th>
-              <th>5. ${isPayment ? 'الحالة' : 'نقد / فقد'}</th>
-              <th>6. المجموع</th>
-            </tr>
-          </thead>
-          <tbody>
-    `;
-
-    let total = 0;
-    dataRows.forEach((item, index) => {
-      let amt = parseFloat(item.amount) || 0;
-      total += amt;
-      html += `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${item.name || '---'}</td>
-          <td>${item.category || item.type || '---'}</td>
-          <td>${item.user || '---'}</td>
-          <td>${amt.toLocaleString()} د.ع</td>
-          <td>${isPayment ? 'مسدد' : (item.type || 'نقد')}</td>
-          <td><b>${amt.toLocaleString()} د.ع</b></td>
-        </tr>
-      `;
-    });
-
-    html += `
-          </tbody>
-        </table>
-        <div class="total-box">
-          المجموع الكلي: ${total.toLocaleString()} دينار عراقي
-        </div>
-        <div style="margin-top: 30px; text-align: center;">
-          <button onclick="window.print()" style="padding: 10px 25px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">طباعة أو حفظ PDF</button>
-        </div>
-      </body>
-      </html>
-    `;
-
-    printWindow.document.write(html);
-    printWindow.document.close();
-  }
-</script>
-
-</body>
-</html>
+          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteFiber(${
