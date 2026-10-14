@@ -110,7 +110,6 @@
     }
     .table-dark-custom td { vertical-align: middle; padding: 10px 8px; border-color: rgba(255, 255, 255, 0.05); color: #ffffff; }
 
-    /* توسيع الحقول داخل الجداول لتعرض الاسم واليوزر كاملاً براحة */
     .table-input, .form-control, .form-select {
       background: rgba(15, 23, 42, 0.95) !important; 
       border: 1px solid rgba(56, 189, 248, 0.35) !important;
@@ -119,7 +118,7 @@
       font-size: 14px !important; 
       font-weight: 700 !important; 
       padding: 6px 10px;
-      min-width: 130px; /* ضمان مساحة كافية للاسم واليوزر */
+      min-width: 130px;
     }
     
     .table-input::placeholder, .form-control::placeholder { 
@@ -221,7 +220,7 @@
     </div>
   </div>
 
-  <!-- تسجيل وتفعيل سريع مع الفرز التلقائي لنوع الاشتراك -->
+  <!-- تسجيل وتفعيل سريع -->
   <div class="activation-box mb-4">
     <h6 class="fw-bold text-info mb-3"><i class="fa-solid fa-bolt me-2"></i>تسجيل وتفعيل اشتراك (مع الفرز التلقائي حسب اليوزر):</h6>
     <form onsubmit="registerActivation(event)" class="row g-2 align-items-center">
@@ -520,7 +519,7 @@
   const MASTER_ACTIVATION_CODE = "20319921992";
   const ADMIN_AUTH_KEY = '20819921998';
 
-  let currentEmailKey = "huzt.m1@gmail.com";
+  let currentEmailKey = "";
   let isAccountActivated = false;
   let fiberData = [], earthData = [], speedData = [], cashActivations = [], debtActivations = [], paidActivations = [];
   let TELEGRAM_BOT_TOKEN = "8769810627:AAHZGUmLmVeiYNYn1X2XhtWyaBjd1iW5-g0";
@@ -535,8 +534,21 @@
     speedPaneHeader: "اشتراكات ابراج سبيد"
   };
 
+  // عند فتح التطبيق: التحقق مما إذا كان المستخدم قد سجل دخوله سابقاً على هذا الجهاز
   window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('loginEmail').value = "huzt.m1@gmail.com";
+    const savedEmail = localStorage.getItem('logged_email');
+    const savedOwner = localStorage.getItem('logged_owner') || "حسين عبد المجيد";
+    if (savedEmail) {
+      currentEmailKey = savedEmail;
+      setupAccountHeader(currentEmailKey, savedOwner);
+      loadCustomTitles();
+      document.getElementById('lockScreen').classList.add('d-none');
+      document.getElementById('mainContent').classList.remove('d-none');
+      loadDataFromCloud();
+    } else {
+      // يترك الحقل فارغاً لكل جهاز جديد
+      document.getElementById('loginEmail').value = "";
+    }
   });
 
   function renameTableTitle(type) {
@@ -626,6 +638,8 @@
     const pass = document.getElementById('loginPass').value.trim();
     if (pass === ADMIN_AUTH_KEY || pass === MASTER_ACTIVATION_CODE) {
       currentEmailKey = email || "huzt.m1@gmail.com";
+      localStorage.setItem('logged_email', currentEmailKey);
+      localStorage.setItem('logged_owner', "حسين عبد المجيد");
       setupAccountHeader(currentEmailKey, "حسين عبد المجيد");
       loadCustomTitles();
       document.getElementById('lockScreen').classList.add('d-none');
@@ -641,6 +655,8 @@
     const name = document.getElementById('regName').value.trim();
     const email = document.getElementById('regEmail').value.trim();
     currentEmailKey = email || "user@gmail.com";
+    localStorage.setItem('logged_email', currentEmailKey);
+    localStorage.setItem('logged_owner', name);
     setupAccountHeader(currentEmailKey, name);
     loadCustomTitles();
     document.getElementById('lockScreen').classList.add('d-none');
@@ -662,7 +678,10 @@
     }
   }
 
+  // تسجيل الخروج والقفل اليدوي
   function lockSystem() {
+    localStorage.removeItem('logged_email');
+    localStorage.removeItem('logged_owner');
     document.getElementById('mainContent').classList.add('d-none');
     document.getElementById('lockScreen').classList.remove('d-none');
   }
