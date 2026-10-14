@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-  <title>نظام إدارة المشتركين</title>
+  <title>Tafe3l - نظام إدارة المشتركين</title>
   <!-- Bootstrap 5 RTL -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
   <!-- FontAwesome Icons -->
@@ -16,38 +16,24 @@
   <style>
     :root {
       --bg-dark: #0b0f19;
-      --panel-bg: rgba(18, 26, 43, 0.85);
+      --panel-bg: rgba(18, 26, 43, 0.95);
       --primary-cyan: #06b6d4;
       --primary-blue: #3b82f6;
-      --accent-green: #10b981;
-      --accent-amber: #f59e0b;
-      --accent-red: #ef4444;
-      --gold-color: #ffc107;
-      --text-main: #ffffff;
-      --text-muted: #cbd5e1;
-      --border-color: rgba(56, 189, 248, 0.3);
+      --border-color: rgba(56, 189, 248, 0.25);
     }
 
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
     body {
-      font-family: 'Cairo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: 'Cairo', sans-serif;
       background-color: var(--bg-dark);
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(6, 182, 212, 0.12) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.12) 0px, transparent 50%),
-        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
-      color: var(--text-main);
+      color: #ffffff;
       min-height: 100vh;
       margin: 0;
-      padding-bottom: 30px;
+      padding-bottom: 40px;
       overflow-x: hidden;
     }
 
@@ -68,31 +54,29 @@
       background: rgba(15, 23, 42, 0.95);
       border: 1px solid var(--border-color);
       border-radius: 24px;
-      padding: 30px 25px;
+      padding: 30px 20px;
       width: 100%;
-      max-width: 400px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 20px rgba(6, 182, 212, 0.2);
+      max-width: 380px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
       text-align: center;
-      backdrop-filter: blur(10px);
     }
 
     .lock-icon {
-      width: 70px;
-      height: 70px;
-      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(59, 130, 246, 0.2));
+      width: 65px;
+      height: 65px;
+      background: rgba(6, 182, 212, 0.2);
       border: 1px solid var(--primary-cyan);
-      border-radius: 20px;
+      border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 15px auto;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       color: var(--primary-cyan);
-      box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
     }
 
-    .auth-tabs { display: flex; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); }
-    .tab-btn { flex: 1; padding: 8px; background: none; border: none; color: var(--text-muted); font-weight: bold; cursor: pointer; }
+    .auth-tabs { display: flex; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); }
+    .tab-btn { flex: 1; padding: 8px; background: none; border: none; color: #94a3b8; font-weight: bold; cursor: pointer; }
     .tab-btn.active { color: var(--primary-cyan); border-bottom: 2px solid var(--primary-cyan); }
 
     .pass-input {
@@ -100,18 +84,14 @@
       border: 1px solid var(--border-color) !important;
       color: #ffffff !important;
       border-radius: 12px !important;
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 0.95rem;
     }
-
-    .pass-input::placeholder { color: #cbd5e1 !important; }
-    .pass-input:focus { box-shadow: 0 0 12px rgba(6, 182, 212, 0.4) !important; border-color: var(--primary-cyan) !important; }
 
     .header-panel {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
       border-radius: 20px;
-      padding: 20px;
+      padding: 15px;
       backdrop-filter: blur(10px);
       box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
@@ -119,55 +99,41 @@
     .brand-title {
       font-weight: 900;
       color: #ffffff;
+      font-size: 1.1rem;
     }
 
     .owner-badge {
       background: rgba(6, 182, 212, 0.15);
       border: 1px solid rgba(6, 182, 212, 0.3);
       color: #ffffff;
-      padding: 6px 16px;
+      padding: 5px 12px;
       border-radius: 50rem;
-      font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .online-indicator {
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       background-color: #10b981;
       border-radius: 50%;
-      display: inline-block;
-      box-shadow: 0 0 8px #10b981;
-    }
-
-    .guest-timer-banner {
-      background: linear-gradient(135deg, #d29922, #f59e0b);
-      color: #000;
-      padding: 8px 15px;
-      border-radius: 12px;
-      font-weight: 800;
-      font-size: 0.9rem;
-      text-align: center;
-      margin-top: 12px;
     }
 
     .app-layout {
       display: flex;
-      gap: 20px;
+      gap: 15px;
       align-items: flex-start;
     }
 
     .sidebar-menu {
-      width: 260px;
+      width: 240px;
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 15px;
+      border-radius: 18px;
+      padding: 12px;
       backdrop-filter: blur(10px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       flex-shrink: 0;
     }
 
@@ -178,52 +144,47 @@
 
     .sidebar-link {
       color: #ffffff;
-      background: rgba(15, 23, 42, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 12px 15px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 10px 12px;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
-      margin-bottom: 8px;
-      transition: all 0.25s ease;
+      margin-bottom: 6px;
       text-decoration: none;
+      transition: all 0.2s;
     }
 
     .sidebar-link:hover, .sidebar-link.active {
       background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
       color: #ffffff;
       border-color: transparent;
-      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
     }
 
     .submenu {
-      padding-right: 15px;
-      margin-top: 5px;
-      margin-bottom: 10px;
+      padding-right: 12px;
+      margin-top: 4px;
+      margin-bottom: 8px;
       display: none;
       border-right: 2px solid var(--primary-cyan);
     }
-
-    .submenu.show {
-      display: block;
-    }
+    .submenu.show { display: block; }
 
     .submenu-item {
       color: #ffffff;
       background: rgba(15, 23, 42, 0.7);
       border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 0.88rem;
+      padding: 7px 10px;
+      font-size: 0.85rem;
       font-weight: 600;
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.2s;
     }
 
     .submenu-item:hover, .submenu-item.active {
@@ -234,107 +195,83 @@
     .content-card {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 20px;
+      border-radius: 18px;
+      padding: 15px;
       backdrop-filter: blur(10px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
     .table-responsive {
-      border-radius: 14px;
+      border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .table-dark-custom {
-      --bs-table-bg: rgba(15, 23, 42, 0.9);
+      --bs-table-bg: rgba(15, 23, 42, 0.95);
       --bs-table-color: #ffffff;
       margin-bottom: 0;
+      font-size: 0.9rem;
     }
 
     .table-dark-custom th {
-      background: rgba(30, 41, 59, 0.95);
-      color: #ffffff;
+      background: rgba(30, 41, 59, 0.98);
+      color: var(--primary-cyan);
       font-weight: 800;
       border-bottom: 2px solid var(--border-color);
-      padding: 12px 14px;
+      padding: 10px 8px;
+      text-align: center;
+      white-space: nowrap;
     }
 
     .table-dark-custom td {
       vertical-align: middle;
-      border-color: rgba(255, 255, 255, 0.1);
-      padding: 10px 12px;
+      border-color: rgba(255, 255, 255, 0.08);
+      padding: 8px 6px;
+      text-align: center;
       color: #ffffff;
     }
 
     .table-input {
-      background: rgba(15, 23, 42, 0.95) !important;
-      border: 1px solid rgba(56, 189, 248, 0.4) !important;
+      background: rgba(2, 6, 23, 0.85) !important;
+      border: 1px solid rgba(56, 189, 248, 0.35) !important;
       color: #ffffff !important;
       border-radius: 8px !important;
-      font-size: 15px !important;
+      font-size: 13px !important;
       font-weight: 600 !important;
-      padding: 6px 10px;
+      padding: 5px 8px;
+      text-align: center;
     }
 
-    .table-input::placeholder { color: #cbd5e1 !important; opacity: 1; }
     .table-input:focus {
       border-color: var(--primary-cyan) !important;
-      box-shadow: 0 0 8px rgba(6, 182, 212, 0.5) !important;
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.4) !important;
       background-color: #020617 !important;
-      color: #ffffff !important;
     }
 
     .btn-action-add {
       background: linear-gradient(135deg, #10b981, #059669);
-      color: #fff; border: none; font-weight: 700; border-radius: 50rem; padding: 8px 20px;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); cursor: pointer;
+      color: #fff; border: none; font-weight: 700; border-radius: 50rem; padding: 6px 16px;
     }
 
     .btn-action-save {
       background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
-      color: #fff; border: none; font-weight: 700; border-radius: 50rem; padding: 8px 20px;
-      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3); cursor: pointer;
-    }
-
-    .btn-action-buy {
-      background: linear-gradient(135deg, #ffc107, #d97706);
-      color: #000; border: none; font-weight: 800; border-radius: 50rem; padding: 6px 16px;
-      box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4); cursor: pointer;
-    }
-
-    .btn-pc-sync {
-      background: linear-gradient(135deg, #6366f1, #4f46e5);
-      color: #fff; border: none; font-weight: 800; border-radius: 50rem; padding: 6px 18px;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); cursor: pointer;
-    }
-
-    .btn-telegram-action {
-      background: linear-gradient(135deg, #0088cc, #006699);
       color: #fff; border: none; font-weight: 700; border-radius: 50rem; padding: 6px 16px;
-      box-shadow: 0 4px 12px rgba(0, 136, 204, 0.35); cursor: pointer;
-    }
-
-    .btn-print-action {
-      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
-      color: #fff; border: none; font-weight: 700; border-radius: 50rem; padding: 6px 16px;
-      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35); cursor: pointer;
     }
 
     .search-box {
       background: rgba(2, 6, 23, 0.7);
       border: 1px solid var(--border-color);
-      border-radius: 50rem; padding: 6px 16px; color: #fff;
+      border-radius: 50rem; padding: 5px 14px;
     }
-    .search-box input { background: transparent; border: none; color: #ffffff; outline: none; width: 100%; font-size: 16px; }
-    .search-box input::placeholder { color: #cbd5e1; }
+    .search-box input { background: transparent; border: none; color: #ffffff; outline: none; width: 100%; font-size: 14px; }
+    .search-box input::placeholder { color: #94a3b8; }
 
     .activation-box {
       background: rgba(30, 41, 59, 0.5);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px; padding: 18px; margin-bottom: 20px;
+      border-radius: 14px; padding: 12px; margin-bottom: 15px;
     }
 
-    .date-select { min-width: 65px; padding: 4px 6px; font-size: 0.85rem !important; }
+    .date-select { min-width: 55px; padding: 4px; font-size: 0.8rem !important; }
     .modal-content-custom { background-color: #0f172a; border: 1px solid var(--border-color); color: #ffffff; border-radius: 20px; }
 
     @media (max-width: 768px) {
@@ -350,8 +287,8 @@
     <div class="lock-icon">
       <i class="fa-solid fa-shield-halved"></i>
     </div>
-    <h4 class="fw-bold mb-1 text-white">نظام إدارة الشبكات</h4>
-    <p class="text-white small mb-3">إدارة الشبكات والتفعيلات أونلاين</p>
+    <h5 class="fw-bold mb-1 text-white">نظام إدارة الشبكات</h5>
+    <p class="text-muted small mb-3">إدارة الشبكات والتفعيلات أونلاين</p>
 
     <div class="auth-tabs">
       <button class="tab-btn active" id="tabLoginBtn" onclick="switchAuthTab('login')">تسجيل الدخول</button>
@@ -373,7 +310,7 @@
 
     <form id="regForm" class="d-none" onsubmit="handleRegister(event)">
       <div class="mb-2">
-        <input type="text" id="regName" class="form-control pass-input" placeholder="الاسم الكامل (مثل: حسين عبد المجيد)" required>
+        <input type="text" id="regName" class="form-control pass-input" placeholder="الاسم الكامل" required>
       </div>
       <div class="mb-2">
         <input type="email" id="regEmail" class="form-control pass-input" placeholder="البريد الإلكتروني" required>
@@ -388,42 +325,31 @@
   </div>
 </div>
 
-<div id="mainContent" class="container-fluid px-2 px-md-4 py-3 d-none">
-  <div class="header-panel mb-4">
-    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+<div id="mainContent" class="container-fluid px-2 px-md-3 py-3 d-none">
+  <div class="header-panel mb-3">
+    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
       <div class="text-center text-md-start">
-        <h3 class="brand-title mb-1 text-white" id="mainBrandTitle"><i class="fa-solid fa-wifi me-2"></i>أهلاً بك حسين عبد المجيد لخدمات الإنترنت</h3>
+        <h3 class="brand-title mb-1" id="mainBrandTitle"><i class="fa-solid fa-wifi me-2 text-info"></i>أهلاً بك حسين عبد المجيد</h3>
         <span class="owner-badge">
-          <span class="online-indicator"></span> متصل بـ JSONbin السحابي | المستخدم: <span id="currentUserName">حسين عبد المجيد</span>
-          <span class="ms-2 text-warning" style="font-size: 0.85rem;">(تم الإنشاء بواسطة حسين عبد المجيد)</span>
+          <span class="online-indicator"></span> متصل السحابي | المستخدم: <span id="currentUserName">حسين عبد المجيد</span>
         </span>
       </div>
       <div class="d-flex gap-2 flex-wrap justify-content-center">
         <button class="btn btn-action-save btn-sm rounded-pill px-3 fw-bold" onclick="manualSaveAlert()">
           <i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي
         </button>
-        <button class="btn btn-pc-sync btn-sm rounded-pill px-3 fw-bold" onclick="openDesktopModal()">
-          <i class="fa-solid fa-desktop me-1"></i> فتح حسابك على الكمبيوتر
-        </button>
-        <button id="buyLifetimeBtn" class="btn btn-action-buy btn-sm rounded-pill px-3 fw-bold d-none" onclick="openBuyModal()">
-          <i class="fa-solid fa-crown me-1"></i> شراء البرنامج (تفعيل مدى الحياة)
-        </button>
-        <button class="btn btn-outline-light btn-sm rounded-pill px-3 fw-bold" onclick="openTelegramModal()">
-          <i class="fa-brands fa-telegram me-1 text-info"></i> إعدادات تلجرام
+        <button class="btn btn-outline-info btn-sm rounded-pill px-3 fw-bold" onclick="openTelegramModal()">
+          <i class="fa-brands fa-telegram me-1"></i> إعدادات تلجرام
         </button>
         <button class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-bold" onclick="lockSystem()">
           <i class="fa-solid fa-power-off me-1"></i> قفل
         </button>
       </div>
     </div>
-
-    <div id="guestBanner" class="guest-timer-banner d-none">
-      ⏳ أنت الآن بوضع الضيف التجريبي لمشاهدة البرنامج (الوقت المتبقي: <span id="timerCount">15:00</span>)
-    </div>
   </div>
 
-  <div class="activation-box mb-4">
-    <h6 class="fw-bold text-white mb-3"><i class="fa-solid fa-bolt me-2 text-warning"></i>تسجيل وتفعيل اشتراك (نقد / فقد) مع الفرز التلقائي:</h6>
+  <div class="activation-box">
+    <h6 class="fw-bold text-info mb-2 text-sm"><i class="fa-solid fa-bolt me-1"></i>تسجيل وتفعيل اشتراك سريع:</h6>
     <form onsubmit="registerActivation(event)" class="row g-2 align-items-center">
       <div class="col-12 col-md-3">
         <input type="text" id="actName" class="form-control table-input" placeholder="اسم المشترك" required>
@@ -451,23 +377,20 @@
     </form>
   </div>
 
-  <!-- هيكل البرنامج الجديد: القائمة الجانبية المنسدلة + محتوى التبويبات -->
   <div class="app-layout">
-    <!-- الشريط الجانبي المنسدل -->
     <div class="sidebar-menu">
       <div class="sidebar-link active" onclick="switchPane('fiber-pane', this)">
         <span><i class="fa-solid fa-cable-car me-2"></i> <span id="fiberTabTitleText">1. الكابل الضوئي</span></span>
       </div>
 
-      <!-- قائمة المشتركين المنسدلة -->
       <div class="sidebar-link" onclick="toggleSubmenu(event)">
         <span><i class="fa-solid fa-users me-2"></i> المشتركين</span>
         <i class="fa-solid fa-chevron-down small"></i>
       </div>
       <div class="submenu show" id="subscribersSubmenu">
-        <a class="submenu-item active text-white" onclick="switchPane('fiber-pane', this)"><i class="fa-solid fa-network-wired me-1"></i> 1. الكابل الضوئي</a>
-        <a class="submenu-item text-white" onclick="switchPane('earth-pane', this)"><i class="fa-solid fa-tower-cell me-1"></i> 2. أبراج أمجد</a>
-        <a class="submenu-item text-white" onclick="switchPane('speed-pane', this)"><i class="fa-solid fa-broadcast-tower me-1"></i> 3. أبراج سبيد</a>
+        <a class="submenu-item active" onclick="switchPane('fiber-pane', this)"><i class="fa-solid fa-network-wired me-1"></i> 1. الكابل الضوئي</a>
+        <a class="submenu-item" onclick="switchPane('earth-pane', this)"><i class="fa-solid fa-tower-cell me-1"></i> 2. أبراج أمجد</a>
+        <a class="submenu-item" onclick="switchPane('speed-pane', this)"><i class="fa-solid fa-broadcast-tower me-1"></i> 3. أبراج سبيد</a>
       </div>
 
       <div class="sidebar-link" onclick="switchPane('cash-pane', this)">
@@ -481,35 +404,29 @@
       </div>
     </div>
 
-    <!-- المحتوى الرئيسي -->
     <div class="main-content-area">
-      <!-- 1. الكابل الضوئي -->
       <div class="tab-pane-content" id="fiber-pane">
         <div class="content-card">
           <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-            <div class="d-flex align-items-center gap-2">
-              <h5 class="fw-bold text-white mb-0" id="fiberPaneTitle"><i class="fa-solid fa-cable-car me-2"></i>مشتركين الكابل الضوئي</h5>
-              <button class="btn btn-outline-warning btn-sm py-0 px-2" title="تعديل اسم الخانة" onclick="renameTableTitle('fiber')"><i class="fa-solid fa-pen"></i></button>
-            </div>
+            <h5 class="fw-bold text-info mb-0" id="fiberPaneTitle"><i class="fa-solid fa-cable-car me-2"></i>مشتركين الكابل الضوئي</h5>
             <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
               <div class="search-box flex-grow-1">
                 <input type="text" id="searchFiber" placeholder="بحث عن اسم أو يوزر..." onkeyup="renderFiberTable()">
               </div>
               <button class="btn btn-action-add btn-sm" onclick="addFiberRow()"><i class="fa-solid fa-plus me-1"></i> إضافة</button>
-              <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
             </div>
           </div>
           <div class="table-responsive">
             <table class="table table-dark-custom text-center align-middle">
               <thead>
                 <tr>
-                  <th style="width: 40px;">#</th>
+                  <th style="width: 35px;">#</th>
                   <th>اسم المشترك / اليوزر</th>
                   <th>نوع الاشتراك</th>
                   <th>سعر الاشتراك</th>
-                  <th>سيريال المشترك</th>
-                  <th style="min-width: 210px;">تاريخ التفعيل (يوم / شهر / سنة)</th>
-                  <th style="width: 50px;">إجراء</th>
+                  <th>سيريال</th>
+                  <th style="min-width: 170px;">التاريخ (يوم/شهر/سنة)</th>
+                  <th style="width: 45px;">حذف</th>
                 </tr>
               </thead>
               <tbody id="fiberTbody"></tbody>
@@ -518,32 +435,27 @@
         </div>
       </div>
 
-      <!-- 2. إيرثلنك أمجد أبراج -->
       <div class="tab-pane-content d-none" id="earth-pane">
         <div class="content-card">
           <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-            <div class="d-flex align-items-center gap-2">
-              <h5 class="fw-bold text-white mb-0" id="earthPaneTitle"><i class="fa-solid fa-tower-broadcast me-2"></i>مشتركين إيرثلنك أمجد</h5>
-              <button class="btn btn-outline-warning btn-sm py-0 px-2" title="تعديل اسم الخانة" onclick="renameTableTitle('earth')"><i class="fa-solid fa-pen"></i></button>
-            </div>
+            <h5 class="fw-bold text-info mb-0" id="earthPaneTitle"><i class="fa-solid fa-tower-broadcast me-2"></i>مشتركين إيرثلنك أمجد</h5>
             <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
               <div class="search-box flex-grow-1">
                 <input type="text" id="searchEarth" placeholder="بحث عن اسم أو يوزر..." onkeyup="renderEarthTable()">
               </div>
               <button class="btn btn-action-add btn-sm" onclick="addEarthRow()"><i class="fa-solid fa-plus me-1"></i> إضافة</button>
-              <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
             </div>
           </div>
           <div class="table-responsive">
             <table class="table table-dark-custom text-center align-middle">
               <thead>
                 <tr>
-                  <th style="width: 40px;">#</th>
+                  <th style="width: 35px;">#</th>
                   <th>اسم المشترك / اليوزر</th>
                   <th>نوع الاشتراك</th>
                   <th>سعر الاشتراك</th>
-                  <th style="min-width: 210px;">تاريخ التفعيل (يوم / شهر / سنة)</th>
-                  <th style="width: 50px;">إجراء</th>
+                  <th style="min-width: 170px;">التاريخ (يوم/شهر/سنة)</th>
+                  <th style="width: 45px;">حذف</th>
                 </tr>
               </thead>
               <tbody id="earthTbody"></tbody>
@@ -552,34 +464,27 @@
         </div>
       </div>
 
-      <!-- 3. سبيد أبراج -->
       <div class="tab-pane-content d-none" id="speed-pane">
         <div class="content-card">
           <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-            <div class="d-flex align-items-center gap-2">
-              <h5 class="fw-bold text-white mb-0" id="speedPaneTitle"><i class="fa-solid fa-wifi me-2"></i>اشتراكات ابراج سبيد</h5>
-              <button class="btn btn-outline-warning btn-sm py-0 px-2" title="تعديل اسم الخانة" onclick="renameTableTitle('speed')"><i class="fa-solid fa-pen"></i></button>
-            </div>
+            <h5 class="fw-bold text-info mb-0" id="speedPaneTitle"><i class="fa-solid fa-wifi me-2"></i>اشتراكات ابراج سبيد</h5>
             <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
               <div class="search-box flex-grow-1">
                 <input type="text" id="searchSpeed" placeholder="بحث عن اسم أو يوزر..." onkeyup="renderSpeedTable()">
               </div>
               <button class="btn btn-action-add btn-sm" onclick="addSpeedRow()"><i class="fa-solid fa-plus me-1"></i> إضافة</button>
-              <button class="btn btn-telegram-action btn-sm" onclick="sendSpeedTableToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال لتلجرام</button>
-              <button class="btn btn-print-action btn-sm" onclick="printReport('تقرير مشتركين أبراج سبيد', speedData, false)"><i class="fa-solid fa-file-pdf me-1"></i> طباعة / حفظ PDF</button>
-              <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
             </div>
           </div>
           <div class="table-responsive">
             <table class="table table-dark-custom text-center align-middle">
               <thead>
                 <tr>
-                  <th style="width: 40px;">#</th>
+                  <th style="width: 35px;">#</th>
                   <th>اسم المشترك / اليوزر</th>
                   <th>نوع الاشتراك</th>
                   <th>سعر الاشتراك</th>
-                  <th style="min-width: 210px;">تاريخ التفعيل (يوم / شهر / سنة)</th>
-                  <th style="width: 50px;">إجراء</th>
+                  <th style="min-width: 170px;">التاريخ (يوم/شهر/سنة)</th>
+                  <th style="width: 45px;">حذف</th>
                 </tr>
               </thead>
               <tbody id="speedTbody"></tbody>
@@ -588,31 +493,18 @@
         </div>
       </div>
 
-      <!-- 4. تفعيلات النقد -->
       <div class="tab-pane-content d-none" id="cash-pane">
         <div class="content-card">
-          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-            <h5 class="fw-bold text-white mb-0"><i class="fa-solid fa-circle-check me-2 text-success"></i>تفعيلات النقد (جدول المبيعات)</h5>
-            <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
-              <div class="search-box flex-grow-1">
-                <input type="text" id="searchCash" placeholder="بحث..." onkeyup="renderCashTable()">
-              </div>
-              <button class="btn btn-telegram-action btn-sm" onclick="sendTodaySalesToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال لتلجرام</button>
-              <button class="btn btn-print-action btn-sm" onclick="printReport('تقرير تفعيلات النقد', cashActivations, false)"><i class="fa-solid fa-file-pdf me-1"></i> طباعة / حفظ PDF</button>
-              <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
-            </div>
-          </div>
+          <h5 class="fw-bold text-success mb-3"><i class="fa-solid fa-circle-check me-2"></i>تفعيلات النقد (جدول المبيعات)</h5>
           <div class="table-responsive">
             <table class="table table-dark-custom text-center align-middle">
               <thead>
                 <tr>
-                  <th style="width: 40px;">ت</th>
-                  <th>1. اسم المشترك / اليوزر</th>
-                  <th>2. نوع الاشتراك</th>
-                  <th>3. سعر الاشتراك</th>
-                  <th>4. نقد / فقد</th>
-                  <th>5. المجموع</th>
-                  <th style="width: 50px;">إجراء</th>
+                  <th>ت</th>
+                  <th>اسم المشترك / اليوزر</th>
+                  <th>نوع الاشتراك</th>
+                  <th>سعر الاشتراك</th>
+                  <th>المجموع</th>
                 </tr>
               </thead>
               <tbody id="cashTbody"></tbody>
@@ -621,32 +513,18 @@
         </div>
       </div>
 
-      <!-- 5. تفعيلات الفقد -->
       <div class="tab-pane-content d-none" id="debt-pane">
         <div class="content-card">
-          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-            <h5 class="fw-bold text-white mb-0"><i class="fa-solid fa-hourglass-half me-2 text-warning"></i>تفعيلات الفقد (الآجل)</h5>
-            <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
-              <div class="search-box flex-grow-1">
-                <input type="text" id="searchDebt" placeholder="بحث..." onkeyup="renderDebtTable()">
-              </div>
-              <button class="btn btn-telegram-action btn-sm" onclick="sendDebtSalesToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال لتلجرام</button>
-              <button class="btn btn-print-action btn-sm" onclick="printReport('تقرير تفعيلات الفقد', debtActivations, false)"><i class="fa-solid fa-file-pdf me-1"></i> طباعة / حفظ PDF</button>
-              <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
-            </div>
-          </div>
+          <h5 class="fw-bold text-warning mb-3"><i class="fa-solid fa-hourglass-half me-2"></i>تفعيلات الفقد (الآجل)</h5>
           <div class="table-responsive">
             <table class="table table-dark-custom text-center align-middle">
               <thead>
                 <tr>
-                  <th style="width: 40px;">ت</th>
-                  <th>1. اسم المشترك / اليوزر</th>
-                  <th>2. نوع الاشتراك</th>
-                  <th>3. سعر الاشتراك</th>
-                  <th>4. نقد / فقد</th>
-                  <th>5. المجموع</th>
+                  <th>ت</th>
+                  <th>اسم المشترك / اليوزر</th>
+                  <th>نوع الاشتراك</th>
+                  <th>السعر</th>
                   <th>تسديد</th>
-                  <th style="width: 50px;">إجراء</th>
                 </tr>
               </thead>
               <tbody id="debtTbody"></tbody>
@@ -655,31 +533,18 @@
         </div>
       </div>
 
-      <!-- 6. المبالغ المسددة -->
       <div class="tab-pane-content d-none" id="paid-pane">
         <div class="content-card">
-          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-            <h5 class="fw-bold text-white mb-0"><i class="fa-solid fa-receipt me-2 text-info"></i>المبالغ المسددة (تقارير التسديد)</h5>
-            <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
-              <div class="search-box flex-grow-1">
-                <input type="text" id="searchPaid" placeholder="بحث..." onkeyup="renderPaidTable()">
-              </div>
-              <button class="btn btn-telegram-action btn-sm" onclick="sendPaidSalesToTelegram()"><i class="fa-brands fa-telegram me-1"></i> إرسال لتلجرام</button>
-              <button class="btn btn-print-action btn-sm" onclick="printReport('جدول تقارير التسديد', paidActivations, true)"><i class="fa-solid fa-file-pdf me-1"></i> طباعة / حفظ PDF</button>
-              <button class="btn btn-action-save btn-sm" onclick="manualSaveAlert()"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ السحابي</button>
-            </div>
-          </div>
+          <h5 class="fw-bold text-info mb-3"><i class="fa-solid fa-receipt me-2"></i>المبالغ المسددة</h5>
           <div class="table-responsive">
             <table class="table table-dark-custom text-center align-middle">
               <thead>
                 <tr>
-                  <th style="width: 40px;">ت</th>
-                  <th>1. اسم المشترك / اليوزر</th>
-                  <th>2. نوع التسديد</th>
-                  <th>3. المبلغ المسدد</th>
-                  <th>4. الحالة</th>
-                  <th>5. المجموع</th>
-                  <th style="width: 50px;">إجراء</th>
+                  <th>ت</th>
+                  <th>اسم المشترك / اليوزر</th>
+                  <th>نوع التسديد</th>
+                  <th>المبلغ</th>
+                  <th>الحالة</th>
                 </tr>
               </thead>
               <tbody id="paidTbody"></tbody>
@@ -687,62 +552,26 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </div>
 
-<!-- Modal فتح حسابك على الكمبيوتر -->
-<div class="modal fade" id="desktopModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content modal-content-custom">
-      <div class="modal-header border-secondary">
-        <h5 class="modal-title fw-bold text-white"><i class="fa-solid fa-desktop me-2"></i>فتح حسابك على متصفح الكمبيوتر</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body text-center">
-        <p class="text-white small mb-3">يمكنك الدخول إلى حسابك المعزول من متصفح الكمبيوتر عبر:</p>
-        <div class="p-3 mb-3 rounded-3" style="background: rgba(2, 6, 23, 0.6); border: 1px solid var(--border-color);">
-          <label class="form-label text-warning font-bold mb-1"><i class="fa-solid fa-envelope me-1"></i> البريد المربوط:</label>
-          <div class="fw-bold text-white fs-5" id="pcAccountEmailDisplay">---</div>
-        </div>
-        <div class="mb-3">
-          <label class="form-label text-white font-bold mb-1"><i class="fa-solid fa-link me-1"></i> رابط البرنامج المباشر:</label>
-          <div class="input-group">
-            <input type="text" id="pcLinkInput" class="form-control table-input text-center text-white" readonly>
-            <button class="btn btn-action-add" onclick="copyPcLink()"><i class="fa-solid fa-copy me-1"></i> نسخ الرابط</button>
-          </div>
-        </div>
-        <div class="my-3">
-          <span class="text-white small d-block mb-2"><i class="fa-solid fa-qrcode me-1"></i> مسح كود QR:</span>
-          <div id="qrcodeContainer" class="d-flex justify-content-center"></div>
-        </div>
-      </div>
-      <div class="modal-footer border-secondary justify-content-between">
-        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">إغلاق</button>
-        <a id="openDirectPcBtn" href="#" target="_blank" class="btn btn-pc-sync rounded-pill px-4">
-          <i class="fa-solid fa-external-link me-1"></i> فتح في متصفح جديد الآن
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal اعدادات تلجرام -->
 <div class="modal fade" id="telegramModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-content-custom">
       <div class="modal-header border-secondary">
-        <h5 class="modal-title fw-bold text-white"><i class="fa-brands fa-telegram me-2 text-info"></i>إعدادات إشعارات تلجرام</h5>
+        <h5 class="modal-title fw-bold text-info"><i class="fa-brands fa-telegram me-2"></i>إعدادات إشعارات تلجرام</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="mb-3">
-          <label class="form-label font-bold text-white">توكن البوت (Bot Token):</label>
-          <input type="text" id="tgBotTokenInput" class="form-control table-input text-white">
+          <label class="form-label font-bold">توكن البوت (Bot Token):</label>
+          <input type="text" id="tgBotTokenInput" class="form-control table-input">
         </div>
         <div class="mb-3">
-          <label class="form-label font-bold text-white">شات أيدي القناة / المجموعة (Chat ID):</label>
-          <input type="text" id="tgChatIdInput" class="form-control table-input text-white">
+          <label class="form-label font-bold">شات أيدي القناة (Chat ID):</label>
+          <input type="text" id="tgChatIdInput" class="form-control table-input">
         </div>
       </div>
       <div class="modal-footer border-secondary">
@@ -753,50 +582,29 @@
   </div>
 </div>
 
-<!-- Modal شراء وتفعيل البرنامج -->
-<div class="modal fade" id="buyModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content modal-content-custom">
-      <div class="modal-header border-secondary">
-        <h5 class="modal-title fw-bold text-warning"><i class="fa-solid fa-key me-2"></i>تفعيل البرنامج مدى الحياة</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body text-center">
-        <div class="mb-3">
-          <input type="text" id="activationCodeInput" class="form-control pass-input text-center fs-5 text-white" placeholder="أدخل كود التفعيل...">
-        </div>
-      </div>
-      <div class="modal-footer border-secondary justify-content-center">
-        <button type="button" class="btn btn-action-add px-4" onclick="verifyActivationCode()">تأكيد التفعيل</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal خيارات التسديد -->
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-content-custom">
       <div class="modal-header border-secondary">
-        <h5 class="modal-title fw-bold text-white"><i class="fa-solid fa-wallet me-2"></i>خيارات تسديد الدين</h5>
+        <h5 class="modal-title fw-bold text-info"><i class="fa-solid fa-wallet me-2"></i>تسديد الدين</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <input type="hidden" id="modalDebtId">
         <div class="mb-3 text-center">
           <h6 id="modalCustomerInfo" class="fw-bold text-warning mb-1"></h6>
-          <p id="modalAmountInfo" class="text-white mb-0"></p>
+          <p id="modalAmountInfo" class="text-light mb-0"></p>
         </div>
         <div class="mb-3">
-          <label class="form-label font-bold text-white">نوع التسديد:</label>
-          <select id="payTypeSelect" class="form-select table-input text-white" onchange="togglePartialInput()">
-            <option value="full" class="bg-dark text-white">تسديد المبلغ كاملاً 💵</option>
-            <option value="partial" class="bg-dark text-white">تسديد جزء من المبلغ 🪙</option>
+          <label class="form-label font-bold">نوع التسديد:</label>
+          <select id="payTypeSelect" class="form-select table-input" onchange="togglePartialInput()">
+            <option value="full">تسديد كامل 💵</option>
+            <option value="partial">تسديد جزئي 🪙</option>
           </select>
         </div>
         <div class="mb-3 d-none" id="partialGroup">
-          <label class="form-label text-white">المبلغ المسدد حالياً (د.ع):</label>
-          <input type="number" id="partialAmountInput" class="form-control table-input text-white" placeholder="أدخل المبلغ المسدد">
+          <label class="form-label">المبلغ المسدد حالياً (د.ع):</label>
+          <input type="number" id="partialAmountInput" class="form-control table-input" placeholder="أدخل المبلغ">
         </div>
       </div>
       <div class="modal-footer border-secondary">
@@ -816,23 +624,10 @@
   let TELEGRAM_BOT_TOKEN = "8769810627:AAHZGUmLmVeiYNYn1X2XhtWyaBjd1iW5-g0";
   let TELEGRAM_CHAT_ID = "-1003786170089";
 
-  function sendTelegramNotification(message) {
-    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
-    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-    fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message, parse_mode: 'HTML' })
-    }).catch(err => console.error("Error sending Telegram message:", err));
-  }
-
   const MASTER_ACTIVATION_CODE = "20319921992";
   const ADMIN_AUTH_KEY = '20819921998';
 
   let currentEmailKey = "huzt.m1@gmail.com";
-  let currentFullName = "حسين عبد المجيد";
-  let guestTimerInterval = null;
-
   let fiberData = [];
   let earthData = [];
   let speedData = [];
@@ -840,201 +635,30 @@
   let debtActivations = [];
   let paidActivations = [];
 
-  let customTableTitles = {
-    fiber: "1. الكابل الضوئي",
-    earth: "2. أبراج أمجد",
-    speed: "3. أبراج سبيد",
-    fiberPaneHeader: "مشتركين الكابل الضوئي",
-    earthPaneHeader: "مشتركين إيرثلنك أمجد",
-    speedPaneHeader: "اشتراكات ابراج سبيد"
-  };
-
   let paymentModalInstance = null;
-  let buyModalInstance = null;
   let telegramModalInstance = null;
-  let desktopModalInstance = null;
 
   window.addEventListener('DOMContentLoaded', () => {
     paymentModalInstance = new bootstrap.Modal(document.getElementById('paymentModal'));
-    buyModalInstance = new bootstrap.Modal(document.getElementById('buyModal'));
     telegramModalInstance = new bootstrap.Modal(document.getElementById('telegramModal'));
-    desktopModalInstance = new bootstrap.Modal(document.getElementById('desktopModal'));
-    
     document.getElementById('loginEmail').value = "huzt.m1@gmail.com";
-    loadTelegramSettings();
   });
 
   function toggleSubmenu(e) {
-    const submenu = document.getElementById('subscribersSubmenu');
-    submenu.classList.toggle('show');
+    document.getElementById('subscribersSubmenu').classList.toggle('show');
   }
 
   function switchPane(paneId, element) {
     document.querySelectorAll('.tab-pane-content').forEach(p => p.classList.add('d-none'));
     document.getElementById(paneId).classList.remove('d-none');
-
     document.querySelectorAll('.sidebar-link, .submenu-item').forEach(el => el.classList.remove('active'));
     element.classList.add('active');
   }
 
-  function updateHeaderBranding(name) {
-    currentFullName = name || "حسين عبد المجيد";
-    document.getElementById('currentUserName').innerText = currentFullName;
-    document.getElementById('mainBrandTitle').innerHTML = `<i class="fa-solid fa-wifi me-2"></i>أهلاً بك ${currentFullName} لخدمات الإنترنت`;
-    localStorage.setItem(`user_fullname_${currentEmailKey}`, currentFullName);
-  }
-
-  function checkActivationStatus() {
-    const buyBtn = document.getElementById('buyLifetimeBtn');
-    if (currentEmailKey === "huzt.m1@gmail.com") {
-      buyBtn.classList.add('d-none');
-      return;
-    }
-    const isActivated = localStorage.getItem(`is_activated_${currentEmailKey}`);
-    if (isActivated === 'true') {
-      buyBtn.classList.add('d-none');
-    } else {
-      buyBtn.classList.remove('d-none');
-    }
-  }
-
-  function openDesktopModal() {
-    document.getElementById('pcAccountEmailDisplay').innerText = currentEmailKey;
-    const appUrl = window.location.href.split('#')[0] + `#account=${encodeURIComponent(currentEmailKey)}`;
-    document.getElementById('pcLinkInput').value = appUrl;
-    document.getElementById('openDirectPcBtn').href = appUrl;
-
-    const qrContainer = document.getElementById('qrcodeContainer');
-    qrContainer.innerHTML = '';
-    new QRCode(qrContainer, {
-      text: appUrl,
-      width: 140,
-      height: 140,
-      colorDark : "#020617",
-      colorLight : "#ffffff",
-      correctLevel : QRCode.CorrectLevel.H
-    });
-
-    desktopModalInstance.show();
-  }
-
-  function copyPcLink() {
-    const input = document.getElementById('pcLinkInput');
-    input.select();
-    input.setSelectionRange(0, 99999);
-    navigator.clipboard.writeText(input.value).then(() => {
-      alert("تم نسخ رابط متصفح الكمبيوتر الخاص بهذا الحساب بنجاح!");
-    });
-  }
-
-  function renameTableTitle(type) {
-    let currentName = "";
-    if (type === 'fiber') currentName = customTableTitles.fiberPaneHeader;
-    if (type === 'earth') currentName = customTableTitles.earthPaneHeader;
-    if (type === 'speed') currentName = customTableTitles.speedPaneHeader;
-
-    let newName = prompt("أدخل الاسم الجديد للخانة / الجدول:", currentName);
-    if (newName && newName.trim() !== "") {
-      if (type === 'fiber') {
-        customTableTitles.fiberPaneHeader = newName.trim();
-        customTableTitles.fiber = "1. " + newName.trim();
-        document.getElementById('fiberTabTitleText').innerText = customTableTitles.fiber;
-        document.getElementById('fiberPaneTitle').innerHTML = `<i class="fa-solid fa-cable-car me-2"></i>${newName.trim()}`;
-      } else if (type === 'earth') {
-        customTableTitles.earthPaneHeader = newName.trim();
-        customTableTitles.earth = "2. " + newName.trim();
-        document.getElementById('earthPaneTitle').innerHTML = `<i class="fa-solid fa-tower-broadcast me-2"></i>${newName.trim()}`;
-      } else if (type === 'speed') {
-        customTableTitles.speedPaneHeader = newName.trim();
-        customTableTitles.speed = "3. " + newName.trim();
-        document.getElementById('speedPaneTitle').innerHTML = `<i class="fa-solid fa-wifi me-2"></i>${newName.trim()}`;
-      }
-      saveCustomTitles();
-      saveDataToCloud();
-      alert("تم تغيير اسم الخانة وتحديثه بنجاح!");
-    }
-  }
-
-  function saveCustomTitles() {
-    localStorage.setItem(`custom_titles_${currentEmailKey}`, JSON.stringify(customTableTitles));
-  }
-
-  function loadCustomTitles() {
-    const saved = localStorage.getItem(`custom_titles_${currentEmailKey}`);
-    if (saved) {
-      try {
-        customTableTitles = JSON.parse(saved);
-        if (customTableTitles.fiber) {
-          document.getElementById('fiberTabTitleText').innerText = customTableTitles.fiber;
-          document.getElementById('fiberPaneTitle').innerHTML = `<i class="fa-solid fa-cable-car me-2"></i>${customTableTitles.fiberPaneHeader}`;
-        }
-        if (customTableTitles.earth) {
-          document.getElementById('earthPaneTitle').innerHTML = `<i class="fa-solid fa-tower-broadcast me-2"></i>${customTableTitles.earthPaneHeader}`;
-        }
-        if (customTableTitles.speed) {
-          document.getElementById('speedPaneTitle').innerHTML = `<i class="fa-solid fa-wifi me-2"></i>${customTableTitles.speedPaneHeader}`;
-        }
-      } catch(e) {}
-    }
-  }
-
-  function openTelegramModal() {
-    document.getElementById('tgBotTokenInput').value = TELEGRAM_BOT_TOKEN;
-    document.getElementById('tgChatIdInput').value = TELEGRAM_CHAT_ID;
-    telegramModalInstance.show();
-  }
-
-  function saveTelegramSettings() {
-    const token = document.getElementById('tgBotTokenInput').value.trim();
-    const chatId = document.getElementById('tgChatIdInput').value.trim();
-    if(!token || !chatId) {
-      alert("يرجى ملء جميع الحقول!");
-      return;
-    }
-    TELEGRAM_BOT_TOKEN = token;
-    TELEGRAM_CHAT_ID = chatId;
-    localStorage.setItem(`tg_token_${currentEmailKey}`, token);
-    localStorage.setItem(`tg_chat_${currentEmailKey}`, chatId);
-    telegramModalInstance.hide();
-    saveDataToCloud();
-    alert("تم حفظ إعدادات تلجرام بنجاح!");
-  }
-
-  function loadTelegramSettings() {
-    const savedToken = localStorage.getItem(`tg_token_${currentEmailKey}`);
-    const savedChat = localStorage.getItem(`tg_chat_${currentEmailKey}`);
-    if (savedToken) TELEGRAM_BOT_TOKEN = savedToken;
-    if (savedChat) TELEGRAM_CHAT_ID = savedChat;
-  }
-
-  function switchAuthTab(tab) {
-    if (tab === 'login') {
-      document.getElementById('tabLoginBtn').classList.add('active');
-      document.getElementById('tabRegBtn').classList.remove('active');
-      document.getElementById('loginForm').classList.remove('d-none');
-      document.getElementById('regForm').classList.add('d-none');
-    } else {
-      document.getElementById('tabRegBtn').classList.add('active');
-      document.getElementById('tabLoginBtn').classList.remove('active');
-      document.getElementById('regForm').classList.remove('d-none');
-      document.getElementById('loginForm').classList.add('d-none');
-    }
-  }
-
   function handleLogin(e) {
     e.preventDefault();
-    const email = document.getElementById('loginEmail').value.trim();
     const pass = document.getElementById('loginPass').value.trim();
-    
     if (pass === ADMIN_AUTH_KEY || pass === MASTER_ACTIVATION_CODE) {
-      currentEmailKey = email || "huzt.m1@gmail.com";
-      const savedName = localStorage.getItem(`user_fullname_${currentEmailKey}`) || (currentEmailKey === "huzt.m1@gmail.com" ? "حسين عبد المجيد" : currentEmailKey.split('@')[0]);
-      
-      updateHeaderBranding(savedName);
-      loadTelegramSettings();
-      loadCustomTitles();
-      checkActivationStatus();
-      
       document.getElementById('lockScreen').classList.add('d-none');
       document.getElementById('mainContent').classList.remove('d-none');
       loadDataFromCloud();
@@ -1045,59 +669,27 @@
 
   function handleRegister(e) {
     e.preventDefault();
-    const name = document.getElementById('regName').value.trim();
-    const email = document.getElementById('regEmail').value.trim();
-    currentEmailKey = email || "huzt.m1@gmail.com";
-    
-    updateHeaderBranding(name);
-    loadTelegramSettings();
-    loadCustomTitles();
-    checkActivationStatus();
-    
     document.getElementById('lockScreen').classList.add('d-none');
     document.getElementById('mainContent').classList.remove('d-none');
-    document.getElementById('guestBanner').classList.remove('d-none');
-    startGuestTimer(900);
     loadDataFromCloud();
   }
 
-  function startGuestTimer(seconds) {
-    let timeLeft = seconds;
-    if (guestTimerInterval) clearInterval(guestTimerInterval);
-    guestTimerInterval = setInterval(() => {
-      let m = Math.floor(timeLeft / 60);
-      let s = timeLeft % 60;
-      document.getElementById('timerCount').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-      if (timeLeft <= 0) {
-        clearInterval(guestTimerInterval);
-        alert('انتهى وقت التجربة المجانية للضيف!');
-        lockSystem();
-      }
-      timeLeft--;
-    }, 1000);
-  }
-
   function lockSystem() {
-    if (guestTimerInterval) clearInterval(guestTimerInterval);
     document.getElementById('mainContent').classList.add('d-none');
     document.getElementById('lockScreen').classList.remove('d-none');
-    document.getElementById('loginPass').value = '';
   }
 
-  function openBuyModal() {
-    buyModalInstance.show();
+  function openTelegramModal() {
+    document.getElementById('tgBotTokenInput').value = TELEGRAM_BOT_TOKEN;
+    document.getElementById('tgChatIdInput').value = TELEGRAM_CHAT_ID;
+    telegramModalInstance.show();
   }
 
-  function verifyActivationCode() {
-    const code = document.getElementById('activationCodeInput').value.trim();
-    if (code === MASTER_ACTIVATION_CODE) {
-      alert('تم تفعيل البرنامج بنجاح مدى الحياة!');
-      localStorage.setItem(`is_activated_${currentEmailKey}`, 'true');
-      buyModalInstance.hide();
-      document.getElementById('buyLifetimeBtn').classList.add('d-none');
-    } else {
-      alert('كود التفعيل غير صحيح!');
-    }
+  function saveTelegramSettings() {
+    TELEGRAM_BOT_TOKEN = document.getElementById('tgBotTokenInput').value.trim();
+    TELEGRAM_CHAT_ID = document.getElementById('tgChatIdInput').value.trim();
+    telegramModalInstance.hide();
+    alert("تم حفظ إعدادات تلجرام!");
   }
 
   function loadDataFromCloud() {
@@ -1106,27 +698,21 @@
     })
     .then(res => res.json())
     .then(data => {
-      const allUsersData = data.record || {};
-      const userData = allUsersData[currentEmailKey] || {};
-      
+      const userData = (data.record || {})[currentEmailKey] || {};
       fiberData = userData.fiberData || [];
       earthData = userData.earthData || [];
       speedData = userData.speedData || [];
       cashActivations = userData.cashActivations || [];
       debtActivations = userData.debtActivations || [];
       paidActivations = userData.paidActivations || [];
-      
       renderAllTables();
     })
-    .catch(err => {
-      console.error("Load error:", err);
-      renderAllTables();
-    });
+    .catch(err => renderAllTables());
   }
 
   function manualSaveAlert() {
     saveDataToCloud();
-    alert('تم حفظ جميع البيانات والإعدادات والتغييرات بنجاح على السحابة!');
+    alert('تم حفظ البيانات سحابياً بنجاح!');
   }
 
   function saveDataToCloud() {
@@ -1136,86 +722,42 @@
     .then(res => res.json())
     .then(data => {
       let allUsersData = data.record || {};
-      allUsersData[currentEmailKey] = {
-        fiberData,
-        earthData,
-        speedData,
-        cashActivations,
-        debtActivations,
-        paidActivations,
-        customTableTitles,
-        telegramConfig: { botToken: TELEGRAM_BOT_TOKEN, chatId: TELEGRAM_CHAT_ID }
-      };
-
+      allUsersData[currentEmailKey] = { fiberData, earthData, speedData, cashActivations, debtActivations, paidActivations };
       return fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': JSONBIN_SECRET_KEY
-        },
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_SECRET_KEY },
         body: JSON.stringify(allUsersData)
       });
-    })
-    .catch(err => console.error("Save error:", err));
+    });
   }
 
   function registerActivation(e) {
     e.preventDefault();
     const name = document.getElementById('actName').value.trim();
     const user = document.getElementById('actUser').value.trim();
+    const category = document.getElementById('actCategory').value.trim() || 'ضوئي';
     const amount = parseFloat(document.getElementById('actAmount').value) || 0;
     const type = document.getElementById('actType').value;
-    const nowStr = new Date().toLocaleString('ar-IQ');
+
+    const item = { id: Date.now(), name, user, category, amount, type, day: '', month: '', year: '', serial: '' };
 
     const userLower = user.toLowerCase();
-    let detectedCategory = "ضوئي";
+    if (userLower.includes('amjad')) earthData.push(item);
+    else if (userLower.includes('spdn')) speedData.push(item);
+    else fiberData.push(item);
 
-    if (userLower.includes('amjad')) {
-      detectedCategory = "ابراج امجد ايرث لنك";
-    } else if (userLower.includes('spdn')) {
-      detectedCategory = "ابراج سبيد";
-    } else {
-      detectedCategory = "ضوئي";
-    }
-
-    const item = { id: Date.now(), name, user, category: detectedCategory, amount, type, date: nowStr, day: '', month: '', year: '', serial: '' };
-
-    if (userLower.includes('amjad')) {
-      earthData.push(item);
-    } else if (userLower.includes('spdn')) {
-      speedData.push(item);
-    } else {
-      fiberData.push(item);
-    }
-
-    if (type === 'نقد') {
-      cashActivations.push(item);
-      sendTelegramNotification(`💵 <b>تفعيل نقد جديد:</b>\n1. اسم المشترك: ${name} (${user})\n2. نوع الاشتراك: ${detectedCategory}\n3. سعر الاشتراك: ${amount} د.ع\n4. نوعه: نقد`);
-    } else {
-      debtActivations.push(item);
-      sendTelegramNotification(`⏳ <b>تفعيل فقد جديد:</b>\n1. اسم المشترك: ${name} (${user})\n2. نوع الاشتراك: ${detectedCategory}\n3. سعر الاشتراك: ${amount} د.ع\n4. نوعه: فقد`);
-    }
+    if (type === 'نقد') cashActivations.push(item);
+    else debtActivations.push(item);
 
     e.target.reset();
     renderAllTables();
     saveDataToCloud();
-    alert('تم تسجيل العملية والفرز التلقائي بنجاح!');
+    alert('تم تسجيل العملية بنجاح!');
   }
 
-  function addFiberRow() {
-    fiberData.push({ id: Date.now(), name: '', user: '', category: 'ضوئي', amount: '', serial: '', day: '', month: '', year: '' });
-    renderFiberTable();
-  }
-
-  function addEarthRow() {
-    earthData.push({ id: Date.now(), name: '', user: '', category: 'ابراج امجد ايرث لنك', amount: '', day: '', month: '', year: '' });
-    renderEarthTable();
-  }
-
-  function addSpeedRow() {
-    speedData.push({ id: Date.now(), name: '', user: '', category: 'ابراج سبيد', amount: '', day: '', month: '', year: '' });
-    renderSpeedTable();
-  }
+  function addFiberRow() { fiberData.push({ id: Date.now(), name: '', user: '', category: 'ضوئي', amount: '', serial: '', day: '', month: '', year: '' }); renderFiberTable(); }
+  function addEarthRow() { earthData.push({ id: Date.now(), name: '', user: '', category: 'ابراج امجد', amount: '', day: '', month: '', year: '' }); renderEarthTable(); }
+  function addSpeedRow() { speedData.push({ id: Date.now(), name: '', user: '', category: 'ابراج سبيد', amount: '', day: '', month: '', year: '' }); renderSpeedTable(); }
 
   function renderAllTables() {
     renderFiberTable();
@@ -1236,33 +778,22 @@
         <tr>
           <td>${index + 1}</td>
           <td>
-            <input type="text" class="form-control table-input mb-1 text-white" value="${item.name}" placeholder="اسم المشترك" onchange="updateFiber(${item.id}, 'name', this.value)">
-            <input type="text" class="form-control table-input text-white" value="${item.user}" placeholder="يوزر المشترك" onchange="updateFiber(${item.id}, 'user', this.value)" style="font-size: 0.85rem !important;">
+            <input type="text" class="form-control table-input mb-1" value="${item.name}" placeholder="الاسم" onchange="updateItem(fiberData, ${item.id}, 'name', this.value)">
+            <input type="text" class="form-control table-input text-info" value="${item.user}" placeholder="اليوزر" onchange="updateItem(fiberData, ${item.id}, 'user', this.value)">
           </td>
-          <td><input type="text" class="form-control table-input text-white" value="${item.category || 'ضوئي'}" onchange="updateFiber(${item.id}, 'category', this.value)"></td>
-          <td><input type="number" class="form-control table-input text-white" value="${item.amount}" onchange="updateFiber(${item.id}, 'amount', this.value)"></td>
-          <td><input type="text" class="form-control table-input text-white" value="${item.serial || ''}" onchange="updateFiber(${item.id}, 'serial', this.value)"></td>
+          <td><input type="text" class="form-control table-input" value="${item.category}" onchange="updateItem(fiberData, ${item.id}, 'category', this.value)"></td>
+          <td><input type="number" class="form-control table-input" value="${item.amount}" onchange="updateItem(fiberData, ${item.id}, 'amount', this.value)"></td>
+          <td><input type="text" class="form-control table-input" value="${item.serial || ''}" onchange="updateItem(fiberData, ${item.id}, 'serial', this.value)"></td>
           <td>
             <div class="d-flex gap-1 justify-content-center">
-              <input type="text" class="form-control table-input date-select text-white" placeholder="يوم" value="${item.day || ''}" onchange="updateFiber(${item.id}, 'day', this.value)">
-              <input type="text" class="form-control table-input date-select text-white" placeholder="شهر" value="${item.month || ''}" onchange="updateFiber(${item.id}, 'month', this.value)">
-              <input type="text" class="form-control table-input date-select text-white" placeholder="سنة" value="${item.year || ''}" onchange="updateFiber(${item.id}, 'year', this.value)">
+              <input type="text" class="form-control table-input date-select" placeholder="يوم" value="${item.day || ''}" onchange="updateItem(fiberData, ${item.id}, 'day', this.value)">
+              <input type="text" class="form-control table-input date-select" placeholder="شهر" value="${item.month || ''}" onchange="updateItem(fiberData, ${item.id}, 'month', this.value)">
+              <input type="text" class="form-control table-input date-select" placeholder="سنة" value="${item.year || ''}" onchange="updateItem(fiberData, ${item.id}, 'year', this.value)">
             </div>
           </td>
-          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteFiber(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
+          <td><button class="btn btn-outline-danger btn-sm py-0 px-1" onclick="deleteItem(fiberData, ${item.id}, renderFiberTable)"><i class="fa-solid fa-trash"></i></button></td>
         </tr>`;
     });
-  }
-
-  function updateFiber(id, field, val) {
-    const item = fiberData.find(x => x.id === id);
-    if (item) item[field] = val;
-  }
-
-  function deleteFiber(id) {
-    fiberData = fiberData.filter(x => x.id !== id);
-    renderFiberTable();
-    saveDataToCloud();
   }
 
   function renderEarthTable() {
@@ -1275,32 +806,21 @@
         <tr>
           <td>${index + 1}</td>
           <td>
-            <input type="text" class="form-control table-input mb-1 text-white" value="${item.name}" placeholder="اسم المشترك" onchange="updateEarth(${item.id}, 'name', this.value)">
-            <input type="text" class="form-control table-input text-white" value="${item.user}" placeholder="يوزر المشترك" onchange="updateEarth(${item.id}, 'user', this.value)" style="font-size: 0.85rem !important;">
+            <input type="text" class="form-control table-input mb-1" value="${item.name}" placeholder="الاسم" onchange="updateItem(earthData, ${item.id}, 'name', this.value)">
+            <input type="text" class="form-control table-input text-info" value="${item.user}" placeholder="اليوزر" onchange="updateItem(earthData, ${item.id}, 'user', this.value)">
           </td>
-          <td><input type="text" class="form-control table-input text-white" value="${item.category || 'ابراج امجد ايرث لنك'}" onchange="updateEarth(${item.id}, 'category', this.value)"></td>
-          <td><input type="number" class="form-control table-input text-white" value="${item.amount}" onchange="updateEarth(${item.id}, 'amount', this.value)"></td>
+          <td><input type="text" class="form-control table-input" value="${item.category}" onchange="updateItem(earthData, ${item.id}, 'category', this.value)"></td>
+          <td><input type="number" class="form-control table-input" value="${item.amount}" onchange="updateItem(earthData, ${item.id}, 'amount', this.value)"></td>
           <td>
             <div class="d-flex gap-1 justify-content-center">
-              <input type="text" class="form-control table-input date-select text-white" placeholder="يوم" value="${item.day || ''}" onchange="updateEarth(${item.id}, 'day', this.value)">
-              <input type="text" class="form-control table-input date-select text-white" placeholder="شهر" value="${item.month || ''}" onchange="updateEarth(${item.id}, 'month', this.value)">
-              <input type="text" class="form-control table-input date-select text-white" placeholder="سنة" value="${item.year || ''}" onchange="updateEarth(${item.id}, 'year', this.value)">
+              <input type="text" class="form-control table-input date-select" placeholder="يوم" value="${item.day || ''}" onchange="updateItem(earthData, ${item.id}, 'day', this.value)">
+              <input type="text" class="form-control table-input date-select" placeholder="شهر" value="${item.month || ''}" onchange="updateItem(earthData, ${item.id}, 'month', this.value)">
+              <input type="text" class="form-control table-input date-select" placeholder="سنة" value="${item.year || ''}" onchange="updateItem(earthData, ${item.id}, 'year', this.value)">
             </div>
           </td>
-          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteEarth(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
+          <td><button class="btn btn-outline-danger btn-sm py-0 px-1" onclick="deleteItem(earthData, ${item.id}, renderEarthTable)"><i class="fa-solid fa-trash"></i></button></td>
         </tr>`;
     });
-  }
-
-  function updateEarth(id, field, val) {
-    const item = earthData.find(x => x.id === id);
-    if (item) item[field] = val;
-  }
-
-  function deleteEarth(id) {
-    earthData = earthData.filter(x => x.id !== id);
-    renderEarthTable();
-    saveDataToCloud();
   }
 
   function renderSpeedTable() {
@@ -1313,82 +833,77 @@
         <tr>
           <td>${index + 1}</td>
           <td>
-            <input type="text" class="form-control table-input mb-1 text-white" value="${item.name}" placeholder="اسم المشترك" onchange="updateSpeed(${item.id}, 'name', this.value)">
-            <input type="text" class="form-control table-input text-white" value="${item.user}" placeholder="يوزر المشترك" onchange="updateSpeed(${item.id}, 'user', this.value)" style="font-size: 0.85rem !important;">
+            <input type="text" class="form-control table-input mb-1" value="${item.name}" placeholder="الاسم" onchange="updateItem(speedData, ${item.id}, 'name', this.value)">
+            <input type="text" class="form-control table-input text-info" value="${item.user}" placeholder="اليوزر" onchange="updateItem(speedData, ${item.id}, 'user', this.value)">
           </td>
-          <td><input type="text" class="form-control table-input text-white" value="${item.category || 'ابراج سبيد'}" onchange="updateSpeed(${item.id}, 'category', this.value)"></td>
-          <td><input type="number" class="form-control table-input text-white" value="${item.amount}" onchange="updateSpeed(${item.id}, 'amount', this.value)"></td>
+          <td><input type="text" class="form-control table-input" value="${item.category}" onchange="updateItem(speedData, ${item.id}, 'category', this.value)"></td>
+          <td><input type="number" class="form-control table-input" value="${item.amount}" onchange="updateItem(speedData, ${item.id}, 'amount', this.value)"></td>
           <td>
             <div class="d-flex gap-1 justify-content-center">
-              <input type="text" class="form-control table-input date-select text-white" placeholder="يوم" value="${item.day || ''}" onchange="updateSpeed(${item.id}, 'day', this.value)">
-              <input type="text" class="form-control table-input date-select text-white" placeholder="شهر" value="${item.month || ''}" onchange="updateSpeed(${item.id}, 'month', this.value)">
-              <input type="text" class="form-control table-input date-select text-white" placeholder="سنة" value="${item.year || ''}" onchange="updateSpeed(${item.id}, 'year', this.value)">
+              <input type="text" class="form-control table-input date-select" placeholder="يوم" value="${item.day || ''}" onchange="updateItem(speedData, ${item.id}, 'day', this.value)">
+              <input type="text" class="form-control table-input date-select" placeholder="شهر" value="${item.month || ''}" onchange="updateItem(speedData, ${item.id}, 'month', this.value)">
+              <input type="text" class="form-control table-input date-select" placeholder="سنة" value="${item.year || ''}" onchange="updateItem(speedData, ${item.id}, 'year', this.value)">
             </div>
           </td>
-          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteSpeed(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
+          <td><button class="btn btn-outline-danger btn-sm py-0 px-1" onclick="deleteItem(speedData, ${item.id}, renderSpeedTable)"><i class="fa-solid fa-trash"></i></button></td>
         </tr>`;
     });
-  }
-
-  function updateSpeed(id, field, val) {
-    const item = speedData.find(x => x.id === id);
-    if (item) item[field] = val;
-  }
-
-  function deleteSpeed(id) {
-    speedData = speedData.filter(x => x.id !== id);
-    renderSpeedTable();
-    saveDataToCloud();
   }
 
   function renderCashTable() {
     const tbody = document.getElementById('cashTbody');
     tbody.innerHTML = '';
-    const search = document.getElementById('searchCash').value.toLowerCase();
     cashActivations.forEach((item, index) => {
-      if (search && !item.name.toLowerCase().includes(search) && !item.user.toLowerCase().includes(search)) return;
       tbody.innerHTML += `
         <tr>
           <td>${index + 1}</td>
-          <td>${item.name}<br><span class="text-white" style="font-size:0.85rem; opacity: 0.9;">${item.user}</span></td>
-          <td>${item.category || 'ضوئي'}</td>
-          <td class="text-white fw-bold">${item.amount} د.ع</td>
-          <td><span class="badge bg-success">نقد</span></td>
-          <td class="fw-bold text-white">${item.amount} د.ع</td>
-          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteCash(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
+          <td>${item.name}<br><small class="text-info">${item.user}</small></td>
+          <td>${item.category}</td>
+          <td class="text-success fw-bold">${item.amount} د.ع</td>
+          <td class="fw-bold">${item.amount} د.ع</td>
         </tr>`;
     });
-  }
-
-  function deleteCash(id) {
-    cashActivations = cashActivations.filter(x => x.id !== id);
-    renderCashTable();
-    saveDataToCloud();
   }
 
   function renderDebtTable() {
     const tbody = document.getElementById('debtTbody');
     tbody.innerHTML = '';
-    const search = document.getElementById('searchDebt').value.toLowerCase();
     debtActivations.forEach((item, index) => {
-      if (search && !item.name.toLowerCase().includes(search) && !item.user.toLowerCase().includes(search)) return;
       tbody.innerHTML += `
         <tr>
           <td>${index + 1}</td>
-          <td>${item.name}<br><span class="text-white" style="font-size:0.85rem; opacity: 0.9;">${item.user}</span></td>
-          <td>${item.category || 'ضوئي'}</td>
-          <td class="text-white fw-bold">${item.amount} د.ع</td>
-          <td><span class="badge bg-warning text-dark">فقد</span></td>
-          <td class="fw-bold text-white">${item.amount} د.ع</td>
-          <td><button class="btn btn-action-add btn-sm py-1" onclick="openPaymentModal(${item.id})">تسديد</button></td>
-          <td><button class="btn btn-outline-danger btn-sm" onclick="deleteDebt(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
+          <td>${item.name}<br><small class="text-info">${item.user}</small></td>
+          <td>${item.category}</td>
+          <td class="text-warning fw-bold">${item.amount} د.ع</td>
+          <td><button class="btn btn-action-add btn-sm py-0 px-2" onclick="openPaymentModal(${item.id})">تسديد</button></td>
         </tr>`;
     });
   }
 
-  function deleteDebt(id) {
-    debtActivations = debtActivations.filter(x => x.id !== id);
-    renderDebtTable();
+  function renderPaidTable() {
+    const tbody = document.getElementById('paidTbody');
+    tbody.innerHTML = '';
+    paidActivations.forEach((item, index) => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.name}<br><small class="text-info">${item.user}</small></td>
+          <td>${item.type}</td>
+          <td class="text-info fw-bold">${item.amount} د.ع</td>
+          <td><span class="badge bg-secondary">مسدد</span></td>
+        </tr>`;
+    });
+  }
+
+  function updateItem(arr, id, field, val) {
+    const item = arr.find(x => x.id === id);
+    if (item) item[field] = val;
+  }
+
+  function deleteItem(arr, id, renderFunc) {
+    const idx = arr.findIndex(x => x.id === id);
+    if (idx !== -1) arr.splice(idx, 1);
+    renderFunc();
     saveDataToCloud();
   }
 
@@ -1397,10 +912,7 @@
     if (!debt) return;
     document.getElementById('modalDebtId').value = debt.id;
     document.getElementById('modalCustomerInfo').innerText = `المشترك: ${debt.name} (${debt.user})`;
-    document.getElementById('modalAmountInfo').innerText = `المبلغ المطلوب: ${debt.amount} دينار عراقي`;
-    document.getElementById('payTypeSelect').value = 'full';
-    document.getElementById('partialGroup').classList.add('d-none');
-    document.getElementById('partialAmountInput').value = '';
+    document.getElementById('modalAmountInfo').innerText = `المبلغ المطلوب: ${debt.amount} د.ع`;
     paymentModalInstance.show();
   }
 
@@ -1415,191 +927,21 @@
     const id = parseInt(document.getElementById('modalDebtId').value);
     const debtIndex = debtActivations.findIndex(x => x.id === id);
     if (debtIndex === -1) return;
-
     const debt = debtActivations[debtIndex];
-    const payType = document.getElementById('payTypeSelect').value;
-    let paidAmount = debt.amount;
-
-    if (payType === 'partial') {
-      const partialVal = parseFloat(document.getElementById('partialAmountInput').value) || 0;
-      if (partialVal <= 0 || partialVal > debt.amount) {
-        alert('يرجى إدخال مبلغ تسديد صحيح!');
-        return;
-      }
-      paidAmount = partialVal;
-    }
-
-    const nowStr = new Date().toLocaleString('ar-IQ');
+    
     paidActivations.push({
       id: Date.now(),
       name: debt.name,
       user: debt.user,
-      category: debt.category,
-      amount: paidAmount,
-      type: payType === 'full' ? 'تسديد كامل 💵' : 'تسديد جزئي 🪙',
-      date: nowStr
+      type: 'تسديد',
+      amount: debt.amount
     });
 
-    if (payType === 'full' || paidAmount >= debt.amount) {
-      debtActivations.splice(debtIndex, 1);
-    } else {
-      debt.amount -= paidAmount;
-    }
-
+    debtActivations.splice(debtIndex, 1);
     paymentModalInstance.hide();
     renderAllTables();
     saveDataToCloud();
-    sendTelegramNotification(`💰 <b>تسديد جديد:</b>\n1. اسم المشترك: ${debt.name} (${debt.user})\n2. نوع التسديد: ${payType}\n3. المبلغ المسدد: ${paidAmount} د.ع\n4. الحالة: مسدد`);
-    alert('تم إتمام التسديد بنجاح!');
-  }
-
-  function renderPaidTable() {
-    const tbody = document.getElementById('paidTbody');
-    tbody.innerHTML = '';
-    const search = document.getElementById('searchPaid').value.toLowerCase();
-    paidActivations.forEach((item, index) => {
-      if (search && !item.name.toLowerCase().includes(search) && !item.user.toLowerCase().includes(search)) return;
-      tbody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${item.name}<br><span class="text-white" style="font-size:0.85rem; opacity: 0.9;">${item.user}</span></td>
-          <td>${item.type}</td>
-          <td class="text-white fw-bold">${item.amount} د.ع</td>
-          <td><span class="badge bg-secondary">مسدد</span></td>
-          <td class="fw-bold text-white">${item.amount} د.ع</td>
-          <td><button class="btn btn-outline-danger btn-sm" onclick="deletePaid(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
-        </tr>`;
-    });
-  }
-
-  function deletePaid(id) {
-    paidActivations = paidActivations.filter(x => x.id !== id);
-    renderPaidTable();
-    saveDataToCloud();
-  }
-
-  function sendListReportToTelegram(title, dataRows, isPayment = false) {
-    if (dataRows.length === 0) {
-      alert("لا توجد بيانات لإرسالها!");
-      return;
-    }
-
-    let msg = `📊 <b>${title}</b>\n`;
-    msg += `📅 التاريخ: ${new Date().toLocaleDateString('ar-IQ')}\n`;
-    msg += `-----------------------------------\n`;
-
-    let total = 0;
-    dataRows.forEach((item, index) => {
-      let amt = parseFloat(item.amount) || 0;
-      total += amt;
-      
-      msg += `<b># الترتيب (${index + 1})</b>\n`;
-      msg += `1. اسم المشترك: ${item.name || '---'} (${item.user || '---'})\n`;
-      if (!isPayment) {
-        msg += `2. نوع الاشتراك: ${item.category || 'ضوئي'}\n`;
-        msg += `3. سعر الاشتراك: ${amt} د.ع\n`;
-        msg += `4. نوعه: ${item.type || 'نقد'}\n`;
-      } else {
-        msg += `2. نوع التسديد: ${item.type || 'تسديد'}\n`;
-        msg += `3. المبلغ المسدد: ${amt} د.ع\n`;
-        msg += `4. الحالة: مسدد\n`;
-      }
-      msg += `-----------------------------------\n`;
-    });
-
-    msg += `📌 <b>المجموع الكلي:</b> ${total.toLocaleString()} دينار عراقي`;
-
-    sendTelegramNotification(msg);
-    alert(`تم إرسال تقرير (${title}) إلى تلجرام بنجاح!`);
-  }
-
-  function sendSpeedTableToTelegram() {
-    sendListReportToTelegram("تقرير مشتركين أبراج سبيد", speedData, false);
-  }
-
-  function sendTodaySalesToTelegram() {
-    sendListReportToTelegram("تقرير تفعيلات النقد", cashActivations, false);
-  }
-
-  function sendDebtSalesToTelegram() {
-    sendListReportToTelegram("تقرير تفعيلات الفقد", debtActivations, false);
-  }
-
-  function sendPaidSalesToTelegram() {
-    sendListReportToTelegram("جدول تقارير التسديد", paidActivations, true);
-  }
-
-  function printReport(title, dataRows, isPayment = false) {
-    if (dataRows.length === 0) {
-      alert("لا توجد بيانات لطباعتها!");
-      return;
-    }
-
-    let printWindow = window.open('', '_blank');
-    let html = `
-      <html lang="ar" dir="rtl">
-      <head>
-        <meta charset="UTF-8">
-        <title>${title}</title>
-        <style>
-          body { font-family: 'Cairo', Tahoma, Arial, sans-serif; padding: 20px; color: #000; direction: rtl; }
-          h2 { text-align: center; margin-bottom: 5px; color: #0f172a; }
-          .date { text-align: center; font-size: 14px; color: #555; margin-bottom: 20px; }
-          table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-          th, td { border: 1px solid #333; padding: 10px; text-align: center; font-size: 14px; }
-          th { background-color: #f1f5f9; color: #000; font-weight: bold; }
-          .total-box { margin-top: 20px; text-align: left; font-size: 16px; font-weight: bold; }
-          @media print { body { padding: 0; } button { display: none; } }
-        </style>
-      </head>
-      <body>
-        <h2>${currentFullName} لخدمات الإنترنت - ${title}</h2>
-        <div class="date">تاريخ التقرير: ${new Date().toLocaleDateString('ar-IQ')}</div>
-        <table>
-          <thead>
-            <tr>
-              <th>ت</th>
-              <th>1. اسم المشترك / اليوزر</th>
-              <th>2. ${isPayment ? 'نوع التسديد' : 'نوع الاشتراك'}</th>
-              <th>3. ${isPayment ? 'المبلغ المسدد' : 'سعر الاشتراك'}</th>
-              <th>4. ${isPayment ? 'الحالة' : 'نقد / فقد'}</th>
-              <th>5. المجموع</th>
-            </tr>
-          </thead>
-          <tbody>
-    `;
-
-    let total = 0;
-    dataRows.forEach((item, index) => {
-      let amt = parseFloat(item.amount) || 0;
-      total += amt;
-      html += `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${item.name || '---'}<br><small style="color:#0088cc;">${item.user || ''}</small></td>
-          <td>${item.category || item.type || '---'}</td>
-          <td>${amt.toLocaleString()} د.ع</td>
-          <td>${isPayment ? 'مسدد' : (item.type || 'نقد')}</td>
-          <td><b>${amt.toLocaleString()} د.ع</b></td>
-        </tr>
-      `;
-    });
-
-    html += `
-          </tbody>
-        </table>
-        <div class="total-box">
-          المجموع الكلي: ${total.toLocaleString()} دينار عراقي
-        </div>
-        <div style="margin-top: 30px; text-align: center;">
-          <button onclick="window.print()" style="padding: 10px 25px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">طباعة أو حفظ PDF</button>
-        </div>
-      </body>
-      </html>
-    `;
-
-    printWindow.document.write(html);
-    printWindow.document.close();
+    alert('تم التسديد بنجاح!');
   }
 </script>
 
