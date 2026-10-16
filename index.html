@@ -150,7 +150,6 @@
       margin-top: 10px;
     }
 
-    /* تحسين التنقل للأجهزة الذكية لمنع التداخل والتدرج السيء */
     .nav-pills {
       gap: 6px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -769,16 +768,33 @@
   let TELEGRAM_CHAT_ID = "";
 
   function sendTelegramNotification(message) {
-    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+    const token = localStorage.getItem(`tg_token_${currentEmailKey}`) || TELEGRAM_BOT_TOKEN;
+    const chatId = localStorage.getItem(`tg_chat_${currentEmailKey}`) || TELEGRAM_CHAT_ID;
+
+    if (!token || !chatId) {
       alert("⚠️ يرجى ضبط إعدادات التليجرام (التوكن والشات آيدي) أولاً من زر 'تلجرام' في الأعلى!");
       return;
     }
-    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+    
+    const url = `https://api.telegram.org/bot${token}/sendMessage`;
+    
     fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message, parse_mode: 'HTML' })
-    }).catch(err => console.error(err));
+      body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'HTML' })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.ok) {
+        alert("✅ تم إرسال الإشعار إلى تلجرام بنجاح!");
+      } else {
+        alert("❌ خطأ من تلجرام: " + (data.description || "يرجى التحقق من التوكن والشات آيدي"));
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert("❌ حدث خطأ في الاتصال بالشبكة أو سيرفر تلجرام.");
+    });
   }
 
   const MASTER_ACTIVATION_CODE = "20319921992";
