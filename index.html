@@ -177,6 +177,9 @@
       font-size: 0.9rem;
       white-space: nowrap;
       transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .nav-pills .nav-link:hover {
@@ -189,6 +192,21 @@
       color: #fff;
       border-color: transparent;
       box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35);
+    }
+
+    .tab-edit-icon {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      cursor: pointer;
+      padding: 3px 6px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      transition: all 0.2s;
+    }
+
+    .tab-edit-icon:hover {
+      opacity: 1;
+      background: rgba(255, 255, 255, 0.25);
     }
 
     .content-card {
@@ -226,6 +244,14 @@
       vertical-align: middle;
       border-color: rgba(255, 255, 255, 0.05);
       padding: 10px 12px;
+    }
+
+    /* نص التاريخ والوقت باللون الأبيض الناصع */
+    .date-time-cell {
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      font-size: 0.92rem;
+      text-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
     }
 
     .table-input {
@@ -496,6 +522,29 @@
   </div>
 </div>
 
+<!-- مودال تغيير اسم الخانة/التبويب بشكل احترافي -->
+<div class="modal fade" id="renameTabModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-content-custom">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title fw-bold text-info"><i class="fa-solid fa-pen-to-square me-2"></i>تغيير اسم الخانة</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editTabId">
+        <div class="mb-3 text-start">
+          <label class="form-label small text-muted">اسم الخانة الجديد:</label>
+          <input type="text" id="newTabNameInput" class="form-control table-input" placeholder="أدخل اسم الخانة الجديد...">
+        </div>
+      </div>
+      <div class="modal-footer border-secondary">
+        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">إلغاء</button>
+        <button type="button" class="btn btn-action-add" onclick="submitTabRename()">حفظ الاسم الجديد <i class="fa-solid fa-check ms-1"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="purchaseModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-content-custom text-center p-3">
@@ -696,20 +745,24 @@
     </form>
   </div>
 
+  <!-- قائمة التبويبات المحدثة بخيارات تعديل احترافية -->
   <ul class="nav nav-pills mb-3" id="mainTabs" role="tablist">
     <li class="nav-item">
       <button class="nav-link active" id="fiber-tab" data-bs-toggle="tab" data-bs-target="#fiber-pane">
-        <i class="fa-solid fa-network-wired me-1"></i> 1. <span id="tabName1" contenteditable="true" onblur="saveTabName(1, this.innerText)">مشتركين الكابل الضوئي</span> <i class="fa-solid fa-pen ms-1" style="font-size:0.7rem; opacity:0.6;"></i>
+        <i class="fa-solid fa-network-wired me-1"></i> 1. <span id="tabName1">مشتركين الكابل الضوئي</span>
+        <i class="fa-solid fa-pen-to-square tab-edit-icon ms-1" title="تغير الاسم" onclick="openRenameModal(1, event)"></i>
       </button>
     </li>
     <li class="nav-item">
       <button class="nav-link" id="earth-tab" data-bs-toggle="tab" data-bs-target="#earth-pane">
-        <i class="fa-solid fa-tower-cell me-1"></i> 2. <span id="tabName2" contenteditable="true" onblur="saveTabName(2, this.innerText)">مشتركين إيرثلنك أمجد</span> <i class="fa-solid fa-pen ms-1" style="font-size:0.7rem; opacity:0.6;"></i>
+        <i class="fa-solid fa-tower-cell me-1"></i> 2. <span id="tabName2">مشتركين إيرثلنك أمجد</span>
+        <i class="fa-solid fa-pen-to-square tab-edit-icon ms-1" title="تغير الاسم" onclick="openRenameModal(2, event)"></i>
       </button>
     </li>
     <li class="nav-item">
       <button class="nav-link" id="speed-tab" data-bs-toggle="tab" data-bs-target="#speed-pane">
-        <i class="fa-solid fa-broadcast-tower me-1"></i> 3. <span id="tabName3" contenteditable="true" onblur="saveTabName(3, this.innerText)">مشتركين أبراج سبيد</span> <i class="fa-solid fa-pen ms-1" style="font-size:0.7rem; opacity:0.6;"></i>
+        <i class="fa-solid fa-broadcast-tower me-1"></i> 3. <span id="tabName3">مشتركين أبراج سبيد</span>
+        <i class="fa-solid fa-pen-to-square tab-edit-icon ms-1" title="تغير الاسم" onclick="openRenameModal(3, event)"></i>
       </button>
     </li>
     <li class="nav-item">
@@ -1021,6 +1074,7 @@
   let telegramModalInstance = null;
   let changePasswordModalInstance = null;
   let desktopLinkModalInstance = null;
+  let renameTabModalInstance = null;
 
   let fiberData = [];
   let earthData = [];
@@ -1039,6 +1093,7 @@
     telegramModalInstance = new bootstrap.Modal(document.getElementById('telegramSettingsModal'));
     changePasswordModalInstance = new bootstrap.Modal(document.getElementById('changePasswordModal'));
     desktopLinkModalInstance = new bootstrap.Modal(document.getElementById('desktopLinkModal'));
+    renameTabModalInstance = new bootstrap.Modal(document.getElementById('renameTabModal'));
 
     const urlParams = new URLSearchParams(window.location.search);
     const paramEmail = urlParams.get('email');
@@ -1478,11 +1533,25 @@
     alert("تم حفظ جميع المتغيرات والمشتركين بنجاح تام! 🌐✅");
   }
 
-  function saveTabName(tabIndex, newName) {
-    if (!newName.trim()) return;
-    customTabNames[tabIndex] = newName.trim();
+  /* الاستدعاء الاحترافي لتعديل اسم الخانة عن طريق المودال */
+  function openRenameModal(tabIndex, e) {
+    if (e) e.stopPropagation();
+    document.getElementById('editTabId').value = tabIndex;
+    document.getElementById('newTabNameInput').value = customTabNames[tabIndex] || '';
+    if (renameTabModalInstance) renameTabModalInstance.show();
+  }
+
+  function submitTabRename() {
+    const tabIndex = document.getElementById('editTabId').value;
+    const newName = document.getElementById('newTabNameInput').value.trim();
+    if (!newName) {
+      alert("يرجى أدخال اسم صحيح!");
+      return;
+    }
+    customTabNames[tabIndex] = newName;
     updateTabNamesUI();
     saveAllSystemDataCloudAndLocal();
+    if (renameTabModalInstance) renameTabModalInstance.hide();
   }
 
   function updateTabNamesUI() {
@@ -1673,7 +1742,7 @@
     renderFiberTable();
     renderEarthTable();
     renderSpeedTable();
-    renderPaidTable(); // تحديث جدول تقرير مبيعات اليوم فورا عند التفعيل
+    renderPaidTable();
 
     const activationForm = document.getElementById('activationForm');
     if (activationForm) activationForm.reset();
@@ -1998,6 +2067,7 @@
     renderSpeedTable();
   }
 
+  /* عرض جدول النقد مع إضافة الفئة الناصعة البياض للتاريخ والوقت */
   function renderCashTable() {
     const searchEl = document.getElementById('searchCash');
     const query = searchEl ? searchEl.value.toLowerCase() : '';
@@ -2014,7 +2084,7 @@
           <td>${item.user || '-'}</td>
           <td>${item.cat || '-'}</td>
           <td class="text-success fw-bold">${Number(item.price || 0).toLocaleString()} د.ع</td>
-          <td class="small text-muted">${item.date}</td>
+          <td class="date-time-cell">${item.date}</td>
           <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteCashItem(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
         </tr>
       `;
@@ -2029,7 +2099,7 @@
         cashActivations.splice(idx, 1);
         saveAllSystemDataCloudAndLocal();
         renderCashTable();
-        renderPaidTable(); // تحديث جدول التقرير السادس فور الحذف
+        renderPaidTable();
 
         const now = new Date();
         const dateStr = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
@@ -2045,6 +2115,7 @@
     }
   }
 
+  /* عرض جدول الفقد مع إضافة الفئة الناصعة البياض للتاريخ والوقت */
   function renderDebtTable() {
     const searchEl = document.getElementById('searchDebt');
     const query = searchEl ? searchEl.value.toLowerCase() : '';
@@ -2061,7 +2132,7 @@
           <td>${item.user || '-'}</td>
           <td>${item.cat || '-'}</td>
           <td><input class="form-control table-input" value="${item.price}" onchange="updateDebtPrice(${item.id}, this.value)"></td>
-          <td class="small text-muted">${item.date}</td>
+          <td class="date-time-cell">${item.date}</td>
           <td>
             <button class="btn btn-success btn-sm rounded-pill px-2 py-0" onclick="openPaymentModal(${item.id})">
               تسديد <i class="fa-solid fa-money-check-dollar ms-1"></i>
@@ -2079,7 +2150,7 @@
     const oldPrice = item.price;
     item.price = newPrice;
     saveAllSystemDataCloudAndLocal();
-    renderPaidTable(); // تحديث جدول التقرير السادس عند التعديل
+    renderPaidTable();
 
     const now = new Date();
     const dateStr = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
@@ -2103,7 +2174,7 @@
         debtActivations.splice(idx, 1);
         saveAllSystemDataCloudAndLocal();
         renderDebtTable();
-        renderPaidTable(); // تحديث جدول التقرير السادس فور الحذف
+        renderPaidTable();
 
         const now = new Date();
         const dateStr = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
@@ -2121,7 +2192,7 @@
     }
   }
 
-  /* الدالة المحدثة بالكامل لدمج وعرض (النقد + الفقد + التسديدات) فوراً في جدول الواجهة */
+  /* عرض تقرير مبيعات اليوم بالكامل وجعل التاريخ والوقت أبيض ناصع */
   function renderPaidTable() {
     const searchEl = document.getElementById('searchPaid');
     const query = searchEl ? searchEl.value.toLowerCase() : '';
@@ -2179,7 +2250,6 @@
     // ترتيب المبيعات حسب الأحدث تاريخاً
     combinedList.sort((a, b) => b.timestamp - a.timestamp);
 
-    // تصفية وعرض العناصر في الجدول
     const filtered = combinedList.filter(x => 
       x.name.toLowerCase().includes(query) || 
       x.user.toLowerCase().includes(query) || 
@@ -2201,7 +2271,7 @@
           <td>${item.cat}</td>
           <td class="text-info fw-bold">${item.amount.toLocaleString()} د.ع</td>
           <td>${item.typeBadge}</td>
-          <td class="small text-muted">${item.date}</td>
+          <td class="date-time-cell">${item.date}</td>
         </tr>
       `;
     });
