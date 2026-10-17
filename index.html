@@ -423,7 +423,7 @@
     <div class="tab-content" id="authTabsContent">
       <!-- نافذة تسجيل الدخول -->
       <div class="tab-pane fade show active" id="loginTabPane" role="tabpanel">
-        <form onsubmit="handleLogin(event)">
+        <form id="loginForm" onsubmit="handleLogin(event)">
           <div class="mb-2 text-start">
             <label class="small text-muted mb-1">البريد الإلكتروني:</label>
             <input type="email" id="loginEmail" class="form-control auth-input" placeholder="example@gmail.com" required>
@@ -444,7 +444,7 @@
 
       <!-- نافذة التسجيل الجديد (تمنح 3 أيام تجريبية) -->
       <div class="tab-pane fade" id="registerTabPane" role="tabpanel">
-        <form onsubmit="handleRegister(event)">
+        <form id="registerForm" onsubmit="handleRegister(event)">
           <div class="mb-2 text-start">
             <label class="small text-muted mb-1">البريد الإلكتروني الحقيقي:</label>
             <input type="email" id="regEmail" class="form-control auth-input" placeholder="example@gmail.com" required>
@@ -590,7 +590,7 @@
   <!-- لوحة تسجيل تفعيل جديد سريع -->
   <div class="activation-box mb-4">
     <h6 class="fw-bold text-info mb-3"><i class="fa-solid fa-bolt me-2"></i>تسجيل وتفعيل اشتراك (نقد / فقد):</h6>
-    <form onsubmit="registerActivation(event)" class="row g-2 align-items-center">
+    <form id="activationForm" onsubmit="registerActivation(event)" class="row g-2 align-items-center">
       <div class="col-12 col-md-3">
         <input type="text" id="actName" class="form-control table-input" placeholder="اسم المشترك" required>
       </div>
@@ -975,8 +975,14 @@
       // التحقق هل هناك جلسة سابقة مسجلة
       const activeSession = localStorage.getItem('hussain_active_session');
       if (activeSession) {
-        const sessionData = JSON.parse(activeSession);
-        loginUser(sessionData.email, sessionData.isPermanent, sessionData.loginTime, false);
+        try {
+          const sessionData = JSON.parse(activeSession);
+          if (sessionData && sessionData.email) {
+            loginUser(sessionData.email, sessionData.isPermanent, sessionData.loginTime, false);
+          }
+        } catch(e) {
+          console.error(e);
+        }
       }
     });
   });
@@ -1045,9 +1051,14 @@
 
   // تسجيل الدخول
   function handleLogin(e) {
-    e.preventDefault();
-    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-    const pass = document.getElementById('loginPass').value;
+    if (e) e.preventDefault();
+    const emailInput = document.getElementById('loginEmail');
+    const passInput = document.getElementById('loginPass');
+    
+    if (!emailInput || !passInput) return;
+    
+    const email = emailInput.value.trim().toLowerCase();
+    const pass = passInput.value;
 
     fetchDataFromJSONbin((cloudData) => {
       globalCloudDatabase = cloudData || {};
@@ -1061,17 +1072,24 @@
       if (usersDb[email] && usersDb[email].pass === pass) {
         loginUser(email, usersDb[email].isPermanent, usersDb[email].loginTime || Date.now(), true);
       } else {
-        document.getElementById('loginAlert').classList.remove('d-none');
+        const alertBox = document.getElementById('loginAlert');
+        if (alertBox) alertBox.classList.remove('d-none');
       }
     });
   }
 
   // إنشاء حساب جديد (تجريبي 3 أيام)
   function handleRegister(e) {
-    e.preventDefault();
-    const email = document.getElementById('regEmail').value.trim().toLowerCase();
-    const pass = document.getElementById('regPass').value;
-    const username = document.getElementById('regUsername').value.trim();
+    if (e) e.preventDefault();
+    const emailInput = document.getElementById('regEmail');
+    const passInput = document.getElementById('regPass');
+    const usernameInput = document.getElementById('regUsername');
+
+    if (!emailInput || !passInput || !usernameInput) return;
+
+    const email = emailInput.value.trim().toLowerCase();
+    const pass = passInput.value;
+    const username = usernameInput.value.trim();
 
     if (email === ADMIN_EMAIL) {
       alert("هذا البريد مخصص للأدمن الأساسي، يرجى تسجيل الدخول مباشرة.");
@@ -1128,9 +1146,13 @@
       }
     }
 
-    document.getElementById('authScreen').classList.add('d-none');
-    document.getElementById('mainContent').classList.remove('d-none');
-    document.getElementById('loginAlert').classList.add('d-none');
+    const authScreen = document.getElementById('authScreen');
+    const mainContent = document.getElementById('mainContent');
+    const loginAlert = document.getElementById('loginAlert');
+
+    if (authScreen) authScreen.classList.add('d-none');
+    if (mainContent) mainContent.classList.remove('d-none');
+    if (loginAlert) loginAlert.classList.add('d-none');
 
     let displayName = "حسين عبد المجيد";
     if (email !== ADMIN_EMAIL) {
@@ -1142,11 +1164,18 @@
       }
     }
 
-    document.getElementById('mainHeaderTitle').innerHTML = `<i class="fa-solid fa-wifi me-2"></i>أهلاً بك أستاذ ${displayName} لخدمات الإنترنت`;
-    if (email === ADMIN_EMAIL) {
-      document.getElementById('currentUserBadge').innerHTML = `<i class="fa-solid fa-user-shield"></i> إدارة: حسين عبد المجيد (الأدمن)`;
-    } else {
-      document.getElementById('currentUserBadge').innerHTML = `<i class="fa-solid fa-user-gear"></i> الحساب: ${email}`;
+    const mainHeaderTitle = document.getElementById('mainHeaderTitle');
+    const currentUserBadge = document.getElementById('currentUserBadge');
+
+    if (mainHeaderTitle) {
+      mainHeaderTitle.innerHTML = `<i class="fa-solid fa-wifi me-2"></i>أهلاً بك أستاذ ${displayName} لخدمات الإنترنت`;
+    }
+    if (currentUserBadge) {
+      if (email === ADMIN_EMAIL) {
+        currentUserBadge.innerHTML = `<i class="fa-solid fa-user-shield"></i> إدارة: حسين عبد المجيد (الأدمن)`;
+      } else {
+        currentUserBadge.innerHTML = `<i class="fa-solid fa-user-gear"></i> الحساب: ${email}`;
+      }
     }
 
     renderAllTables();
@@ -1154,14 +1183,19 @@
   }
 
   function showPurchaseModal() {
-    document.getElementById('mainContent').classList.add('d-none');
-    document.getElementById('authScreen').classList.remove('d-none');
-    purchaseModalInstance.show();
+    const mainContent = document.getElementById('mainContent');
+    const authScreen = document.getElementById('authScreen');
+    if (mainContent) mainContent.classList.add('d-none');
+    if (authScreen) authScreen.classList.remove('d-none');
+    if (purchaseModalInstance) purchaseModalInstance.show();
   }
 
   // التحقق من كود الشراء (7 أرقام: 2031988)
   function verifyActivationCode() {
-    const code = document.getElementById('activationCodeInput').value.trim();
+    const codeInput = document.getElementById('activationCodeInput');
+    if (!codeInput) return;
+    const code = codeInput.value.trim();
+
     if (code === PERMANENT_ACTIVATION_CODE) {
       fetchDataFromJSONbin((cloudData) => {
         globalCloudDatabase = cloudData || {};
@@ -1175,18 +1209,22 @@
         localStorage.setItem('hussain_active_session', JSON.stringify(session));
 
         if (trialTimerInterval) clearInterval(trialTimerInterval);
-        purchaseModalInstance.hide();
+        if (purchaseModalInstance) purchaseModalInstance.hide();
         alert("تم تفعيل حسابك السحابي بنجاح للابد عبر سحابة JSONbin! شكراً لك.");
         loginUser(currentEmail, true, Date.now(), false);
       });
     } else {
-      document.getElementById('codeAlert').classList.remove('d-none');
+      const codeAlert = document.getElementById('codeAlert');
+      if (codeAlert) codeAlert.classList.remove('d-none');
     }
   }
 
   // نسيت كلمة المرور وإرسالها للتيليجرام
   function forgotPasswordAction() {
-    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const emailInput = document.getElementById('loginEmail');
+    if (!emailInput) return;
+    const email = emailInput.value.trim().toLowerCase();
+
     if (!email) {
       alert("يرجى إدخال البريد الإلكتروني أولاً في حقل البريد لتتم استعادة كلمة المرور وإرسالها إلى تيليجرام!");
       return;
@@ -1236,42 +1274,7 @@
   function openChangePasswordModal() {
     document.getElementById('currentPassInput').value = '';
     document.getElementById('newPassInput').value = '';
-    changePasswordModalInstance.show();
+    if (changePasswordModalInstance) changePasswordModalInstance.show();
   }
 
-  function submitChangePassword() {
-    const currentPass = document.getElementById('currentPassInput').value;
-    const newPass = document.getElementById('newPassInput').value;
-
-    if (!currentPass || !newPass) {
-      alert("يرجى إدخال كلمة المرور الحالية والجديدة!");
-      return;
-    }
-
-    if (currentEmail === ADMIN_EMAIL) {
-      if (currentPass === ADMIN_PASS) {
-        alert("لا يمكن تغيير كلمة مرور الأدمن الافتراضية من هنا.");
-        changePasswordModalInstance.hide();
-        return;
-      }
-    }
-
-    fetchDataFromJSONbin((cloudData) => {
-      globalCloudDatabase = cloudData || {};
-      if (globalCloudDatabase.usersDb && globalCloudDatabase.usersDb[currentEmail]) {
-        if (globalCloudDatabase.usersDb[currentEmail].pass === currentPass) {
-          globalCloudDatabase.usersDb[currentEmail].pass = newPass;
-          saveDatatoJSONbin((success) => {
-            changePasswordModalInstance.hide();
-            alert("تم تغيير كلمة المرور بنجاح وحفظها سحابياً! 🔑✅");
-          });
-        } else {
-          alert("كلمة المرور الحالية غير صحيحة!");
-        }
-      }
-    });
-  }
-
-  function logoutSystem() {
-    if (trialTimerInterval) clearInterval(trialTimerInterval);
-    localStorage.removeItem('hussain_
+  function subm
