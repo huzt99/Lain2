@@ -581,7 +581,6 @@
         <div class="p-3 rounded mt-2" style="background: rgba(15, 23, 42, 0.8); border: 1px dashed var(--border-color);">
           <p class="small mb-1 text-light"><i class="fa-solid fa-qrcode me-1 text-warning"></i> أو امسح الكود بهاتفك:</p>
           <div id="qrcodeContainer" class="d-flex justify-content-center my-2 bg-white p-2 rounded" style="width: 130px; height: 130px; margin: 0 auto;">
-            <!-- توليد QR Code تلقائياً -->
             <img id="qrCodeImg" src="" alt="QR Code" style="width: 100%; height: 100%; object-fit: contain;">
           </div>
         </div>
@@ -1021,12 +1020,12 @@
       verifyBtn.addEventListener('click', verifyActivationCode);
     }
 
-    // التحقق من وجود رابط بارامترات للدخول التلقائي من الكمبيوتر (URL parameters)
+    // التحقق من وجود رابط بارامترات للدخول التلقائي من الكمبيوتر
     const urlParams = new URLSearchParams(window.location.search);
     const paramEmail = urlParams.get('email');
     const paramPerm = urlParams.get('perm') === 'true';
 
-    // تحميل فوري من الذاكرة المحلية أولاً لضمان عدم تعليق الواجهة نهائياً في الـ APK
+    // 1. تحميل فوري ومباشر من الذاكرة المحلية لضمان عدم حدوث أي تجميد (Freeze)
     const localData = localStorage.getItem('hussain_cloud_fallback');
     if (localData) {
       try {
@@ -1036,36 +1035,37 @@
       }
     }
 
-    // جلب البيانات من السحابة في الخلفية بدون حجب الواجهة
+    // فحص الجلسة النشطة محلياً مباشرة
+    if (paramEmail) {
+      const usersDb = globalCloudDatabase.usersDb || {};
+      let isPerm = paramPerm;
+      let loginTime = Date.now();
+      if (paramEmail === ADMIN_EMAIL) {
+        isPerm = true;
+      } else if (usersDb[paramEmail]) {
+        isPerm = usersDb[paramEmail].isPermanent;
+        loginTime = usersDb[paramEmail].loginTime || Date.now();
+      }
+      loginUser(paramEmail, isPerm, loginTime, false);
+    } else {
+      const activeSession = localStorage.getItem('hussain_active_session');
+      if (activeSession) {
+        try {
+          const sessionData = JSON.parse(activeSession);
+          if (sessionData && sessionData.email) {
+            loginUser(sessionData.email, sessionData.isPermanent, sessionData.loginTime, false);
+          }
+        } catch(e) {
+          console.error(e);
+        }
+      }
+    }
+
+    // 2. تحديث البيانات من السحابة في الخلفية (Background Sync) بدون حجب الشاشة
     fetchDataFromJSONbin((cloudData) => {
       if (cloudData && Object.keys(cloudData).length > 0) {
         globalCloudDatabase = cloudData;
-      }
-      
-      if (paramEmail) {
-        // تسجيل دخول مباشر عبر الرابط القادم من الكمبيوتر
-        const usersDb = globalCloudDatabase.usersDb || {};
-        let isPerm = paramPerm;
-        let loginTime = Date.now();
-        if (paramEmail === ADMIN_EMAIL) {
-          isPerm = true;
-        } else if (usersDb[paramEmail]) {
-          isPerm = usersDb[paramEmail].isPermanent;
-          loginTime = usersDb[paramEmail].loginTime || Date.now();
-        }
-        loginUser(paramEmail, isPerm, loginTime, false);
-      } else {
-        const activeSession = localStorage.getItem('hussain_active_session');
-        if (activeSession) {
-          try {
-            const sessionData = JSON.parse(activeSession);
-            if (sessionData && sessionData.email) {
-              loginUser(sessionData.email, sessionData.isPermanent, sessionData.loginTime, false);
-            }
-          } catch(e) {
-            console.error(e);
-          }
-        }
+        localStorage.setItem('hussain_cloud_fallback', JSON.stringify(cloudData));
       }
     });
   });
@@ -1073,20 +1073,17 @@
   function fetchDataFromJSONbin(callback) {
     const url = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`;
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3500);
+    const timeoutId = setTimeout(() => controller.abort(), 2500);
 
     fetch(url, {
       method: 'GET',
-      headers: {
-        'X-Master-Key': JSONBIN_MASTER_KEY
-      },
+      headers: { 'X-Master-Key': JSONBIN_MASTER_KEY },
       signal: controller.signal
     })
     .then(response => response.json())
     .then(data => {
       clearTimeout(timeoutId);
       if (data && data.record) {
-        localStorage.setItem('hussain_cloud_fallback', JSON.stringify(data.record));
         callback(data.record);
       } else {
         callback(null);
@@ -1094,7 +1091,6 @@
     })
     .catch(err => {
       clearTimeout(timeoutId);
-      console.warn("Offline or APK Network restriction, using local storage cache.");
       callback(null);
     });
   }
@@ -1104,7 +1100,7 @@
 
     const url = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3500);
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
 
     fetch(url, {
       method: 'PUT',
@@ -1137,12 +1133,13 @@
         text: message,
         parse_mode: 'HTML'
       })
-    }).catch(err => console.error("Error sending Telegram message:", err));
+    }).catch(err => console.error(err));
   }
 
   function handleLogin() {
     const emailInput = document.getElementById('loginEmail');
     const passInput = document.getElementById('loginPass');
+    const loginBtn = document.getElementById('loginBtn');
     
     if (!emailInput || !passInput) return;
     
@@ -1154,25 +1151,37 @@
       return;
     }
 
-    const usersDb = globalCloudDatabase.usersDb || {};
-
-    if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
-      loginUser(email, true, Date.now(), true);
-      return;
+    if (loginBtn) {
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> جارِ تسجيل الدخول...`;
     }
 
-    if (usersDb[email] && usersDb[email].pass === pass) {
-      loginUser(email, usersDb[email].isPermanent, usersDb[email].loginTime || Date.now(), true);
-    } else {
-      const alertBox = document.getElementById('loginAlert');
-      if (alertBox) alertBox.classList.remove('d-none');
-    }
+    setTimeout(() => {
+      const usersDb = globalCloudDatabase.usersDb || {};
+
+      if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
+        loginUser(email, true, Date.now(), true);
+        return;
+      }
+
+      if (usersDb[email] && usersDb[email].pass === pass) {
+        loginUser(email, usersDb[email].isPermanent, usersDb[email].loginTime || Date.now(), true);
+      } else {
+        const alertBox = document.getElementById('loginAlert');
+        if (alertBox) alertBox.classList.remove('d-none');
+        if (loginBtn) {
+          loginBtn.disabled = false;
+          loginBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket me-1"></i> دخول سريع واسترداد البيانات`;
+        }
+      }
+    }, 200);
   }
 
   function handleRegister() {
     const emailInput = document.getElementById('regEmail');
     const passInput = document.getElementById('regPass');
     const usernameInput = document.getElementById('regUsername');
+    const regBtn = document.getElementById('regBtn');
 
     if (!emailInput || !passInput || !usernameInput) return;
 
@@ -1190,25 +1199,37 @@
       return;
     }
 
-    if (!globalCloudDatabase.usersDb) globalCloudDatabase.usersDb = {};
-
-    if (globalCloudDatabase.usersDb[email]) {
-      alert("البريد الإلكتروني مسجل مسبقاً، يرجى تسجيل الدخول.");
-      return;
+    if (regBtn) {
+      regBtn.disabled = true;
+      regBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> جارِ إنشاء الحساب...`;
     }
 
-    const now = Date.now();
-    globalCloudDatabase.usersDb[email] = {
-      pass: pass,
-      username: username,
-      isPermanent: false,
-      loginTime: now
-    };
+    setTimeout(() => {
+      if (!globalCloudDatabase.usersDb) globalCloudDatabase.usersDb = {};
 
-    saveDatatoJSONbin((success) => {
+      if (globalCloudDatabase.usersDb[email]) {
+        alert("البريد الإلكتروني مسجل مسبقاً، يرجى تسجيل الدخول.");
+        if (regBtn) {
+          regBtn.disabled = false;
+          regBtn.innerHTML = `<i class="fa-solid fa-user-plus me-1"></i> إنشاء حساب تجريبي جديد`;
+        }
+        return;
+      }
+
+      const now = Date.now();
+      globalCloudDatabase.usersDb[email] = {
+        pass: pass,
+        username: username,
+        isPermanent: false,
+        loginTime: now
+      };
+
+      // حفظ غير متزامن في الخلفية لضمان عدم تعليق الواجهة
+      saveDatatoJSONbin((success) => {});
+
       alert("تم إنشاء الحساب بنجاح! لديك 3 أيام تجريبية مجانية.");
       loginUser(email, false, now, true);
-    });
+    }, 200);
   }
 
   function loginUser(email, isPermanent, loginTime, alertSuccess) {
@@ -1246,22 +1267,4 @@
 
     let displayName = "حسين عبد المجيد";
     if (email !== ADMIN_EMAIL) {
-      const usersDb = globalCloudDatabase.usersDb || {};
-      if (usersDb[email] && usersDb[email].username) {
-        displayName = usersDb[email].username;
-      } else {
-        displayName = email;
-      }
-    }
-
-    const mainHeaderTitle = document.getElementById('mainHeaderTitle');
-    const currentUserBadge = document.getElementById('currentUserBadge');
-
-    if (mainHeaderTitle) {
-      mainHeaderTitle.innerHTML = `<i class="fa-solid fa-wifi me-2"></i>أهلاً بك أستاذ ${displayName} لخدمات الإنترنت`;
-    }
-    if (currentUserBadge) {
-      if (email === ADMIN_EMAIL) {
-        currentUserBadge.innerHTML = `<i class="fa-solid fa-user-shield"></i> إدارة: حسين عبد المجيد (الأدمن)`;
-      } else {
-        currentUserBadge.innerHTML = `<i class="fa-solid fa-user-gear"></i> الحساب: ${ema
+      const usersD
