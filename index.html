@@ -1009,7 +1009,7 @@
   function fetchDataFromJSONbin(callback) {
     const url = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`;
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3500); // مهلة قصيرة جداً لضمان عدم التعليق
+    const timeoutId = setTimeout(() => controller.abort(), 3500);
 
     fetch(url, {
       method: 'GET',
@@ -1959,6 +1959,17 @@
     });
   }
 
+  // ===== دالة استدعاء الطباعة الذكية الشاملة للـ WebView والـ Browser =====
+  function triggerPrintProcess() {
+    // التأكد إذا كان التطبيق يعتمد على واجهة أندرويد المباشرة (Android.printDocument)
+    if (window.AndroidApp && typeof window.AndroidApp.printDocument === 'function') {
+      window.AndroidApp.printDocument();
+    } else {
+      // التراجع إلى أمر الطباعة العادي للـ Web Browser
+      window.print();
+    }
+  }
+
   function printTodaySales() {
     const now = new Date();
     const todayLocaleStr = now.toLocaleDateString('ar-IQ');
@@ -2012,7 +2023,7 @@
     document.getElementById('printTime').innerText = now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
     document.getElementById('printTotalAmount').innerText = totalSales.toLocaleString();
 
-    window.print();
+    triggerPrintProcess();
   }
 
   function printDebtSales() {
@@ -2060,7 +2071,7 @@
     document.getElementById('printTime').innerText = now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
     document.getElementById('printTotalAmount').innerText = totalDebt.toLocaleString();
 
-    window.print();
+    triggerPrintProcess();
   }
 
   function printPaidSales() {
@@ -2108,7 +2119,7 @@
     document.getElementById('printTime').innerText = now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
     document.getElementById('printTotalAmount').innerText = totalPaid.toLocaleString();
 
-    window.print();
+    triggerPrintProcess();
   }
 
   function updateItem(arr, id, key, val) {
