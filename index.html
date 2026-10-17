@@ -407,7 +407,7 @@
       <i class="fa-solid fa-shield-halved"></i>
     </div>
     <h4 class="fw-bold mb-1">حسين لخدمات الإنترنت</h4>
-    <p class="text-muted small mb-1">نظام إدارة الشبكات (مربوط بـ JSONbin.io)</p>
+    <p class="text-muted small mb-1">نظام إدارة الشبكات (مربوط محلياً وسحابياً)</p>
     <p class="text-info small mb-3" style="font-size: 0.755rem;">تم الإنتاج بواسطة حسين عبد المجيد</p>
 
     <!-- تبديل الأشكال: دخول أو تسجيل جديد -->
@@ -432,8 +432,8 @@
           <input type="password" id="loginPass" class="form-control auth-input" placeholder="••••••••" required>
         </div>
         <div id="loginAlert" class="alert alert-danger py-2 d-none small mb-3">البريد أو الرمز غير صحيح!</div>
-        <button type="button" class="btn btn-action-save w-100 py-2 fs-6 mb-2" onclick="handleLogin()">
-          <i class="fa-solid fa-right-to-bracket me-1"></i> دخول واسترداد من السحابة
+        <button type="button" id="loginBtn" class="btn btn-action-save w-100 py-2 fs-6 mb-2">
+          <i class="fa-solid fa-right-to-bracket me-1"></i> دخول سريع واسترداد البيانات
         </button>
         <button type="button" class="btn btn-outline-warning w-100 py-1 btn-sm rounded-pill" onclick="forgotPasswordAction()">
           <i class="fa-solid fa-key me-1"></i> نسيت كلمة المرور؟ (إرسال للتيليجرام)
@@ -456,10 +456,10 @@
         </div>
         <div class="alert alert-warning py-2 small mb-3 text-start" style="font-size: 0.78rem; line-height: 1.4;">
           <i class="fa-solid fa-circle-info me-1"></i> <strong>ملاحظة:</strong> عزيزي المستخدم رجاءً ادخل حسابك ورقمك ويوزر نيم حقيقي حفاظاً لك لكي لا يتم نسيانه.<br>
-          <span class="text-success mt-1 d-block">✨ يمنحك التسجيل 3 أيام تجريبية مجانية مع الحفظ السحابي!</span>
+          <span class="text-success mt-1 d-block">✨ يمنحك التسجيل 3 أيام تجريبية مجانية مع الحفظ الفوري!</span>
         </div>
-        <button type="button" class="btn btn-action-add w-100 py-2 fs-6" onclick="handleRegister()">
-          <i class="fa-solid fa-user-plus me-1"></i> إنشاء حساب سحابي تجريبي
+        <button type="button" id="regBtn" class="btn btn-action-add w-100 py-2 fs-6">
+          <i class="fa-solid fa-user-plus me-1"></i> إنشاء حساب تجريبي جديد
         </button>
       </div>
     </div>
@@ -475,7 +475,7 @@
         <h4 class="modal-title fw-bold text-warning"><i class="fa-solid fa-crown me-2"></i>انتهت الفترة التجريبية (3 أيام)</h4>
       </div>
       <div class="modal-body">
-        <p class="text-muted small mb-3">للاستمرار في استخدام التطبيق بكامل ميزاته السحابية وبدون توقف، يرجى شراء حسابك الخاص الدائم.</p>
+        <p class="text-muted small mb-3">للاستمرار في استخدام التطبيق بكامل ميزاته وبدون توقف، يرجى شراء حسابك الخاص الدائم.</p>
         
         <div class="mb-3">
           <label class="form-label small text-info fw-bold">أدخل كود الشراء (7 أرقام):</label>
@@ -483,8 +483,8 @@
         </div>
         <div id="codeAlert" class="alert alert-danger py-1 d-none small mb-3">كود الشراء غير صحيح!</div>
 
-        <button type="button" class="btn btn-action-save w-100 py-2 mb-3" onclick="verifyActivationCode()">
-          <i class="fa-solid fa-check-circle me-1"></i> تفعيل الحساب السحابي للابد
+        <button type="button" id="verifyBtn" class="btn btn-action-save w-100 py-2 mb-3">
+          <i class="fa-solid fa-check-circle me-1"></i> تفعيل الحساب للابد
         </button>
 
         <div class="p-3 rounded" style="background: rgba(15, 23, 42, 0.8); border: 1px dashed var(--border-color);">
@@ -566,7 +566,6 @@
         <div class="small text-muted" style="font-size: 0.78rem;">تم الإنتاج بواسطة حسين عبد المجيد</div>
       </div>
       <div class="d-flex gap-2 flex-wrap justify-content-center align-items-center">
-        <!-- زر الحفظ العلوي الشامل (حفظ جميع المتغيرات) -->
         <button class="btn btn-action-add btn-sm rounded-pill px-3 fw-bold shadow" onclick="saveAllSystemDataCloudAndLocal()">
           <i class="fa-solid fa-cloud-arrow-up me-1"></i> حفظ جميع المتغيرات
         </button>
@@ -953,7 +952,6 @@
   let userTelegram = { token: "", chatId: "" };
   let customTabNames = { 1: "مشتركين الكابل الضوئي", 2: "مشتركين إيرثلنك أمجد", 3: "مشتركين أبراج سبيد" };
 
-  // تخزين شامل لكل حسابات المستخدمين سحابياً
   let globalCloudDatabase = {};
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -962,15 +960,38 @@
     telegramModalInstance = new bootstrap.Modal(document.getElementById('telegramSettingsModal'));
     changePasswordModalInstance = new bootstrap.Modal(document.getElementById('changePasswordModal'));
 
-    // جلب البيانات مع دعم APK الـ Fallback المحلي الفوري لضمان عدم حدوث تعليق
+    // ربط الأزرار برمجياً بالكامل لضمان استجابتها المضمونة في الـ APK (WebView)
+    const loginBtn = document.getElementById('loginBtn');
+    if (loginBtn) {
+      loginBtn.addEventListener('click', handleLogin);
+    }
+
+    const regBtn = document.getElementById('regBtn');
+    if (regBtn) {
+      regBtn.addEventListener('click', handleRegister);
+    }
+
+    const verifyBtn = document.getElementById('verifyBtn');
+    if (verifyBtn) {
+      verifyBtn.addEventListener('click', verifyActivationCode);
+    }
+
+    // تحميل فوري من الذاكرة المحلية أولاً لضمان عدم تعليق الواجهة نهائياً في الـ APK
+    const localData = localStorage.getItem('hussain_cloud_fallback');
+    if (localData) {
+      try {
+        globalCloudDatabase = JSON.parse(localData);
+      } catch(e) {
+        globalCloudDatabase = {};
+      }
+    }
+
+    // جلب البيانات من السحابة في الخلفية بدون حجب الواجهة
     fetchDataFromJSONbin((cloudData) => {
       if (cloudData && Object.keys(cloudData).length > 0) {
         globalCloudDatabase = cloudData;
-      } else {
-        globalCloudDatabase = JSON.parse(localStorage.getItem('hussain_cloud_fallback')) || {};
       }
       
-      // التحقق هل هناك جلسة سابقة مسجلة
       const activeSession = localStorage.getItem('hussain_active_session');
       if (activeSession) {
         try {
@@ -985,11 +1006,10 @@
     });
   });
 
-  // جلب البيانات سحابياً من JSONbin.io مع مهلة زمنية (Timeout) لتجنب توقف التطبيق داخل الـ APK
   function fetchDataFromJSONbin(callback) {
     const url = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`;
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 4000); // مهلة 4 ثوانٍ كحد أقصى للاتصال
+    const timeoutId = setTimeout(() => controller.abort(), 3500); // مهلة قصيرة جداً لضمان عدم التعليق
 
     fetch(url, {
       method: 'GET',
@@ -1005,25 +1025,22 @@
         localStorage.setItem('hussain_cloud_fallback', JSON.stringify(data.record));
         callback(data.record);
       } else {
-        const localFallback = JSON.parse(localStorage.getItem('hussain_cloud_fallback')) || {};
-        callback(localFallback);
+        callback(null);
       }
     })
     .catch(err => {
       clearTimeout(timeoutId);
-      console.warn("Network request blocked or timed out in APK, falling back to local storage:", err);
-      const localFallback = JSON.parse(localStorage.getItem('hussain_cloud_fallback')) || {};
-      callback(localFallback);
+      console.warn("Offline or APK Network restriction, using local storage cache.");
+      callback(null);
     });
   }
 
-  // حفظ البيانات سحابياً ومحلياً
   function saveDatatoJSONbin(callback) {
     localStorage.setItem('hussain_cloud_fallback', JSON.stringify(globalCloudDatabase));
 
     const url = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 4000);
+    const timeoutId = setTimeout(() => controller.abort(), 3500);
 
     fetch(url, {
       method: 'PUT',
@@ -1041,12 +1058,10 @@
     })
     .catch(err => {
       clearTimeout(timeoutId);
-      console.warn("Cloud save skipped in APK mode, saved locally successfully.");
       if (callback) callback(false);
     });
   }
 
-  // إرسال إشعار تيليجرام الخاص بحساب المستخدم
   function sendTelegramNotification(message) {
     if (!userTelegram.token || !userTelegram.chatId) return;
     const url = `https://api.telegram.org/bot${userTelegram.token}/sendMessage`;
@@ -1061,7 +1076,6 @@
     }).catch(err => console.error("Error sending Telegram message:", err));
   }
 
-  // تسجيل الدخول
   function handleLogin() {
     const emailInput = document.getElementById('loginEmail');
     const passInput = document.getElementById('loginPass');
@@ -1076,25 +1090,21 @@
       return;
     }
 
-    fetchDataFromJSONbin((cloudData) => {
-      globalCloudDatabase = cloudData || JSON.parse(localStorage.getItem('hussain_cloud_fallback')) || {};
-      const usersDb = globalCloudDatabase.usersDb || {};
+    const usersDb = globalCloudDatabase.usersDb || {};
 
-      if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
-        loginUser(email, true, Date.now(), true);
-        return;
-      }
+    if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
+      loginUser(email, true, Date.now(), true);
+      return;
+    }
 
-      if (usersDb[email] && usersDb[email].pass === pass) {
-        loginUser(email, usersDb[email].isPermanent, usersDb[email].loginTime || Date.now(), true);
-      } else {
-        const alertBox = document.getElementById('loginAlert');
-        if (alertBox) alertBox.classList.remove('d-none');
-      }
-    });
+    if (usersDb[email] && usersDb[email].pass === pass) {
+      loginUser(email, usersDb[email].isPermanent, usersDb[email].loginTime || Date.now(), true);
+    } else {
+      const alertBox = document.getElementById('loginAlert');
+      if (alertBox) alertBox.classList.remove('d-none');
+    }
   }
 
-  // إنشاء حساب جديد (تجريبي 3 أيام)
   function handleRegister() {
     const emailInput = document.getElementById('regEmail');
     const passInput = document.getElementById('regPass');
@@ -1116,31 +1126,27 @@
       return;
     }
 
-    fetchDataFromJSONbin((cloudData) => {
-      globalCloudDatabase = cloudData || JSON.parse(localStorage.getItem('hussain_cloud_fallback')) || {};
-      if (!globalCloudDatabase.usersDb) globalCloudDatabase.usersDb = {};
+    if (!globalCloudDatabase.usersDb) globalCloudDatabase.usersDb = {};
 
-      if (globalCloudDatabase.usersDb[email]) {
-        alert("البريد الإلكتروني مسجل مسبقاً، يرجى تسجيل الدخول.");
-        return;
-      }
+    if (globalCloudDatabase.usersDb[email]) {
+      alert("البريد الإلكتروني مسجل مسبقاً، يرجى تسجيل الدخول.");
+      return;
+    }
 
-      const now = Date.now();
-      globalCloudDatabase.usersDb[email] = {
-        pass: pass,
-        username: username,
-        isPermanent: false,
-        loginTime: now
-      };
+    const now = Date.now();
+    globalCloudDatabase.usersDb[email] = {
+      pass: pass,
+      username: username,
+      isPermanent: false,
+      loginTime: now
+    };
 
-      saveDatatoJSONbin((success) => {
-        alert("تم إنشاء الحساب بنجاح! لديك 3 أيام تجريبية مجانية.");
-        loginUser(email, false, now, true);
-      });
+    saveDatatoJSONbin((success) => {
+      alert("تم إنشاء الحساب بنجاح! لديك 3 أيام تجريبية مجانية.");
+      loginUser(email, false, now, true);
     });
   }
 
-  // دالة تفعيل جلسة المستخدم
   function loginUser(email, isPermanent, loginTime, alertSuccess) {
     currentEmail = email;
     currentUserKey = "hussain_user_data_" + email.replace(/[@.]/g, '_');
@@ -1149,7 +1155,6 @@
 
     loadUserDataFromCloud();
 
-    // التحقق من انتهاء الفترة التجريبية (3 أيام = 72 ساعة)
     if (email !== ADMIN_EMAIL && !isPermanent) {
       const threeDays = 3 * 24 * 60 * 60 * 1000;
       const elapsedTime = Date.now() - loginTime;
@@ -1210,65 +1215,929 @@
     if (purchaseModalInstance) purchaseModalInstance.show();
   }
 
-  // التحقق من كود الشراء (7 أرقام: 2031988)
   function verifyActivationCode() {
     const codeInput = document.getElementById('activationCodeInput');
     if (!codeInput) return;
     const code = codeInput.value.trim();
 
     if (code === PERMANENT_ACTIVATION_CODE) {
-      fetchDataFromJSONbin((cloudData) => {
-        globalCloudDatabase = cloudData || JSON.parse(localStorage.getItem('hussain_cloud_fallback')) || {};
-        if (globalCloudDatabase.usersDb && globalCloudDatabase.usersDb[currentEmail]) {
-          globalCloudDatabase.usersDb[currentEmail].isPermanent = true;
-          saveDatatoJSONbin();
-        }
+      if (globalCloudDatabase.usersDb && globalCloudDatabase.usersDb[currentEmail]) {
+        globalCloudDatabase.usersDb[currentEmail].isPermanent = true;
+        saveDatatoJSONbin();
+      }
 
-        let session = JSON.parse(localStorage.getItem('hussain_active_session')) || {};
-        session.isPermanent = true;
-        localStorage.setItem('hussain_active_session', JSON.stringify(session));
+      let session = JSON.parse(localStorage.getItem('hussain_active_session')) || {};
+      session.isPermanent = true;
+      localStorage.setItem('hussain_active_session', JSON.stringify(session));
 
-        if (trialTimerInterval) clearInterval(trialTimerInterval);
-        if (purchaseModalInstance) purchaseModalInstance.hide();
-        alert("تم تفعيل حسابك بنجاح للابد! شكراً لك.");
-        loginUser(currentEmail, true, Date.now(), false);
-      });
+      if (trialTimerInterval) clearInterval(trialTimerInterval);
+      if (purchaseModalInstance) purchaseModalInstance.hide();
+      alert("تم تفعيل حسابك بنجاح للابد! شكراً لك.");
+      loginUser(currentEmail, true, Date.now(), false);
     } else {
       const codeAlert = document.getElementById('codeAlert');
       if (codeAlert) codeAlert.classList.remove('d-none');
     }
   }
 
-  // نسيت كلمة المرور وإرسالها للتيليجرام
   function forgotPasswordAction() {
     const emailInput = document.getElementById('loginEmail');
     if (!emailInput) return;
     const email = emailInput.value.trim().toLowerCase();
 
     if (!email) {
-      alert("يرجى إدخال البريد الإلكتروني أولاً في حقل البريد لتتم استعادة كلمة المرور وإرسالها إلى تيليجرام!");
+      alert("يرجى إدخال البريد الإلكتروني أولاً في حقل البريد لتتم استعادة كلمة المرور!");
       return;
     }
 
-    fetchDataFromJSONbin((cloudData) => {
-      globalCloudDatabase = cloudData || JSON.parse(localStorage.getItem('hussain_cloud_fallback')) || {};
-      const usersDb = globalCloudDatabase.usersDb || {};
+    const usersDb = globalCloudDatabase.usersDb || {};
 
-      if (email === ADMIN_EMAIL) {
-        alert("كلمة مرور حساب الأدمن الأساسي محفوظة لديك.");
+    if (email === ADMIN_EMAIL) {
+      alert("كلمة مرور حساب الأدمن الأساسي محفوظة لديك.");
+      return;
+    }
+
+    if (usersDb[email]) {
+      const pass = usersDb[email].pass;
+      alert(`كلمة المرور لحسابك (${email}) هي: ${pass}`);
+    } else {
+      alert("البريد الإلكتروني غير مسجل في النظام!");
+    }
+  }
+
+  function openChangePasswordModal() {
+    document.getElementById('currentPassInput').value = '';
+    document.getElementById('newPassInput').value = '';
+    if (changePasswordModalInstance) changePasswordModalInstance.show();
+  }
+
+  function submitChangePassword() {
+    const currentPass = document.getElementById('currentPassInput').value;
+    const newPass = document.getElementById('newPassInput').value;
+
+    if (!currentPass || !newPass) {
+      alert("يرجى إدخال كلمة المرور الحالية والجديدة!");
+      return;
+    }
+
+    if (currentEmail === ADMIN_EMAIL && currentPass === ADMIN_PASS) {
+      alert("لا يمكن تغيير كلمة مرور الأدمن الافتراضية من هنا.");
+      if (changePasswordModalInstance) changePasswordModalInstance.hide();
+      return;
+    }
+
+    if (globalCloudDatabase.usersDb && globalCloudDatabase.usersDb[currentEmail]) {
+      if (globalCloudDatabase.usersDb[currentEmail].pass === currentPass) {
+        globalCloudDatabase.usersDb[currentEmail].pass = newPass;
+        saveDatatoJSONbin((success) => {
+          if (changePasswordModalInstance) changePasswordModalInstance.hide();
+          alert("تم تغيير كلمة المرور بنجاح وحفظها! 🔑✅");
+        });
+      } else {
+        alert("كلمة المرور الحالية غير صحيحة!");
+      }
+    }
+  }
+
+  function logoutSystem() {
+    if (trialTimerInterval) clearInterval(trialTimerInterval);
+    localStorage.removeItem('hussain_active_session');
+    location.reload();
+  }
+
+  function loadUserDataFromCloud() {
+    if (!globalCloudDatabase[currentUserKey]) {
+      globalCloudDatabase[currentUserKey] = {
+        fiber: [], earth: [], speed: [], cash: [], debt: [], paid: [], 
+        telegram: { token: "", chatId: "" },
+        tabNames: { 1: "مشتركين الكابل الضوئي", 2: "مشتركين إيرثلنك أمجد", 3: "مشتركين أبراج سبيد" }
+      };
+    }
+    const uData = globalCloudDatabase[currentUserKey];
+    fiberData = uData.fiber || [];
+    earthData = uData.earth || [];
+    speedData = uData.speed || [];
+    cashActivations = uData.cash || [];
+    debtActivations = uData.debt || [];
+    paidActivations = uData.paid || [];
+    userTelegram = uData.telegram || { token: "", chatId: "" };
+    customTabNames = uData.tabNames || { 1: "مشتركين الكابل الضوئي", 2: "مشتركين إيرثلنك أمجد", 3: "مشتركين أبراج سبيد" };
+  }
+
+  function saveAllSystemDataCloudAndLocal() {
+    globalCloudDatabase[currentUserKey] = {
+      fiber: fiberData,
+      earth: earthData,
+      speed: speedData,
+      cash: cashActivations,
+      debt: debtActivations,
+      paid: paidActivations,
+      telegram: userTelegram,
+      tabNames: customTabNames
+    };
+
+    saveDatatoJSONbin((success) => {
+      const now = new Date();
+      const timeStr = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
+      sendTelegramNotification(`☁️ <b>تم حفظ جميع المتغيرات بنجاح!</b>\n🕒 الوقت: ${timeStr}`);
+      alert("تم حفظ جميع المتغيرات والمشتركين بنجاح تام! 🌐✅");
+    });
+  }
+
+  function saveTabName(tabIndex, newName) {
+    if (!newName.trim()) return;
+    customTabNames[tabIndex] = newName.trim();
+    updateTabNamesUI();
+    saveAllSystemDataCloudAndLocal();
+  }
+
+  function updateTabNamesUI() {
+    const el1 = document.getElementById('tabName1');
+    const el2 = document.getElementById('tabName2');
+    const el3 = document.getElementById('tabName3');
+    const h1 = document.getElementById('headerTitle1');
+    const h2 = document.getElementById('headerTitle2');
+    const h3 = document.getElementById('headerTitle3');
+
+    if (el1) el1.innerText = customTabNames[1];
+    if (el2) el2.innerText = customTabNames[2];
+    if (el3) el3.innerText = customTabNames[3];
+    if (h1) h1.innerText = customTabNames[1];
+    if (h2) h2.innerText = customTabNames[2];
+    if (h3) h3.innerText = customTabNames[3];
+  }
+
+  function openTelegramModal() {
+    document.getElementById('userBotToken').value = userTelegram.token || '';
+    document.getElementById('userChatId').value = userTelegram.chatId || '';
+    if (telegramModalInstance) telegramModalInstance.show();
+  }
+
+  function saveUserTelegramSettings() {
+    userTelegram.token = document.getElementById('userBotToken').value.trim();
+    userTelegram.chatId = document.getElementById('userChatId').value.trim();
+    saveAllSystemDataCloudAndLocal();
+    if (telegramModalInstance) telegramModalInstance.hide();
+    alert("تم حفظ إعدادات تيليجرام بنجاح!");
+  }
+
+  function autoDetectCategory(amountVal) {
+    const amt = Number(amountVal);
+    const catInput = document.getElementById('actCategory');
+    if (!catInput) return;
+    if (amt === 35000) {
+      catInput.value = 'bisac';
+    } else if (amt === 45000) {
+      catInput.value = 'plus';
+    } else if (amt === 65000) {
+      catInput.value = 'turbo';
+    } else if (amt === 100000) {
+      catInput.value = 'pro Max';
+    } else {
+      catInput.value = '';
+    }
+  }
+
+  function registerActivation(e) {
+    if (e) e.preventDefault();
+    const name = document.getElementById('actName').value.trim();
+    const user = document.getElementById('actUser').value.trim();
+    const cat = document.getElementById('actCategory').value.trim();
+    const price = document.getElementById('actAmount').value.trim();
+    const type = document.getElementById('actType').value;
+    
+    if(!user) {
+      alert('يرجى كتابة يوزر المشترك ليتسنى للنظام توجيهه تلقائياً!');
+      return;
+    }
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
+
+    const currentDay = now.getDate();
+    const currentMonth = now.getMonth() + 1;
+    const currentYear = now.getFullYear() < 2026 ? 2026 : now.getFullYear();
+
+    let found = false;
+    let targetSection = '';
+    const userLower = user.toLowerCase().trim();
+
+    const fiberMatch = fiberData.find(x => x.user.toLowerCase().trim() === userLower);
+    if (fiberMatch) {
+      fiberMatch.actDay = currentDay;
+      fiberMatch.actMonth = currentMonth;
+      fiberMatch.actYear = currentYear;
+      if (price) fiberMatch.price = price;
+      if (cat) fiberMatch.cat = cat;
+      found = true;
+      targetSection = customTabNames[1];
+    }
+
+    const earthMatch = earthData.find(x => x.user.toLowerCase().trim() === userLower);
+    if (earthMatch) {
+      earthMatch.actDay = currentDay;
+      earthMatch.actMonth = currentMonth;
+      earthMatch.actYear = currentYear;
+      if (price) earthMatch.price = price;
+      if (cat) earthMatch.cat = cat;
+      found = true;
+      targetSection = customTabNames[2];
+    }
+
+    const speedMatch = speedData.find(x => x.user.toLowerCase().trim() === userLower);
+    if (speedMatch) {
+      speedMatch.actDay = currentDay;
+      speedMatch.actMonth = currentMonth;
+      speedMatch.actYear = currentYear;
+      if (price) speedMatch.price = price;
+      if (cat) speedMatch.cat = cat;
+      found = true;
+      targetSection = customTabNames[3];
+    }
+
+    if (!found) {
+      const isFiberPattern = /^mu\d+f\d+p\d+$/i.test(userLower);
+      const isEarthPattern = /amjad\d*$/i.test(userLower);
+      const isSpeedPattern = /spdn\d*$/i.test(userLower);
+
+      const newSubscriber = {
+        id: Date.now() + 1,
+        name: name,
+        user: user,
+        cat: cat,
+        price: price,
+        actDay: currentDay,
+        actMonth: currentMonth,
+        actYear: currentYear
+      };
+
+      if (isFiberPattern) {
+        fiberData.unshift({ ...newSubscriber, serial: '' });
+        found = true;
+        targetSection = customTabNames[1];
+      } else if (isEarthPattern) {
+        earthData.unshift(newSubscriber);
+        found = true;
+        targetSection = customTabNames[2];
+      } else if (isSpeedPattern) {
+        speedData.unshift(newSubscriber);
+        found = true;
+        targetSection = customTabNames[3];
+      }
+    }
+
+    const item = { 
+      id: Date.now(), 
+      name, 
+      user, 
+      cat, 
+      price, 
+      date: dateStr,
+      timestamp: now.getTime()
+    };
+
+    if (type === 'نقد') {
+      cashActivations.unshift(item);
+      renderCashTable();
+
+      const msg = `💵 <b>تجديد اشتراك جديد (نقد)</b>\n\n` +
+                  `👤 <b>الاسم:</b> ${name}\n` +
+                  `🆔 <b>اليوزر:</b> ${user}\n` +
+                  `📦 <b>الفئة:</b> ${cat || '-'}\n` +
+                  `💰 <b>المبلغ:</b> ${Number(price || 0).toLocaleString()} د.ع\n` +
+                  `🕒 <b>الوقت:</b> ${dateStr}\n\n` +
+                  `🏛 <b>حسين لخدمات الإنترنت</b>`;
+      sendTelegramNotification(msg);
+
+    } else {
+      debtActivations.unshift(item);
+      renderDebtTable();
+
+      const msg = `⏳ <b>تجديد اشتراك جديد (فقد / آجل)</b>\n\n` +
+                  `👤 <b>الاسم:</b> ${name}\n` +
+                  `🆔 <b>اليوزر:</b> ${user}\n` +
+                  `📦 <b>الفئة:</b> ${cat || '-'}\n` +
+                  `💰 <b>المبلغ المطلوب:</b> ${Number(price || 0).toLocaleString()} د.ع\n` +
+                  `🕒 <b>الوقت:</b> ${dateStr}\n\n` +
+                  `🏛 <b>حسين لخدمات الإنترنت</b>`;
+      sendTelegramNotification(msg);
+    }
+
+    saveAllSystemDataCloudAndLocal();
+
+    renderFiberTable();
+    renderEarthTable();
+    renderSpeedTable();
+
+    const activationForm = document.getElementById('activationForm');
+    if (activationForm) activationForm.reset();
+
+    if (found) {
+      alert(`تم التفعيل والحفظ بنجاح! \nتم إضافة/تحديث المشترك تلقائياً في خانة: [${targetSection}].`);
+    } else {
+      alert(`تم تسجيل التفعيل وحفظه وإضافته إلى قائمة [تفعيلات ${type}].`);
+    }
+  }
+
+  function openPaymentModal(id) {
+    const item = debtActivations.find(x => x.id === id);
+    if (!item) return;
+
+    document.getElementById('modalDebtId').value = id;
+    document.getElementById('modalCustomerInfo').innerText = `المشترك: ${item.name} (${item.user || 'بدون يوزر'})`;
+    document.getElementById('modalAmountInfo').innerText = `المبلغ المطلوب حالياً: ${Number(item.price || 0).toLocaleString()} د.ع`;
+    document.getElementById('payTypeSelect').value = 'full';
+    document.getElementById('partialAmountInput').value = '';
+    togglePartialInput();
+
+    if (paymentModalInstance) paymentModalInstance.show();
+  }
+
+  function togglePartialInput() {
+    const payType = document.getElementById('payTypeSelect').value;
+    const partialGroup = document.getElementById('partialGroup');
+    if (!partialGroup) return;
+    if (payType === 'partial') {
+      partialGroup.classList.remove('d-none');
+    } else {
+      partialGroup.classList.add('d-none');
+    }
+  }
+
+  function processPayment() {
+    const id = Number(document.getElementById('modalDebtId').value);
+    const payType = document.getElementById('payTypeSelect').value;
+    const idx = debtActivations.findIndex(x => x.id === id);
+
+    if (idx === -1) return;
+
+    const item = debtActivations[idx];
+    const originalPrice = Number(item.price || 0);
+    const now = new Date();
+    const payDate = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
+
+    if (payType === 'full') {
+      const paidItem = {
+        id: Date.now(),
+        name: item.name,
+        user: item.user,
+        cat: item.cat,
+        paidAmount: originalPrice,
+        type: 'سداد كامل 💵',
+        date: payDate,
+        timestamp: now.getTime()
+      };
+
+      paidActivations.unshift(paidItem);
+      debtActivations.splice(idx, 1);
+
+      saveAllSystemDataCloudAndLocal();
+      renderDebtTable();
+      renderPaidTable();
+      if (paymentModalInstance) paymentModalInstance.hide();
+
+      const message = `✅ <b>تم تسديد المبلغ بالكامـل</b>\n\n` +
+                      `👤 <b>الاسم:</b> ${item.name}\n` +
+                      `🆔 <b>اليوزر:</b> ${item.user || '-'}\n` +
+                      `📦 <b>الفئة:</b> ${item.cat || '-'}\n` +
+                      `💰 <b>المبلغ المسدد:</b> ${originalPrice.toLocaleString()} د.ع\n` +
+                      `🕒 <b>الوقت:</b> ${payDate}\n\n` +
+                      `🏛 <b>حسين لخدمات الإنترنت</b>`;
+      sendTelegramNotification(message);
+
+      alert('تم تسديد المبلغ بالكامل بنجاح!');
+
+    } else {
+      const partialAmount = Number(document.getElementById('partialAmountInput').value);
+      if (!partialAmount || partialAmount <= 0) {
+        alert('يرجى إدخال مبلغ مسدد صحيح!');
         return;
       }
 
-      if (usersDb[email]) {
-        const pass = usersDb[email].pass;
-        const targetUserKey = "hussain_user_data_" + email.replace(/[@.]/g, '_');
-        const userData = globalCloudDatabase[targetUserKey];
+      if (partialAmount >= originalPrice) {
+        alert('المبلغ المكتوب يتجاوز أو يساوي الدين، يرجى اختيار تسديد كامل.');
+        return;
+      }
 
-        if (userData && userData.telegram && userData.telegram.token && userData.telegram.chatId) {
-          const tToken = userData.telegram.token;
-          const tChatId = userData.telegram.chatId;
-          const url = `https://api.telegram.org/bot${tToken}/sendMessage`;
-          
-          fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'app
+      const remainingPrice = originalPrice - partialAmount;
+      item.price = remainingPrice;
+
+      const paidItem = {
+        id: Date.now(),
+        name: item.name,
+        user: item.user,
+        cat: item.cat,
+        paidAmount: partialAmount,
+        type: `سداد جزئي (المتبقي: ${remainingPrice.toLocaleString()} د.ع)`,
+        date: payDate,
+        timestamp: now.getTime()
+      };
+
+      paidActivations.unshift(paidItem);
+
+      saveAllSystemDataCloudAndLocal();
+      renderDebtTable();
+      renderPaidTable();
+      if (paymentModalInstance) paymentModalInstance.hide();
+
+      const message = `🪙 <b>تم تسديد جزء من المبلغ (تسديد جزئي)</b>\n\n` +
+                      `👤 <b>الاسم:</b> ${item.name}\n` +
+                      `🆔 <b>اليوزر:</b> ${item.user || '-'}\n` +
+                      `📦 <b>الفئة:</b> ${item.cat || '-'}\n` +
+                      `💵 <b>المبلغ المسدد:</b> ${partialAmount.toLocaleString()} د.ع\n` +
+                      `⏳ <b>المبلغ المتبقي:</b> ${remainingPrice.toLocaleString()} د.ع\n` +
+                      `🕒 <b>الوقت:</b> ${payDate}\n\n` +
+                      `🏛 <b>حسين لخدمات الإنترنت</b>`;
+      sendTelegramNotification(message);
+
+      alert(`تم تسديد ${partialAmount.toLocaleString()} د.ع بنجاح.`);
+    }
+  }
+
+  function getDayOptions(selectedDay) {
+    let options = '';
+    for (let d = 1; d <= 31; d++) {
+      const selected = String(d) === String(selectedDay) ? 'selected' : '';
+      options += `<option value="${d}" ${selected}>${d}</option>`;
+    }
+    return options;
+  }
+
+  function getMonthOptions(selectedMonth) {
+    let options = '';
+    for (let m = 1; m <= 12; m++) {
+      const selected = String(m) === String(selectedMonth) ? 'selected' : '';
+      options += `<option value="${m}" ${selected}>${m}</option>`;
+    }
+    return options;
+  }
+
+  function getYearOptions(selectedYear) {
+    let options = '';
+    for (let y = 2026; y <= 2100; y++) {
+      const selected = String(y) === String(selectedYear) ? 'selected' : '';
+      options += `<option value="${y}" ${selected}>${y}</option>`;
+    }
+    return options;
+  }
+
+  function renderFiberTable() {
+    const searchEl = document.getElementById('searchFiber');
+    const query = searchEl ? searchEl.value.toLowerCase() : '';
+    const tbody = document.getElementById('fiberTbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const today = new Date();
+    const defaultDay = today.getDate();
+    const defaultMonth = today.getMonth() + 1;
+    const defaultYear = today.getFullYear() < 2026 ? 2026 : today.getFullYear();
+
+    fiberData.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
+      const day = item.actDay || defaultDay;
+      const month = item.actMonth || defaultMonth;
+      const year = item.actYear || defaultYear;
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td><input class="form-control table-input" value="${item.name}" onchange="updateItem(fiberData, ${item.id}, 'name', this.value)"></td>
+          <td><input class="form-control table-input" value="${item.user}" onchange="updateItem(fiberData, ${item.id}, 'user', this.value)"></td>
+          <td><input class="form-control table-input" value="${item.cat}" onchange="updateItem(fiberData, ${item.id}, 'cat', this.value)"></td>
+          <td><input class="form-control table-input" value="${item.price}" onchange="updateItem(fiberData, ${item.id}, 'price', this.value)"></td>
+          <td><input class="form-control table-input" value="${item.serial || ''}" onchange="updateItem(fiberData, ${item.id}, 'serial', this.value)"></td>
+          <td>
+            <div class="d-flex gap-1 justify-content-center">
+              <select class="form-select table-input date-select" onchange="updateItem(fiberData, ${item.id}, 'actDay', this.value)">${getDayOptions(day)}</select>
+              <select class="form-select table-input date-select" onchange="updateItem(fiberData, ${item.id}, 'actMonth', this.value)">${getMonthOptions(month)}</select>
+              <select class="form-select table-input date-select" style="min-width: 75px;" onchange="updateItem(fiberData, ${item.id}, 'actYear', this.value)">${getYearOptions(year)}</select>
+            </div>
+          </td>
+          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(fiberData, ${item.id}, renderFiberTable)"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+      `;
+    });
+  }
+
+  function addFiberRow() {
+    const today = new Date();
+    fiberData.push({ 
+      id: Date.now(), 
+      name: 'مشترك جديد', 
+      user: '', 
+      cat: '', 
+      price: '', 
+      serial: '',
+      actDay: today.getDate(),
+      actMonth: today.getMonth() + 1,
+      actYear: today.getFullYear() < 2026 ? 2026 : today.getFullYear()
+    });
+    saveAllSystemDataCloudAndLocal();
+    renderFiberTable();
+  }
+
+  function renderEarthTable() {
+    const searchEl = document.getElementById('searchEarth');
+    const query = searchEl ? searchEl.value.toLowerCase() : '';
+    const tbody = document.getElementById('earthTbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const today = new Date();
+    const defaultDay = today.getDate();
+    const defaultMonth = today.getMonth() + 1;
+    const defaultYear = today.getFullYear() < 2026 ? 2026 : today.getFullYear();
+
+    earthData.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
+      const day = item.actDay || defaultDay;
+      const month = item.actMonth || defaultMonth;
+      const year = item.actYear || defaultYear;
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td><input class="form-control table-input" value="${item.name}" onchange="updateItem(earthData, ${item.id}, 'name', this.value)"></td>
+          <td><input class="form-control table-input" value="${item.user}" onchange="updateItem(earthData, ${item.id}, 'user', this.value)"></td>
+          <td><input class="form-control table-input" value="${item.cat}" onchange="updateItem(earthData, ${item.id}, 'cat', this.value)"></td>
+          <td><input class="form-control table-input" value="${item.price}" onchange="updateItem(earthData, ${item.id}, 'price', this.value)"></td>
+          <td>
+            <div class="d-flex gap-1 justify-content-center">
+              <select class="form-select table-input date-select" onchange="updateItem(earthData, ${item.id}, 'actDay', this.value)">${getDayOptions(day)}</select>
+              <select class="form-select table-input date-select" onchange="updateItem(earthData, ${item.id}, 'actMonth', this.value)">${getMonthOptions(month)}</select>
+              <select class="form-select table-input date-select" style="min-width: 75px;" onchange="updateItem(earthData, ${item.id}, 'actYear', this.value)">${getYearOptions(year)}</select>
+            </div>
+          </td>
+          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(earthData, ${item.id}, renderEarthTable)"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+      `;
+    });
+  }
+
+  function addEarthRow() {
+    const today = new Date();
+    earthData.push({ 
+      id: Date.now(), 
+      name: 'مشترك جديد', 
+      user: '', 
+      cat: '', 
+      price: '',
+      actDay: today.getDate(),
+      actMonth: today.getMonth() + 1,
+      actYear: today.getFullYear() < 2026 ? 2026 : today.getFullYear()
+    });
+    saveAllSystemDataCloudAndLocal();
+    renderEarthTable();
+  }
+
+  function renderSpeedTable() {
+    const searchEl = document.getElementById('searchSpeed');
+    const query = searchEl ? searchEl.value.toLowerCase() : '';
+    const tbody = document.getElementById('speedTbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const today = new Date();
+    const defaultDay = today.getDate();
+    const defaultMonth = today.getMonth() + 1;
+    const defaultYear = today.getFullYear() < 2026 ? 2026 : today.getFullYear();
+
+    speedData.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
+      const day = item.actDay || defaultDay;
+      const month = item.actMonth || defaultMonth;
+      const year = item.actYear || defaultYear;
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td><input class="form-control table-input" value="${item.name}" onchange="updateItem(speedData, ${item.id}, 'name', this.value)"></td>
+          <td><input class="form-control table-input" value="${item.user}" onchange="updateItem(speedData, ${item.id}, 'user', this.value)"></td>
+          <td><input class="form-control table-input" value="${item.cat}" onchange="updateItem(speedData, ${item.id}, 'cat', this.value)"></td>
+          <td><input class="form-control table-input" value="${item.price}" onchange="updateItem(speedData, ${item.id}, 'price', this.value)"></td>
+          <td>
+            <div class="d-flex gap-1 justify-content-center">
+              <select class="form-select table-input date-select" onchange="updateItem(speedData, ${item.id}, 'actDay', this.value)">${getDayOptions(day)}</select>
+              <select class="form-select table-input date-select" onchange="updateItem(speedData, ${item.id}, 'actMonth', this.value)">${getMonthOptions(month)}</select>
+              <select class="form-select table-input date-select" style="min-width: 75px;" onchange="updateItem(speedData, ${item.id}, 'actYear', this.value)">${getYearOptions(year)}</select>
+            </div>
+          </td>
+          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(speedData, ${item.id}, renderSpeedTable)"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+      `;
+    });
+  }
+
+  function addSpeedRow() {
+    const today = new Date();
+    speedData.push({ 
+      id: Date.now(), 
+      name: 'مشترك جديد', 
+      user: '', 
+      cat: '', 
+      price: '',
+      actDay: today.getDate(),
+      actMonth: today.getMonth() + 1,
+      actYear: today.getFullYear() < 2026 ? 2026 : today.getFullYear()
+    });
+    saveAllSystemDataCloudAndLocal();
+    renderSpeedTable();
+  }
+
+  function renderCashTable() {
+    const searchEl = document.getElementById('searchCash');
+    const query = searchEl ? searchEl.value.toLowerCase() : '';
+    const tbody = document.getElementById('cashTbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    cashActivations.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.name}</td>
+          <td>${item.user || '-'}</td>
+          <td>${item.cat || '-'}</td>
+          <td class="text-success fw-bold">${Number(item.price || 0).toLocaleString()} د.ع</td>
+          <td class="small text-muted">${item.date}</td>
+          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(cashActivations, ${item.id}, renderCashTable)"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+      `;
+    });
+  }
+
+  function renderDebtTable() {
+    const searchEl = document.getElementById('searchDebt');
+    const query = searchEl ? searchEl.value.toLowerCase() : '';
+    const tbody = document.getElementById('debtTbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    debtActivations.filter(x => x.name.toLowerCase().includes(query) || x.user.toLowerCase().includes(query)).forEach((item, index) => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.name}</td>
+          <td>${item.user || '-'}</td>
+          <td>${item.cat || '-'}</td>
+          <td><input class="form-control table-input" value="${item.price}" onchange="updateDebtPrice(${item.id}, this.value)"></td>
+          <td class="small text-muted">${item.date}</td>
+          <td>
+            <button class="btn btn-success btn-sm rounded-pill px-2 py-0" onclick="openPaymentModal(${item.id})">
+              تسديد <i class="fa-solid fa-money-check-dollar ms-1"></i>
+            </button>
+          </td>
+          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteDebtItem(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+      `;
+    });
+  }
+
+  function updateDebtPrice(id, newPrice) {
+    const item = debtActivations.find(x => x.id === id);
+    if (!item) return;
+    const oldPrice = item.price;
+    item.price = newPrice;
+    saveAllSystemDataCloudAndLocal();
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
+
+    const message = `✏️ <b>تم تعديل مبلغ الدين لمشترك</b>\n\n` +
+                    `👤 <b>الاسم:</b> ${item.name}\n` +
+                    `🆔 <b>اليوزر:</b> ${item.user || '-'}\n` +
+                    `📦 <b>الفئة:</b> ${item.cat || '-'}\n` +
+                    `💵 <b>المبلغ السابق:</b> ${Number(oldPrice || 0).toLocaleString()} د.ع\n` +
+                    `💰 <b>المبلغ الجديد:</b> ${Number(newPrice || 0).toLocaleString()} د.ع\n` +
+                    `🕒 <b>الوقت:</b> ${dateStr}\n\n` +
+                    `🏛 <b>حسين لخدمات الإنترنت</b>`;
+    sendTelegramNotification(message);
+  }
+
+  function deleteDebtItem(id) {
+    if (confirm("هل أنت تأكد من الحذف؟")) {
+      const idx = debtActivations.findIndex(x => x.id === id);
+      if (idx !== -1) {
+        const item = debtActivations[idx];
+        debtActivations.splice(idx, 1);
+        saveAllSystemDataCloudAndLocal();
+        renderDebtTable();
+
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
+
+        const message = `🗑 <b>تم حذف مشترك من خانة المشتركين بالفقد (الآجل)</b>\n\n` +
+                        `👤 <b>الاسم:</b> ${item.name}\n` +
+                        `🆔 <b>اليوزر:</b> ${item.user || '-'}\n` +
+                        `📦 <b>الفئة:</b> ${item.cat || '-'}\n` +
+                        `💰 <b>المبلغ المتبقي المحذوف:</b> ${Number(item.price || 0).toLocaleString()} د.ع\n` +
+                        `🕒 <b>الوقت:</b> ${dateStr}\n\n` +
+                        `🏛 <b>حسين لخدمات الإنترنت</b>`;
+        sendTelegramNotification(message);
+      }
+    }
+  }
+
+  function renderPaidTable() {
+    const searchEl = document.getElementById('searchPaid');
+    const query = searchEl ? searchEl.value.toLowerCase() : '';
+    const tbody = document.getElementById('paidTbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    paidActivations.filter(x => x.name.toLowerCase().includes(query) || (x.user && x.user.toLowerCase().includes(query))).forEach((item, index) => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.name}</td>
+          <td>${item.user || '-'}</td>
+          <td>${item.cat || '-'}</td>
+          <td class="text-info fw-bold">${Number(item.paidAmount || 0).toLocaleString()} د.ع</td>
+          <td><span class="badge bg-secondary">${item.type}</span></td>
+          <td class="small text-muted">${item.date}</td>
+          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(paidActivations, ${item.id}, renderPaidTable)"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+      `;
+    });
+  }
+
+  function printTodaySales() {
+    const now = new Date();
+    const todayLocaleStr = now.toLocaleDateString('ar-IQ');
+
+    const todayItems = cashActivations.filter(item => {
+      if (item.timestamp) {
+        const itemDate = new Date(item.timestamp);
+        return itemDate.toDateString() === now.toDateString();
+      }
+      return item.date && item.date.includes(todayLocaleStr);
+    });
+
+    document.getElementById('printReportSubtitle').innerText = 'تقرير المبيعات والتفعيلات النقدية اليومية';
+    document.getElementById('printReportTitle').innerText = 'تفاصيل المبيعات النقدية لليوم';
+    document.getElementById('printTotalLabel').innerText = 'إجمالي مبيعات اليوم النقدية:';
+
+    document.getElementById('printTableHeader').innerHTML = `
+      <th style="width: 40px;">#</th>
+      <th>اسم المشترك</th>
+      <th>يوزر المشترك</th>
+      <th>فئة الاشتراك</th>
+      <th>التاريخ والوقت</th>
+      <th>المبلغ (د.ع)</th>
+    `;
+
+    const printTbody = document.getElementById('printTbody');
+    printTbody.innerHTML = '';
+    let totalSales = 0;
+
+    if (todayItems.length === 0) {
+      printTbody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #64748b;">لا توجد أي مبيعات نقدية مسجلة بتاريخ اليوم (${todayLocaleStr})</td></tr>`;
+    } else {
+      todayItems.forEach((item, index) => {
+        const priceNum = Number(item.price) || 0;
+        totalSales += priceNum;
+
+        printTbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td><strong>${item.name}</strong></td>
+            <td>${item.user || '-'}</td>
+            <td>${item.cat || '-'}</td>
+            <td>${item.date}</td>
+            <td><strong>${priceNum.toLocaleString()} د.ع</strong></td>
+          </tr>
+        `;
+      });
+    }
+
+    document.getElementById('printDate').innerText = todayLocaleStr;
+    document.getElementById('printTime').innerText = now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('printTotalAmount').innerText = totalSales.toLocaleString();
+
+    window.print();
+  }
+
+  function printDebtSales() {
+    const now = new Date();
+    const todayLocaleStr = now.toLocaleDateString('ar-IQ');
+
+    document.getElementById('printReportSubtitle').innerText = 'تقرير تفعيلات المبيعات الآجلة (الفقد)';
+    document.getElementById('printReportTitle').innerText = 'تفاصيل مبيعات الفقد المتبقية (الديون المطلوب سدادها)';
+    document.getElementById('printTotalLabel').innerText = 'مجموع إجمالي المبيعات المطلوبة (الفقد):';
+
+    document.getElementById('printTableHeader').innerHTML = `
+      <th style="width: 40px;">#</th>
+      <th>اسم المشترك</th>
+      <th>يوزر المشترك</th>
+      <th>فئة الاشتراك</th>
+      <th>التاريخ والوقت</th>
+      <th>المبلغ (د.ع)</th>
+    `;
+
+    const printTbody = document.getElementById('printTbody');
+    printTbody.innerHTML = '';
+    let totalDebt = 0;
+
+    if (debtActivations.length === 0) {
+      printTbody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #64748b;">لا توجد أي تفعيلات آجل (فقد) مسجلة حالياً</td></tr>`;
+    } else {
+      debtActivations.forEach((item, index) => {
+        const priceNum = Number(item.price) || 0;
+        totalDebt += priceNum;
+
+        printTbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td><strong>${item.name}</strong></td>
+            <td>${item.user || '-'}</td>
+            <td>${item.cat || '-'}</td>
+            <td>${item.date}</td>
+            <td><strong>${priceNum.toLocaleString()} د.ع</strong></td>
+          </tr>
+        `;
+      });
+    }
+
+    document.getElementById('printDate').innerText = todayLocaleStr;
+    document.getElementById('printTime').innerText = now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('printTotalAmount').innerText = totalDebt.toLocaleString();
+
+    window.print();
+  }
+
+  function printPaidSales() {
+    const now = new Date();
+    const todayLocaleStr = now.toLocaleDateString('ar-IQ');
+
+    document.getElementById('printReportSubtitle').innerText = 'تقرير كشف المبالغ والديون المسددة';
+    document.getElementById('printReportTitle').innerText = 'تفاصيل سجل التسديدات المستلمة';
+    document.getElementById('printTotalLabel').innerText = 'إجمالي المبالغ المسددة:';
+
+    document.getElementById('printTableHeader').innerHTML = `
+      <th style="width: 40px;">#</th>
+      <th>اسم المشترك</th>
+      <th>يوزر المشترك</th>
+      <th>نوع التسديد</th>
+      <th>التاريخ والوقت</th>
+      <th>المبلغ المسدد (د.ع)</th>
+    `;
+
+    const printTbody = document.getElementById('printTbody');
+    printTbody.innerHTML = '';
+    let totalPaid = 0;
+
+    if (paidActivations.length === 0) {
+      printTbody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #64748b;">لا توجد أي عمليات تسديد مسجلة حالياً</td></tr>`;
+    } else {
+      paidActivations.forEach((item, index) => {
+        const paidNum = Number(item.paidAmount) || 0;
+        totalPaid += paidNum;
+
+        printTbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td><strong>${item.name}</strong></td>
+            <td>${item.user || '-'}</td>
+            <td>${item.type || '-'}</td>
+            <td>${item.date}</td>
+            <td><strong>${paidNum.toLocaleString()} د.ع</strong></td>
+          </tr>
+        `;
+      });
+    }
+
+    document.getElementById('printDate').innerText = todayLocaleStr;
+    document.getElementById('printTime').innerText = now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('printTotalAmount').innerText = totalPaid.toLocaleString();
+
+    window.print();
+  }
+
+  function updateItem(arr, id, key, val) {
+    const obj = arr.find(x => x.id === id);
+    if (obj) {
+      obj[key] = val;
+      saveAllSystemDataCloudAndLocal();
+    }
+  }
+
+  function deleteItem(arr, id, callback) {
+    if (confirm("هل أنت تأكد من الحذف؟")) {
+      const idx = arr.findIndex(x => x.id === id);
+      if (idx !== -1) {
+        arr.splice(idx, 1);
+        saveAllSystemDataCloudAndLocal();
+        callback();
+      }
+    }
+  }
+
+  function renderAllTables() {
+    renderFiberTable();
+    renderEarthTable();
+    renderSpeedTable();
+    renderCashTable();
+    renderDebtTable();
+    renderPaidTable();
+  }
+</script>
+</body>
+</html>
