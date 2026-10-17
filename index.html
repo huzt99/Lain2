@@ -141,6 +141,21 @@
       gap: 8px;
     }
 
+    /* Trial Banner Box */
+    .trial-banner {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(239, 68, 68, 0.2));
+      border: 1px solid var(--accent-amber);
+      border-radius: 16px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+    }
+
     /* Tabs Styling */
     .nav-pills {
       gap: 8px;
@@ -266,6 +281,24 @@
       padding: 8px 20px;
       box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
       cursor: pointer;
+    }
+
+    .btn-action-activate {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      border: none;
+      font-weight: 800;
+      border-radius: 50rem;
+      padding: 8px 22px;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+      cursor: pointer;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
     }
 
     .btn-action-print {
@@ -433,7 +466,6 @@
         </div>
         <div id="loginAlert" class="alert alert-danger py-2 d-none small mb-3">البريد أو الرمز غير صحيح!</div>
         
-        <!-- تم استخدام onclick مباشرة لضمان العمل 100% داخل تطبيق الـ APK -->
         <button type="button" id="loginBtn" class="btn btn-action-save w-100 py-2 fs-6 mb-2" onclick="handleLogin()">
           <i class="fa-solid fa-right-to-bracket me-1"></i> دخول سريع واسترداد البيانات
         </button>
@@ -462,7 +494,6 @@
           <span class="text-success mt-1 d-block">✨ يمنحك التسجيل 3 أيام تجريبية مجانية مع الحفظ الفوري!</span>
         </div>
         
-        <!-- تم استخدام onclick مباشرة لضمان العمل 100% داخل تطبيق الـ APK -->
         <button type="button" id="regBtn" class="btn btn-action-add w-100 py-2 fs-6" onclick="handleRegister()">
           <i class="fa-solid fa-user-plus me-1"></i> إنشاء حساب تجريبي جديد
         </button>
@@ -472,35 +503,41 @@
   </div>
 </div>
 
-<!-- Modal نافذة شراء الحساب الدائم وإدخال كود 7 أرقام -->
+<!-- Modal نافذة شراء الحساب الدائم مع التواصل مع المطور -->
 <div class="modal fade" id="purchaseModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-content-custom text-center p-3">
       <div class="modal-header border-0 justify-content-center">
-        <h4 class="modal-title fw-bold text-warning"><i class="fa-solid fa-crown me-2"></i>انتهت الفترة التجريبية (3 أيام)</h4>
+        <h4 class="modal-title fw-bold text-warning"><i class="fa-solid fa-crown me-2"></i>تفعيل الحساب الدائم</h4>
       </div>
       <div class="modal-body">
-        <p class="text-muted small mb-3">للاستمرار في استخدام التطبيق بكامل ميزاته وبدون توقف، يرجى شراء حسابك الخاص الدائم.</p>
+        <p class="text-muted small mb-3">للاستمرار في استخدام التطبيق بكامل ميزاته وبدون توقف، يرجى تفعيل حسابك الخاص الدائم بسعر <strong>200 ألف</strong> للأبد.</p>
         
         <div class="mb-3">
-          <label class="form-label small text-info fw-bold">أدخل كود الشراء (7 أرقام):</label>
-          <input type="text" id="activationCodeInput" class="form-control auth-input text-center" placeholder="أدخل الكود هنا" maxlength="7" pattern="[0-9]{7}">
+          <label class="form-label small text-info fw-bold">أدخل كود التفعيل المكون من (11 رقم):</label>
+          <input type="text" id="activationCodeInput" class="form-control auth-input text-center" placeholder="أدخل كود التفعيل هنا">
         </div>
-        <div id="codeAlert" class="alert alert-danger py-1 d-none small mb-3">كود الشراء غير صحيح!</div>
+        <div id="codeAlert" class="alert alert-danger py-1 d-none small mb-3">كود التفعيل غير صحيح!</div>
 
+        <!-- زر تفعيل الحساب للابد -->
         <button type="button" id="verifyBtn" class="btn btn-action-save w-100 py-2 mb-3" onclick="verifyActivationCode()">
           <i class="fa-solid fa-check-circle me-1"></i> تفعيل الحساب للابد
         </button>
 
         <div class="p-3 rounded" style="background: rgba(15, 23, 42, 0.8); border: 1px dashed var(--border-color);">
-          <p class="small mb-1 text-light">هل تحتاج إلى كود الشراء؟</p>
-          <a href="https://t.me/" target="_blank" class="btn btn-outline-info btn-sm rounded-pill px-3 fw-bold mt-1">
-            <i class="fa-brands fa-telegram me-1"></i> تواصل مع المطور للحصول على الكود
-          </a>
+          <p class="small mb-2 text-light">هل تحتاج إلى كود التفعيل؟ تواصل مع المطور الأستاذ <strong>حسين عبد المجيد</strong>:</p>
+          <div class="d-flex flex-column gap-2">
+            <a href="https://wa.me/9647862597668" target="_blank" class="btn btn-success btn-sm rounded-pill fw-bold">
+              <i class="fa-brands fa-whatsapp me-1"></i> واتساب: +9647862597668
+            </a>
+            <a href="https://t.me/huzt92" target="_blank" class="btn btn-outline-info btn-sm rounded-pill fw-bold">
+              <i class="fa-brands fa-telegram me-1"></i> تلجرام: @huzt92
+            </a>
+          </div>
         </div>
       </div>
       <div class="modal-footer border-0 justify-content-center">
-        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill" onclick="logoutSystem()">تسجيل الخروج</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill" data-bs-dismiss="modal">إغلاق</button>
       </div>
     </div>
   </div>
@@ -599,6 +636,20 @@
 
 <!-- المحتوى الرئيسي -->
 <div id="mainContent" class="container-fluid px-2 px-md-4 py-3 d-none">
+
+  <!-- شريط مهلة الـ 3 أيام وزر التفعيل العلوي المباشر -->
+  <div id="topTrialBanner" class="trial-banner d-none">
+    <div class="d-flex align-items-center gap-2">
+      <i class="fa-solid fa-clock-rotate-left text-warning fs-5"></i>
+      <div>
+        <div class="fw-bold text-warning small">مهلة الفترة التجريبية (3 أيام):</div>
+        <div id="topTimerDisplay" class="fw-extrabold text-info fs-6">03 أيام 00:00:00</div>
+      </div>
+    </div>
+    <button class="btn btn-action-activate btn-sm" onclick="showPurchaseModal()">
+      <i class="fa-solid fa-shield-halved me-1"></i> تفعيل الحساب الآن
+    </button>
+  </div>
 
   <!-- الترويسة الرئيسية -->
   <div class="header-panel mb-4">
@@ -973,7 +1024,7 @@
   // بيانات الأدمن الثابتة الخاصة بك
   const ADMIN_EMAIL = "huzt.m1@gmail.com";
   const ADMIN_PASS = "Huzt19881988";
-  const PERMANENT_ACTIVATION_CODE = "2031988";
+  const PERMANENT_ACTIVATION_CODE = "20819921992";
 
   // إعدادات JSONbin.io الخاصة بك
   const JSONBIN_BIN_ID = "6acc8eb0ffd5d160536374e6";
@@ -1192,6 +1243,8 @@
 
     loadUserDataFromCloud();
 
+    const topTrialBanner = document.getElementById('topTrialBanner');
+
     if (email !== ADMIN_EMAIL && !isPermanent) {
       const threeDays = 3 * 24 * 60 * 60 * 1000;
       const elapsedTime = Date.now() - loginTime;
@@ -1201,11 +1254,16 @@
         return;
       } else {
         const remainingTime = threeDays - elapsedTime;
+        if (topTrialBanner) topTrialBanner.classList.remove('d-none');
+        startTrialCountdown(remainingTime);
+
         if (trialTimerInterval) clearInterval(trialTimerInterval);
         trialTimerInterval = setTimeout(() => {
           showPurchaseModal();
         }, remainingTime);
       }
+    } else {
+      if (topTrialBanner) topTrialBanner.classList.add('d-none');
     }
 
     const authScreen = document.getElementById('authScreen');
@@ -1242,6 +1300,35 @@
 
     renderAllTables();
     updateTabNamesUI();
+  }
+
+  function startTrialCountdown(durationMs) {
+    const topDisplay = document.getElementById('topTimerDisplay');
+    let endTime = Date.now() + durationMs;
+
+    const updateTimer = () => {
+      let now = Date.now();
+      let distance = endTime - now;
+
+      if (distance <= 0) {
+        if (topDisplay) topDisplay.innerText = "انتهت المهلة!";
+        clearInterval(window.trialIntervalRef);
+        showPurchaseModal();
+        return;
+      }
+
+      let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      const timeText = `${days} أيام ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      if (topDisplay) topDisplay.innerText = timeText;
+    };
+
+    updateTimer();
+    if (window.trialIntervalRef) clearInterval(window.trialIntervalRef);
+    window.trialIntervalRef = setInterval(updateTimer, 1000);
   }
 
   function openDesktopLinkModal() {
@@ -1281,10 +1368,6 @@
   }
 
   function showPurchaseModal() {
-    const mainContent = document.getElementById('mainContent');
-    const authScreen = document.getElementById('authScreen');
-    if (mainContent) mainContent.classList.add('d-none');
-    if (authScreen) authScreen.classList.remove('d-none');
     if (purchaseModalInstance) purchaseModalInstance.show();
   }
 
@@ -1304,6 +1387,7 @@
       localStorage.setItem('hussain_active_session', JSON.stringify(session));
 
       if (trialTimerInterval) clearInterval(trialTimerInterval);
+      if (window.trialIntervalRef) clearInterval(window.trialIntervalRef);
       if (purchaseModalInstance) purchaseModalInstance.hide();
       alert("تم تفعيل حسابك بنجاح للابد! شكراً لك.");
       loginUser(currentEmail, true, Date.now(), false);
@@ -1373,6 +1457,7 @@
 
   function logoutSystem() {
     if (trialTimerInterval) clearInterval(trialTimerInterval);
+    if (window.trialIntervalRef) clearInterval(window.trialIntervalRef);
     localStorage.removeItem('hussain_active_session');
     window.location.href = window.location.href.split('?')[0];
   }
