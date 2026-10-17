@@ -962,10 +962,12 @@
     telegramModalInstance = new bootstrap.Modal(document.getElementById('telegramSettingsModal'));
     changePasswordModalInstance = new bootstrap.Modal(document.getElementById('changePasswordModal'));
 
-    // جلب البيانات من سحابة JSONbin عند فتح التطبيق أول مرة
+    // جلب البيانات مع دعم APK الـ Fallback المحلي الفوري لضمان عدم حدوث تعليق
     fetchDataFromJSONbin((cloudData) => {
-      if (cloudData) {
+      if (cloudData && Object.keys(cloudData).length > 0) {
         globalCloudDatabase = cloudData;
+      } else {
+        globalCloudDatabase = JSON.parse(localStorage.getItem('hussain_cloud_fallback')) || {};
       }
       
       // التحقق هل هناك جلسة سابقة مسجلة
@@ -983,49 +985,63 @@
     });
   });
 
-  // جلب البيانات سحابياً من JSONbin.io
+  // جلب البيانات سحابياً من JSONbin.io مع مهلة زمنية (Timeout) لتجنب توقف التطبيق داخل الـ APK
   function fetchDataFromJSONbin(callback) {
     const url = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 4000); // مهلة 4 ثوانٍ كحد أقصى للاتصال
+
     fetch(url, {
       method: 'GET',
       headers: {
         'X-Master-Key': JSONBIN_MASTER_KEY
-      }
+      },
+      signal: controller.signal
     })
     .then(response => response.json())
     .then(data => {
+      clearTimeout(timeoutId);
       if (data && data.record) {
+        localStorage.setItem('hussain_cloud_fallback', JSON.stringify(data.record));
         callback(data.record);
       } else {
-        callback({});
+        const localFallback = JSON.parse(localStorage.getItem('hussain_cloud_fallback')) || {};
+        callback(localFallback);
       }
     })
     .catch(err => {
-      console.error("Error fetching from JSONbin:", err);
+      clearTimeout(timeoutId);
+      console.warn("Network request blocked or timed out in APK, falling back to local storage:", err);
       const localFallback = JSON.parse(localStorage.getItem('hussain_cloud_fallback')) || {};
       callback(localFallback);
     });
   }
 
-  // حفظ البيانات سحابياً إلى JSONbin.io
+  // حفظ البيانات سحابياً ومحلياً
   function saveDatatoJSONbin(callback) {
+    localStorage.setItem('hussain_cloud_fallback', JSON.stringify(globalCloudDatabase));
+
     const url = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 4000);
+
     fetch(url, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'X-Master-Key': JSONBIN_MASTER_KEY
       },
-      body: JSON.stringify(globalCloudDatabase)
+      body: JSON.stringify(globalCloudDatabase),
+      signal: controller.signal
     })
     .then(response => response.json())
     .then(data => {
-      localStorage.setItem('hussain_cloud_fallback', JSON.stringify(globalCloudDatabase));
+      clearTimeout(timeoutId);
       if (callback) callback(true);
     })
     .catch(err => {
-      console.error("Error saving to JSONbin:", err);
-      localStorage.setItem('hussain_cloud_fallback', JSON.stringify(globalCloudDatabase));
+      clearTimeout(timeoutId);
+      console.warn("Cloud save skipped in APK mode, saved locally successfully.");
       if (callback) callback(false);
     });
   }
@@ -1061,7 +1077,7 @@
     }
 
     fetchDataFromJSONbin((cloudData) => {
-      globalCloudDatabase = cloudData || {};
+      globalCloudDatabase = cloudData || JSON.parse(localStorage.getItem('hussain_cloud_fallback')) || {};
       const usersDb = globalCloudDatabase.usersDb || {};
 
       if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
@@ -1101,7 +1117,7 @@
     }
 
     fetchDataFromJSONbin((cloudData) => {
-      globalCloudDatabase = cloudData || {};
+      globalCloudDatabase = cloudData || JSON.parse(localStorage.getItem('hussain_cloud_fallback')) || {};
       if (!globalCloudDatabase.usersDb) globalCloudDatabase.usersDb = {};
 
       if (globalCloudDatabase.usersDb[email]) {
@@ -1118,7 +1134,7 @@
       };
 
       saveDatatoJSONbin((success) => {
-        alert("تم إنشاء الحساب السحابي بنجاح! لديك 3 أيام تجريبية مجانية.");
+        alert("تم إنشاء الحساب بنجاح! لديك 3 أيام تجريبية مجانية.");
         loginUser(email, false, now, true);
       });
     });
@@ -1202,7 +1218,7 @@
 
     if (code === PERMANENT_ACTIVATION_CODE) {
       fetchDataFromJSONbin((cloudData) => {
-        globalCloudDatabase = cloudData || {};
+        globalCloudDatabase = cloudData || JSON.parse(localStorage.getItem('hussain_cloud_fallback')) || {};
         if (globalCloudDatabase.usersDb && globalCloudDatabase.usersDb[currentEmail]) {
           globalCloudDatabase.usersDb[currentEmail].isPermanent = true;
           saveDatatoJSONbin();
@@ -1214,7 +1230,7 @@
 
         if (trialTimerInterval) clearInterval(trialTimerInterval);
         if (purchaseModalInstance) purchaseModalInstance.hide();
-        alert("تم تفعيل حسابك السحابي بنجاح للابد عبر سحابة JSONbin! شكراً لك.");
+        alert("تم تفعيل حسابك بنجاح للابد! شكراً لك.");
         loginUser(currentEmail, true, Date.now(), false);
       });
     } else {
@@ -1235,11 +1251,11 @@
     }
 
     fetchDataFromJSONbin((cloudData) => {
-      globalCloudDatabase = cloudData || {};
+      globalCloudDatabase = cloudData || JSON.parse(localStorage.getItem('hussain_cloud_fallback')) || {};
       const usersDb = globalCloudDatabase.usersDb || {};
 
       if (email === ADMIN_EMAIL) {
-        alert("كلمة مرور حساب الأدمن الأساسي محفوظة لديك. (راجع الإعدادات البرمجية)");
+        alert("كلمة مرور حساب الأدمن الأساسي محفوظة لديك.");
         return;
       }
 
@@ -1255,30 +1271,4 @@
           
           fetch(url, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              chat_id: tChatId,
-              text: `🔐 <b>استعادة كلمة المرور</b>\n\nحسابك: ${email}\nكلمة المرور الخاصة بك هي: <b>${pass}</b>\n\n🏛 <b>حسين لخدمات الإنترنت</b>`,
-              parse_mode: 'HTML'
-            })
-          }).then(() => {
-            alert("تم إرسال كلمة المرور السابقة بنجاح إلى حسابك / بوت تيليجرام الخاص بك!");
-          }).catch(err => {
-            alert("فشل الإرسال للتيليجرام، تأكد من إعدادات البوت والآيدي.");
-          });
-        } else {
-          alert(`كلمة المرور لحسابك (${email}) هي: ${pass}\n(ملاحظة: لم تقم بربط بوت تيليجرام مسبقاً لذا تم إظهارها هنا).`);
-        }
-      } else {
-        alert("البريد الإلكتروني غير مسجل في النظام!");
-      }
-    });
-  }
-
-  function openChangePasswordModal() {
-    document.getElementById('currentPassInput').value = '';
-    document.getElementById('newPassInput').value = '';
-    if (changePasswordModalInstance) changePasswordModalInstance.show();
-  }
-
-  function submitChangePassword(
+            headers: { 'Content-Type': 'app
