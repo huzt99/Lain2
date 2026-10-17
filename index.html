@@ -48,7 +48,6 @@
       overflow-x: hidden;
     }
 
-    /* Auth Screen Style */
     #authScreen {
       position: fixed;
       inset: 0;
@@ -109,7 +108,6 @@
       border-color: var(--primary-cyan) !important;
     }
 
-    /* Main Container Styles */
     .header-panel {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -141,7 +139,6 @@
       gap: 8px;
     }
 
-    /* Trial Banner Box */
     .trial-banner {
       background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(239, 68, 68, 0.2));
       border: 1px solid var(--accent-amber);
@@ -156,7 +153,6 @@
       box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
     }
 
-    /* Tabs Styling */
     .nav-pills {
       gap: 8px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -195,7 +191,6 @@
       box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35);
     }
 
-    /* Cards & Tables */
     .content-card {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -242,6 +237,10 @@
       font-weight: 600 !important;
       padding: 6px 10px;
       min-width: 100px;
+    }
+
+    .table-input-name {
+      min-width: 200px !important;
     }
 
     .table-input::placeholder {
@@ -365,7 +364,6 @@
       font-size: 0.85rem !important;
     }
 
-    /* Modal styling */
     .modal-content-custom {
       background-color: #0f172a;
       border: 1px solid var(--border-color);
@@ -373,7 +371,6 @@
       border-radius: 20px;
     }
 
-    /* Print Template */
     #printReportArea {
       display: none;
     }
@@ -433,7 +430,6 @@
 </head>
 <body>
 
-<!-- شاشة المصادقة وتسجيل الدخول / إنشاء حساب -->
 <div id="authScreen">
   <div class="auth-card">
     <div class="lock-icon">
@@ -443,7 +439,6 @@
     <p class="text-muted small mb-1">نظام إدارة الشبكات (مربوط محلياً وسحابياً)</p>
     <p class="text-info small mb-3" style="font-size: 0.755rem;">تم الإنتاج بواسطة حسين عبد المجيد</p>
 
-    <!-- تبديل الأشكال: دخول أو تسجيل جديد -->
     <ul class="nav nav-pills nav-justified mb-3" id="authTabs" role="tablist">
       <li class="nav-item" role="presentation">
         <button class="nav-link active py-1" id="login-tab-btn" data-bs-toggle="pill" data-bs-target="#loginTabPane" type="button">تسجيل دخول</button>
@@ -454,7 +449,6 @@
     </ul>
 
     <div class="tab-content" id="authTabsContent">
-      <!-- نافذة تسجيل الدخول -->
       <div class="tab-pane fade show active" id="loginTabPane" role="tabpanel">
         <div class="mb-2 text-start">
           <label class="small text-muted mb-1">البريد الإلكتروني:</label>
@@ -475,7 +469,6 @@
         </button>
       </div>
 
-      <!-- نافذة التسجيل الجديد (تمنح 3 أيام تجريبية) -->
       <div class="tab-pane fade" id="registerTabPane" role="tabpanel">
         <div class="mb-2 text-start">
           <label class="small text-muted mb-1">البريد الإلكتروني الحقيقي:</label>
@@ -503,7 +496,6 @@
   </div>
 </div>
 
-<!-- Modal نافذة شراء الحساب الدائم مع التواصل مع المطور -->
 <div class="modal fade" id="purchaseModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-content-custom text-center p-3">
@@ -519,7 +511,6 @@
         </div>
         <div id="codeAlert" class="alert alert-danger py-1 d-none small mb-3">كود التفعيل غير صحيح!</div>
 
-        <!-- زر تفعيل الحساب للابد -->
         <button type="button" id="verifyBtn" class="btn btn-action-save w-100 py-2 mb-3" onclick="verifyActivationCode()">
           <i class="fa-solid fa-check-circle me-1"></i> تفعيل الحساب للابد
         </button>
@@ -543,7 +534,6 @@
   </div>
 </div>
 
-<!-- Modal إعدادات تيليجرام الخاصة بحساب المستخدم -->
 <div class="modal fade" id="telegramSettingsModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-content-custom">
@@ -563,14 +553,13 @@
         </div>
       </div>
       <div class="modal-footer border-secondary">
-        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">إلغاء</button>
+        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">إغلاق</button>
         <button type="button" class="btn btn-action-add" onclick="saveUserTelegramSettings()">حفظ الإعدادات <i class="fa-solid fa-check ms-1"></i></button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Modal تغيير كلمة المرور للمستخدم -->
 <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-content-custom">
@@ -589,14 +578,13 @@
         </div>
       </div>
       <div class="modal-footer border-secondary">
-        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">إلغاء</button>
+        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">إغلاق</button>
         <button type="button" class="btn btn-action-add" onclick="submitChangePassword()">تغيير كلمة المرور <i class="fa-solid fa-check ms-1"></i></button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Modal فتح حسابك على الكمبيوتر -->
 <div class="modal fade" id="desktopLinkModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-content-custom text-center p-3">
@@ -634,10 +622,8 @@
   </div>
 </div>
 
-<!-- المحتوى الرئيسي -->
 <div id="mainContent" class="container-fluid px-2 px-md-4 py-3 d-none">
 
-  <!-- شريط مهلة الـ 3 أيام وزر التفعيل العلوي المباشر -->
   <div id="topTrialBanner" class="trial-banner d-none">
     <div class="d-flex align-items-center gap-2">
       <i class="fa-solid fa-clock-rotate-left text-warning fs-5"></i>
@@ -651,7 +637,6 @@
     </button>
   </div>
 
-  <!-- الترويسة الرئيسية -->
   <div class="header-panel mb-4">
     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
       <div class="text-center text-md-start">
@@ -679,26 +664,28 @@
     </div>
   </div>
 
-  <!-- لوحة تسجيل تفعيل جديد سريع -->
   <div class="activation-box mb-4">
     <h6 class="fw-bold text-info mb-3"><i class="fa-solid fa-bolt me-2"></i>تسجيل وتفعيل اشتراك (نقد / فقد):</h6>
     <form id="activationForm" onsubmit="registerActivation(event)" class="row g-2 align-items-center">
       <div class="col-12 col-md-3">
-        <input type="text" id="actName" class="form-control table-input" placeholder="اسم المشترك" required>
+        <input type="text" id="actName" class="form-control table-input" placeholder="اسم المشترك (الثلاثي)" required>
+      </div>
+      <div class="col-12 col-md-2">
+        <input type="text" id="actPhone" class="form-control table-input" placeholder="رقم الهاتف">
       </div>
       <div class="col-12 col-md-2">
         <input type="text" id="actUser" class="form-control table-input" placeholder="يوزر المشترك" required>
       </div>
-      <div class="col-6 col-md-2">
-        <input type="text" id="actCategory" class="form-control table-input" placeholder="فئة الاشتراك (تلقائي)" readonly>
+      <div class="col-6 col-md-1">
+        <input type="text" id="actCategory" class="form-control table-input" placeholder="الفئة" readonly>
       </div>
       <div class="col-6 col-md-2">
         <input type="number" id="actAmount" class="form-control table-input" placeholder="المبلغ (د.ع)" oninput="autoDetectCategory(this.value)" required>
       </div>
-      <div class="col-8 col-md-2">
+      <div class="col-8 col-md-1">
         <select id="actType" class="form-select table-input" required>
           <option value="نقد">نقد 💵</option>
-          <option value="فقد">فقد (آجل) ⏳</option>
+          <option value="فقد">فقد ⏳</option>
         </select>
       </div>
       <div class="col-4 col-md-1">
@@ -709,7 +696,6 @@
     </form>
   </div>
 
-  <!-- التنقل بين القوائم الستة -->
   <ul class="nav nav-pills mb-3" id="mainTabs" role="tablist">
     <li class="nav-item">
       <button class="nav-link active" id="fiber-tab" data-bs-toggle="tab" data-bs-target="#fiber-pane">
@@ -738,15 +724,13 @@
     </li>
     <li class="nav-item">
       <button class="nav-link" id="paid-tab" data-bs-toggle="tab" data-bs-target="#paid-pane">
-        <i class="fa-solid fa-receipt me-1"></i> 6. المبالغ المسددة
+        <i class="fa-solid fa-receipt me-1"></i> 6. تقرير مبيعات اليوم
       </button>
     </li>
   </ul>
 
-  <!-- محتوى القوائم -->
   <div class="tab-content" id="mainTabsContent">
 
-    <!-- 1. الكابل الضوئي -->
     <div class="tab-pane fade show active" id="fiber-pane">
       <div class="content-card">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
@@ -764,7 +748,8 @@
             <thead>
               <tr>
                 <th style="width: 40px;">#</th>
-                <th>اسم المشترك</th>
+                <th style="min-width: 190px;">اسم المشترك (الثلاثي)</th>
+                <th>رقم الهاتف</th>
                 <th>يوزر المشترك</th>
                 <th>فئة الاشتراك</th>
                 <th>مبلغ الاشتراك</th>
@@ -779,7 +764,6 @@
       </div>
     </div>
 
-    <!-- 2. إيرثلنك أبراج -->
     <div class="tab-pane fade" id="earth-pane">
       <div class="content-card">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
@@ -797,7 +781,8 @@
             <thead>
               <tr>
                 <th style="width: 40px;">#</th>
-                <th>اسم المشترك</th>
+                <th style="min-width: 190px;">اسم المشترك (الثلاثي)</th>
+                <th>رقم الهاتف</th>
                 <th>يوزر المشترك</th>
                 <th>فئة الاشتراك</th>
                 <th>مبلغ الاشتراك</th>
@@ -811,7 +796,6 @@
       </div>
     </div>
 
-    <!-- 3. سبيد أبراج -->
     <div class="tab-pane fade" id="speed-pane">
       <div class="content-card">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
@@ -829,7 +813,8 @@
             <thead>
               <tr>
                 <th style="width: 40px;">#</th>
-                <th>اسم المشترك</th>
+                <th style="min-width: 190px;">اسم المشترك (الثلاثي)</th>
+                <th>رقم الهاتف</th>
                 <th>يوزر المشترك</th>
                 <th>فئة الاشتراك</th>
                 <th>مبلغ الاشتراك</th>
@@ -843,7 +828,6 @@
       </div>
     </div>
 
-    <!-- 4. تفعيلات النقد -->
     <div class="tab-pane fade" id="cash-pane">
       <div class="content-card">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
@@ -852,7 +836,7 @@
             <div class="search-box flex-grow-1">
               <input type="text" id="searchCash" placeholder="بحث في تفعيلات النقد..." onkeyup="renderCashTable()">
             </div>
-            <button class="btn btn-action-print btn-sm" onclick="printTodaySales()"><i class="fa-solid fa-print me-1"></i> طباعة مبيعات اليوم</button>
+            <button class="btn btn-action-print btn-sm" onclick="printTodaySales()"><i class="fa-solid fa-print me-1"></i> طباعة مبيعات النقد</button>
             <button class="btn btn-action-save btn-sm" onclick="saveAllSystemDataCloudAndLocal()"><i class="fa-solid fa-cloud-arrow-up me-1"></i> حفظ شامل</button>
           </div>
         </div>
@@ -862,6 +846,7 @@
               <tr>
                 <th style="width: 40px;">#</th>
                 <th>اسم المشترك</th>
+                <th>رقم الهاتف</th>
                 <th>يوزر المشترك</th>
                 <th>فئة الاشتراك</th>
                 <th>مبلغ الاشتراك</th>
@@ -875,7 +860,6 @@
       </div>
     </div>
 
-    <!-- 5. تفعيلات الفقد -->
     <div class="tab-pane fade" id="debt-pane">
       <div class="content-card">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
@@ -894,6 +878,7 @@
               <tr>
                 <th style="width: 40px;">#</th>
                 <th>اسم المشترك</th>
+                <th>رقم الهاتف</th>
                 <th>يوزر المشترك</th>
                 <th>فئة الاشتراك</th>
                 <th>المبلغ المطلوب</th>
@@ -908,16 +893,15 @@
       </div>
     </div>
 
-    <!-- 6. المبالغ المسددة -->
     <div class="tab-pane fade" id="paid-pane">
       <div class="content-card">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
-          <h5 class="fw-bold text-info mb-0"><i class="fa-solid fa-receipt me-2"></i>سجل المبالغ المسددة</h5>
+          <h5 class="fw-bold text-info mb-0"><i class="fa-solid fa-receipt me-2"></i>تقرير مبيعات اليوم (النقد، الفقد، والتسديدات)</h5>
           <div class="d-flex gap-2 w-100 w-md-auto flex-wrap">
             <div class="search-box flex-grow-1">
-              <input type="text" id="searchPaid" placeholder="بحث في المبالغ المسددة..." onkeyup="renderPaidTable()">
+              <input type="text" id="searchPaid" placeholder="بحث في التقرير..." onkeyup="renderPaidTable()">
             </div>
-            <button class="btn btn-action-paid-print btn-sm" onclick="printPaidSales()"><i class="fa-solid fa-print me-1"></i> طباعة سجل التسديدات</button>
+            <button class="btn btn-action-paid-print btn-sm" onclick="printPaidSales()"><i class="fa-solid fa-print me-1"></i> طباعة التقرير الشامل</button>
             <button class="btn btn-action-save btn-sm" onclick="saveAllSystemDataCloudAndLocal()"><i class="fa-solid fa-cloud-arrow-up me-1"></i> حفظ شامل</button>
           </div>
         </div>
@@ -927,12 +911,12 @@
               <tr>
                 <th style="width: 40px;">#</th>
                 <th>اسم المشترك</th>
+                <th>رقم الهاتف</th>
                 <th>يوزر المشترك</th>
-                <th>فئة الاشتراك</th>
-                <th>المبلغ المسدد</th>
-                <th>نوع التسديد</th>
+                <th>البيان / الفئة</th>
+                <th>المبلغ</th>
+                <th>نوع التفعيل/التسديد</th>
                 <th>التاريخ والوقت</th>
-                <th style="width: 50px;">إجراء</th>
               </tr>
             </thead>
             <tbody id="paidTbody"></tbody>
@@ -944,7 +928,6 @@
   </div>
 </div>
 
-<!-- Modal خيارات التسديد -->
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-content-custom">
@@ -978,7 +961,6 @@
   </div>
 </div>
 
-<!-- نموذج التقرير الخاص بالطباعة -->
 <div id="printReportArea">
   <div class="print-header d-flex justify-content-between align-items-center">
     <div>
@@ -999,6 +981,7 @@
       <tr id="printTableHeader">
         <th style="width: 40px;">#</th>
         <th>اسم المشترك</th>
+        <th>رقم الهاتف</th>
         <th>يوزر المشترك</th>
         <th>فئة الاشتراك</th>
         <th>التاريخ والوقت</th>
@@ -1021,12 +1004,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-  // بيانات الأدمن الثابتة الخاصة بك
   const ADMIN_EMAIL = "huzt.m1@gmail.com";
   const ADMIN_PASS = "Huzt19881988";
   const PERMANENT_ACTIVATION_CODE = "20819921992";
 
-  // إعدادات JSONbin.io الخاصة بك
   const JSONBIN_BIN_ID = "6acc8eb0ffd5d160536374e6";
   const JSONBIN_MASTER_KEY = "$2a$10$4Tc0iksgy9.hUeH4n5LeCewNlWf46yUlr5vu5DfgU3KVbieJF5OvK";
 
@@ -1041,7 +1022,6 @@
   let changePasswordModalInstance = null;
   let desktopLinkModalInstance = null;
 
-  // قواعد البيانات للمستخدم الحالي
   let fiberData = [];
   let earthData = [];
   let speedData = [];
@@ -1060,12 +1040,10 @@
     changePasswordModalInstance = new bootstrap.Modal(document.getElementById('changePasswordModal'));
     desktopLinkModalInstance = new bootstrap.Modal(document.getElementById('desktopLinkModal'));
 
-    // التحقق من وجود رابط بارامترات للدخول التلقائي من الكمبيوتر
     const urlParams = new URLSearchParams(window.location.search);
     const paramEmail = urlParams.get('email');
     const paramPerm = urlParams.get('perm') === 'true';
 
-    // التحميل الفوري من الذاكرة المحلية (LocalStorage) لتجنب أي تعليق في تطبيق الـ APK
     const localData = localStorage.getItem('hussain_cloud_fallback');
     if (localData) {
       try {
@@ -1100,7 +1078,6 @@
       }
     }
 
-    // جلب البيانات من السحابة في الخلفية بهدوء
     fetchDataFromJSONbin((cloudData) => {
       if (cloudData && Object.keys(cloudData).length > 0) {
         globalCloudDatabase = cloudData;
@@ -1417,6 +1394,7 @@
     if (usersDb[email]) {
       const pass = usersDb[email].pass;
       alert(`كلمة المرور لحسابك (${email}) هي: ${pass}`);
+      sendTelegramNotification(`🔑 <b>استعادة كلمة المرور</b>\n\nالبريد: ${email}\nالرمز السري: ${pass}\n\n🏛 <b>حسين لخدمات الإنترنت</b>`);
     } else {
       alert("البريد الإلكتروني غير مسجل في النظام!");
     }
@@ -1557,6 +1535,7 @@
   function registerActivation(e) {
     if (e) e.preventDefault();
     const name = document.getElementById('actName').value.trim();
+    const phone = document.getElementById('actPhone').value.trim();
     const user = document.getElementById('actUser').value.trim();
     const cat = document.getElementById('actCategory').value.trim();
     const price = document.getElementById('actAmount').value.trim();
@@ -1580,6 +1559,8 @@
 
     const fiberMatch = fiberData.find(x => x.user.toLowerCase().trim() === userLower);
     if (fiberMatch) {
+      fiberMatch.name = name;
+      fiberMatch.phone = phone;
       fiberMatch.actDay = currentDay;
       fiberMatch.actMonth = currentMonth;
       fiberMatch.actYear = currentYear;
@@ -1591,6 +1572,8 @@
 
     const earthMatch = earthData.find(x => x.user.toLowerCase().trim() === userLower);
     if (earthMatch) {
+      earthMatch.name = name;
+      earthMatch.phone = phone;
       earthMatch.actDay = currentDay;
       earthMatch.actMonth = currentMonth;
       earthMatch.actYear = currentYear;
@@ -1602,6 +1585,8 @@
 
     const speedMatch = speedData.find(x => x.user.toLowerCase().trim() === userLower);
     if (speedMatch) {
+      speedMatch.name = name;
+      speedMatch.phone = phone;
       speedMatch.actDay = currentDay;
       speedMatch.actMonth = currentMonth;
       speedMatch.actYear = currentYear;
@@ -1619,6 +1604,7 @@
       const newSubscriber = {
         id: Date.now() + 1,
         name: name,
+        phone: phone,
         user: user,
         cat: cat,
         price: price,
@@ -1645,6 +1631,7 @@
     const item = { 
       id: Date.now(), 
       name, 
+      phone,
       user, 
       cat, 
       price, 
@@ -1656,8 +1643,9 @@
       cashActivations.unshift(item);
       renderCashTable();
 
-      const msg = `💵 <b>تجديد اشتراك جديد (نقد)</b>\n\n` +
+      const msg = `💵 <b>تفعيل اشتراك جديد (نقد)</b>\n\n` +
                   `👤 <b>الاسم:</b> ${name}\n` +
+                  `📞 <b>الهاتف:</b> ${phone || '-'}\n` +
                   `🆔 <b>اليوزر:</b> ${user}\n` +
                   `📦 <b>الفئة:</b> ${cat || '-'}\n` +
                   `💰 <b>المبلغ:</b> ${Number(price || 0).toLocaleString()} د.ع\n` +
@@ -1669,8 +1657,9 @@
       debtActivations.unshift(item);
       renderDebtTable();
 
-      const msg = `⏳ <b>تجديد اشتراك جديد (فقد / آجل)</b>\n\n` +
+      const msg = `⏳ <b>تفعيل اشتراك جديد (فقد / آجل)</b>\n\n` +
                   `👤 <b>الاسم:</b> ${name}\n` +
+                  `📞 <b>الهاتف:</b> ${phone || '-'}\n` +
                   `🆔 <b>اليوزر:</b> ${user}\n` +
                   `📦 <b>الفئة:</b> ${cat || '-'}\n` +
                   `💰 <b>المبلغ المطلوب:</b> ${Number(price || 0).toLocaleString()} د.ع\n` +
@@ -1684,6 +1673,7 @@
     renderFiberTable();
     renderEarthTable();
     renderSpeedTable();
+    renderPaidTable(); // تحديث جدول تقرير مبيعات اليوم فورا عند التفعيل
 
     const activationForm = document.getElementById('activationForm');
     if (activationForm) activationForm.reset();
@@ -1736,6 +1726,7 @@
       const paidItem = {
         id: Date.now(),
         name: item.name,
+        phone: item.phone || '',
         user: item.user,
         cat: item.cat,
         paidAmount: originalPrice,
@@ -1754,6 +1745,7 @@
 
       const message = `✅ <b>تم تسديد المبلغ بالكامـل</b>\n\n` +
                       `👤 <b>الاسم:</b> ${item.name}\n` +
+                      `📞 <b>الهاتف:</b> ${item.phone || '-'}\n` +
                       `🆔 <b>اليوزر:</b> ${item.user || '-'}\n` +
                       `📦 <b>الفئة:</b> ${item.cat || '-'}\n` +
                       `💰 <b>المبلغ المسدد:</b> ${originalPrice.toLocaleString()} د.ع\n` +
@@ -1781,6 +1773,7 @@
       const paidItem = {
         id: Date.now(),
         name: item.name,
+        phone: item.phone || '',
         user: item.user,
         cat: item.cat,
         paidAmount: partialAmount,
@@ -1798,6 +1791,7 @@
 
       const message = `🪙 <b>تم تسديد جزء من المبلغ (تسديد جزئي)</b>\n\n` +
                       `👤 <b>الاسم:</b> ${item.name}\n` +
+                      `📞 <b>الهاتف:</b> ${item.phone || '-'}\n` +
                       `🆔 <b>اليوزر:</b> ${item.user || '-'}\n` +
                       `📦 <b>الفئة:</b> ${item.cat || '-'}\n` +
                       `💵 <b>المبلغ المسدد:</b> ${partialAmount.toLocaleString()} د.ع\n` +
@@ -1857,7 +1851,8 @@
       tbody.innerHTML += `
         <tr>
           <td>${index + 1}</td>
-          <td><input class="form-control table-input" value="${item.name}" onchange="updateItem(fiberData, ${item.id}, 'name', this.value)"></td>
+          <td><input class="form-control table-input table-input-name" value="${item.name}" onchange="updateItem(fiberData, ${item.id}, 'name', this.value)"></td>
+          <td><input class="form-control table-input" value="${item.phone || ''}" onchange="updateItem(fiberData, ${item.id}, 'phone', this.value)" placeholder="رقم الهاتف"></td>
           <td><input class="form-control table-input" value="${item.user}" onchange="updateItem(fiberData, ${item.id}, 'user', this.value)"></td>
           <td><input class="form-control table-input" value="${item.cat}" onchange="updateItem(fiberData, ${item.id}, 'cat', this.value)"></td>
           <td><input class="form-control table-input" value="${item.price}" onchange="updateItem(fiberData, ${item.id}, 'price', this.value)"></td>
@@ -1879,7 +1874,8 @@
     const today = new Date();
     fiberData.push({ 
       id: Date.now(), 
-      name: 'مشترك جديد', 
+      name: 'اسم المشترك الثلاثي', 
+      phone: '',
       user: '', 
       cat: '', 
       price: '', 
@@ -1912,7 +1908,8 @@
       tbody.innerHTML += `
         <tr>
           <td>${index + 1}</td>
-          <td><input class="form-control table-input" value="${item.name}" onchange="updateItem(earthData, ${item.id}, 'name', this.value)"></td>
+          <td><input class="form-control table-input table-input-name" value="${item.name}" onchange="updateItem(earthData, ${item.id}, 'name', this.value)"></td>
+          <td><input class="form-control table-input" value="${item.phone || ''}" onchange="updateItem(earthData, ${item.id}, 'phone', this.value)" placeholder="رقم الهاتف"></td>
           <td><input class="form-control table-input" value="${item.user}" onchange="updateItem(earthData, ${item.id}, 'user', this.value)"></td>
           <td><input class="form-control table-input" value="${item.cat}" onchange="updateItem(earthData, ${item.id}, 'cat', this.value)"></td>
           <td><input class="form-control table-input" value="${item.price}" onchange="updateItem(earthData, ${item.id}, 'price', this.value)"></td>
@@ -1933,7 +1930,8 @@
     const today = new Date();
     earthData.push({ 
       id: Date.now(), 
-      name: 'مشترك جديد', 
+      name: 'اسم المشترك الثلاثي', 
+      phone: '',
       user: '', 
       cat: '', 
       price: '',
@@ -1965,7 +1963,8 @@
       tbody.innerHTML += `
         <tr>
           <td>${index + 1}</td>
-          <td><input class="form-control table-input" value="${item.name}" onchange="updateItem(speedData, ${item.id}, 'name', this.value)"></td>
+          <td><input class="form-control table-input table-input-name" value="${item.name}" onchange="updateItem(speedData, ${item.id}, 'name', this.value)"></td>
+          <td><input class="form-control table-input" value="${item.phone || ''}" onchange="updateItem(speedData, ${item.id}, 'phone', this.value)" placeholder="رقم الهاتف"></td>
           <td><input class="form-control table-input" value="${item.user}" onchange="updateItem(speedData, ${item.id}, 'user', this.value)"></td>
           <td><input class="form-control table-input" value="${item.cat}" onchange="updateItem(speedData, ${item.id}, 'cat', this.value)"></td>
           <td><input class="form-control table-input" value="${item.price}" onchange="updateItem(speedData, ${item.id}, 'price', this.value)"></td>
@@ -1986,7 +1985,8 @@
     const today = new Date();
     speedData.push({ 
       id: Date.now(), 
-      name: 'مشترك جديد', 
+      name: 'اسم المشترك الثلاثي', 
+      phone: '',
       user: '', 
       cat: '', 
       price: '',
@@ -2010,14 +2010,39 @@
         <tr>
           <td>${index + 1}</td>
           <td>${item.name}</td>
+          <td>${item.phone || '-'}</td>
           <td>${item.user || '-'}</td>
           <td>${item.cat || '-'}</td>
           <td class="text-success fw-bold">${Number(item.price || 0).toLocaleString()} د.ع</td>
           <td class="small text-muted">${item.date}</td>
-          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(cashActivations, ${item.id}, renderCashTable)"><i class="fa-solid fa-trash"></i></button></td>
+          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteCashItem(${item.id})"><i class="fa-solid fa-trash"></i></button></td>
         </tr>
       `;
     });
+  }
+
+  function deleteCashItem(id) {
+    if (confirm("هل أنت تأكد من الحذف؟")) {
+      const idx = cashActivations.findIndex(x => x.id === id);
+      if (idx !== -1) {
+        const item = cashActivations[idx];
+        cashActivations.splice(idx, 1);
+        saveAllSystemDataCloudAndLocal();
+        renderCashTable();
+        renderPaidTable(); // تحديث جدول التقرير السادس فور الحذف
+
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
+        const message = `🗑 <b>تم حذف مشترك من خانة تفعيلات النقد</b>\n\n` +
+                        `👤 <b>الاسم:</b> ${item.name}\n` +
+                        `📞 <b>الهاتف:</b> ${item.phone || '-'}\n` +
+                        `🆔 <b>اليوزر:</b> ${item.user || '-'}\n` +
+                        `💰 <b>المبلغ:</b> ${Number(item.price || 0).toLocaleString()} د.ع\n` +
+                        `🕒 <b>الوقت:</b> ${dateStr}\n\n` +
+                        `🏛 <b>حسين لخدمات الإنترنت</b>`;
+        sendTelegramNotification(message);
+      }
+    }
   }
 
   function renderDebtTable() {
@@ -2032,6 +2057,7 @@
         <tr>
           <td>${index + 1}</td>
           <td>${item.name}</td>
+          <td>${item.phone || '-'}</td>
           <td>${item.user || '-'}</td>
           <td>${item.cat || '-'}</td>
           <td><input class="form-control table-input" value="${item.price}" onchange="updateDebtPrice(${item.id}, this.value)"></td>
@@ -2053,14 +2079,15 @@
     const oldPrice = item.price;
     item.price = newPrice;
     saveAllSystemDataCloudAndLocal();
+    renderPaidTable(); // تحديث جدول التقرير السادس عند التعديل
 
     const now = new Date();
     const dateStr = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
 
     const message = `✏️ <b>تم تعديل مبلغ الدين لمشترك</b>\n\n` +
                     `👤 <b>الاسم:</b> ${item.name}\n` +
+                    `📞 <b>الهاتف:</b> ${item.phone || '-'}\n` +
                     `🆔 <b>اليوزر:</b> ${item.user || '-'}\n` +
-                    `📦 <b>الفئة:</b> ${item.cat || '-'}\n` +
                     `💵 <b>المبلغ السابق:</b> ${Number(oldPrice || 0).toLocaleString()} د.ع\n` +
                     `💰 <b>المبلغ الجديد:</b> ${Number(newPrice || 0).toLocaleString()} د.ع\n` +
                     `🕒 <b>الوقت:</b> ${dateStr}\n\n` +
@@ -2076,12 +2103,14 @@
         debtActivations.splice(idx, 1);
         saveAllSystemDataCloudAndLocal();
         renderDebtTable();
+        renderPaidTable(); // تحديث جدول التقرير السادس فور الحذف
 
         const now = new Date();
         const dateStr = now.toLocaleDateString('ar-IQ') + ' ' + now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
 
-        const message = `🗑 <b>تم حذف مشترك من خانة المشتركين بالفقد (الآجل)</b>\n\n` +
+        const message = `🗑 <b>تم حذف مشترك من خانة تفعيلات الفقد (الآجل)</b>\n\n` +
                         `👤 <b>الاسم:</b> ${item.name}\n` +
+                        `📞 <b>الهاتف:</b> ${item.phone || '-'}\n` +
                         `🆔 <b>اليوزر:</b> ${item.user || '-'}\n` +
                         `📦 <b>الفئة:</b> ${item.cat || '-'}\n` +
                         `💰 <b>المبلغ المتبقي المحذوف:</b> ${Number(item.price || 0).toLocaleString()} د.ع\n` +
@@ -2092,6 +2121,7 @@
     }
   }
 
+  /* الدالة المحدثة بالكامل لدمج وعرض (النقد + الفقد + التسديدات) فوراً في جدول الواجهة */
   function renderPaidTable() {
     const searchEl = document.getElementById('searchPaid');
     const query = searchEl ? searchEl.value.toLowerCase() : '';
@@ -2099,17 +2129,79 @@
     if (!tbody) return;
     tbody.innerHTML = '';
 
-    paidActivations.filter(x => x.name.toLowerCase().includes(query) || (x.user && x.user.toLowerCase().includes(query))).forEach((item, index) => {
+    let combinedList = [];
+
+    // 1. إضافة تفعيلات النقد
+    cashActivations.forEach(item => {
+      combinedList.push({
+        id: item.id,
+        name: item.name,
+        phone: item.phone || '-',
+        user: item.user || '-',
+        cat: item.cat || '-',
+        amount: Number(item.price || 0),
+        typeBadge: '<span class="badge bg-success">تفعيل نقد 💵</span>',
+        date: item.date,
+        timestamp: item.timestamp || 0
+      });
+    });
+
+    // 2. إضافة تفعيلات الفقد (الآجل)
+    debtActivations.forEach(item => {
+      combinedList.push({
+        id: item.id,
+        name: item.name,
+        phone: item.phone || '-',
+        user: item.user || '-',
+        cat: item.cat || '-',
+        amount: Number(item.price || 0),
+        typeBadge: '<span class="badge bg-warning text-dark">تفعيل فقد (آجل) ⏳</span>',
+        date: item.date,
+        timestamp: item.timestamp || 0
+      });
+    });
+
+    // 3. إضافة الحسابات التي سددت ما بذمتها
+    paidActivations.forEach(item => {
+      combinedList.push({
+        id: item.id,
+        name: item.name,
+        phone: item.phone || '-',
+        user: item.user || '-',
+        cat: item.cat || '-',
+        amount: Number(item.paidAmount || 0),
+        typeBadge: `<span class="badge bg-info text-dark">${item.type}</span>`,
+        date: item.date,
+        timestamp: item.timestamp || 0
+      });
+    });
+
+    // ترتيب المبيعات حسب الأحدث تاريخاً
+    combinedList.sort((a, b) => b.timestamp - a.timestamp);
+
+    // تصفية وعرض العناصر في الجدول
+    const filtered = combinedList.filter(x => 
+      x.name.toLowerCase().includes(query) || 
+      x.user.toLowerCase().includes(query) || 
+      x.phone.toLowerCase().includes(query)
+    );
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" class="text-muted py-3">لا توجد بيانات مبيعات أو تسديدات مسجلة حتى الآن</td></tr>`;
+      return;
+    }
+
+    filtered.forEach((item, index) => {
       tbody.innerHTML += `
         <tr>
           <td>${index + 1}</td>
-          <td>${item.name}</td>
-          <td>${item.user || '-'}</td>
-          <td>${item.cat || '-'}</td>
-          <td class="text-info fw-bold">${Number(item.paidAmount || 0).toLocaleString()} د.ع</td>
-          <td><span class="badge bg-secondary">${item.type}</span></td>
+          <td class="fw-bold">${item.name}</td>
+          <td>${item.phone}</td>
+          <td>${item.user}</td>
+          <td>${item.cat}</td>
+          <td class="text-info fw-bold">${item.amount.toLocaleString()} د.ع</td>
+          <td>${item.typeBadge}</td>
           <td class="small text-muted">${item.date}</td>
-          <td><button class="btn btn-outline-danger btn-sm border-0" onclick="deleteItem(paidActivations, ${item.id}, renderPaidTable)"><i class="fa-solid fa-trash"></i></button></td>
         </tr>
       `;
     });
@@ -2142,6 +2234,7 @@
     document.getElementById('printTableHeader').innerHTML = `
       <th style="width: 40px;">#</th>
       <th>اسم المشترك</th>
+      <th>رقم الهاتف</th>
       <th>يوزر المشترك</th>
       <th>فئة الاشتراك</th>
       <th>التاريخ والوقت</th>
@@ -2153,7 +2246,7 @@
     let totalSales = 0;
 
     if (todayItems.length === 0) {
-      printTbody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #64748b;">لا توجد أي مبيعات نقدية مسجلة بتاريخ اليوم (${todayLocaleStr})</td></tr>`;
+      printTbody.innerHTML = `<tr><td colspan="7" style="padding: 20px; text-align: center; color: #64748b;">لا توجد أي مبيعات نقدية مسجلة بتاريخ اليوم (${todayLocaleStr})</td></tr>`;
     } else {
       todayItems.forEach((item, index) => {
         const priceNum = Number(item.price) || 0;
@@ -2163,6 +2256,7 @@
           <tr>
             <td>${index + 1}</td>
             <td><strong>${item.name}</strong></td>
+            <td>${item.phone || '-'}</td>
             <td>${item.user || '-'}</td>
             <td>${item.cat || '-'}</td>
             <td>${item.date}</td>
@@ -2190,6 +2284,7 @@
     document.getElementById('printTableHeader').innerHTML = `
       <th style="width: 40px;">#</th>
       <th>اسم المشترك</th>
+      <th>رقم الهاتف</th>
       <th>يوزر المشترك</th>
       <th>فئة الاشتراك</th>
       <th>التاريخ والوقت</th>
@@ -2201,7 +2296,7 @@
     let totalDebt = 0;
 
     if (debtActivations.length === 0) {
-      printTbody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #64748b;">لا توجد أي تفعيلات آجل (فقد) مسجلة حالياً</td></tr>`;
+      printTbody.innerHTML = `<tr><td colspan="7" style="padding: 20px; text-align: center; color: #64748b;">لا توجد أي تفعيلات آجل (فقد) مسجلة حالياً</td></tr>`;
     } else {
       debtActivations.forEach((item, index) => {
         const priceNum = Number(item.price) || 0;
@@ -2211,6 +2306,7 @@
           <tr>
             <td>${index + 1}</td>
             <td><strong>${item.name}</strong></td>
+            <td>${item.phone || '-'}</td>
             <td>${item.user || '-'}</td>
             <td>${item.cat || '-'}</td>
             <td>${item.date}</td>
@@ -2231,46 +2327,49 @@
     const now = new Date();
     const todayLocaleStr = now.toLocaleDateString('ar-IQ');
 
-    document.getElementById('printReportSubtitle').innerText = 'تقرير كشف المبالغ والديون المسددة';
-    document.getElementById('printReportTitle').innerText = 'تفاصيل سجل التسديدات المستلمة';
-    document.getElementById('printTotalLabel').innerText = 'إجمالي المبالغ المسددة:';
+    let totalCashSales = cashActivations.reduce((sum, item) => sum + Number(item.price || 0), 0);
+    let totalDebtSales = debtActivations.reduce((sum, item) => sum + Number(item.price || 0), 0);
+    let totalPaidSum = paidActivations.reduce((sum, item) => sum + Number(item.paidAmount || 0), 0);
+
+    document.getElementById('printReportSubtitle').innerText = 'تقرير مبيعات اليوم الشامل (نقد، فقد، والتسديدات)';
+    document.getElementById('printReportTitle').innerText = 'كشف مبيعات اليوم (النقد والفقد) وسجل التسديدات المستلمة';
+    document.getElementById('printTotalLabel').innerText = `إجمالي مبيعات النقد (${totalCashSales.toLocaleString()}) + الفقد (${totalDebtSales.toLocaleString()}) | المسدد:`;
 
     document.getElementById('printTableHeader').innerHTML = `
       <th style="width: 40px;">#</th>
       <th>اسم المشترك</th>
+      <th>رقم الهاتف</th>
       <th>يوزر المشترك</th>
-      <th>نوع التسديد</th>
+      <th>نوع البيان / الفئة</th>
       <th>التاريخ والوقت</th>
-      <th>المبلغ المسدد (د.ع)</th>
+      <th>المبلغ (د.ع)</th>
     `;
 
     const printTbody = document.getElementById('printTbody');
     printTbody.innerHTML = '';
-    let totalPaid = 0;
 
+    printTbody.innerHTML += `<tr><td colspan="7" style="background: #e2e8f0; font-weight: bold; text-align: right;">--- أولاً: مبيعات النقد ---</td></tr>`;
+    cashActivations.forEach((item, idx) => {
+      printTbody.innerHTML += `<tr><td>${idx+1}</td><td>${item.name}</td><td>${item.phone||'-'}</td><td>${item.user||'-'}</td><td>نقد (${item.cat||'-'})</td><td>${item.date}</td><td><strong>${Number(item.price||0).toLocaleString()} د.ع</strong></td></tr>`;
+    });
+
+    printTbody.innerHTML += `<tr><td colspan="7" style="background: #e2e8f0; font-weight: bold; text-align: right;">--- ثانياً: تفعيلات الفقد (الآجل) ---</td></tr>`;
+    debtActivations.forEach((item, idx) => {
+      printTbody.innerHTML += `<tr><td>${idx+1}</td><td>${item.name}</td><td>${item.phone||'-'}</td><td>${item.user||'-'}</td><td>فقد (${item.cat||'-'})</td><td>${item.date}</td><td><strong>${Number(item.price||0).toLocaleString()} د.ع</strong></td></tr>`;
+    });
+
+    printTbody.innerHTML += `<tr><td colspan="7" style="background: #e2e8f0; font-weight: bold; text-align: right;">--- ثالثاً: تقارير اليوزرات التي سددت ما في ذمتها ---</td></tr>`;
     if (paidActivations.length === 0) {
-      printTbody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #64748b;">لا توجد أي عمليات تسديد مسجلة حالياً</td></tr>`;
+      printTbody.innerHTML += `<tr><td colspan="7" style="text-align: center; color: #64748b;">لا توجد تسديدات مسجلة</td></tr>`;
     } else {
-      paidActivations.forEach((item, index) => {
-        const paidNum = Number(item.paidAmount) || 0;
-        totalPaid += paidNum;
-
-        printTbody.innerHTML += `
-          <tr>
-            <td>${index + 1}</td>
-            <td><strong>${item.name}</strong></td>
-            <td>${item.user || '-'}</td>
-            <td>${item.type || '-'}</td>
-            <td>${item.date}</td>
-            <td><strong>${paidNum.toLocaleString()} د.ع</strong></td>
-          </tr>
-        `;
+      paidActivations.forEach((item, idx) => {
+        printTbody.innerHTML += `<tr><td>${idx+1}</td><td>${item.name}</td><td>${item.phone||'-'}</td><td>${item.user||'-'}</td><td>${item.type}</td><td>${item.date}</td><td><strong>${Number(item.paidAmount||0).toLocaleString()} د.ع</strong></td></tr>`;
       });
     }
 
     document.getElementById('printDate').innerText = todayLocaleStr;
     document.getElementById('printTime').innerText = now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('printTotalAmount').innerText = totalPaid.toLocaleString();
+    document.getElementById('printTotalAmount').innerText = totalPaidSum.toLocaleString();
 
     triggerPrintProcess();
   }
@@ -2280,6 +2379,7 @@
     if (obj) {
       obj[key] = val;
       saveAllSystemDataCloudAndLocal();
+      renderPaidTable();
     }
   }
 
@@ -2290,6 +2390,7 @@
         arr.splice(idx, 1);
         saveAllSystemDataCloudAndLocal();
         callback();
+        renderPaidTable();
       }
     }
   }
