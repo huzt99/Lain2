@@ -423,48 +423,44 @@
     <div class="tab-content" id="authTabsContent">
       <!-- نافذة تسجيل الدخول -->
       <div class="tab-pane fade show active" id="loginTabPane" role="tabpanel">
-        <form id="loginForm" onsubmit="handleLogin(event)">
-          <div class="mb-2 text-start">
-            <label class="small text-muted mb-1">البريد الإلكتروني:</label>
-            <input type="email" id="loginEmail" class="form-control auth-input" placeholder="example@gmail.com" required>
-          </div>
-          <div class="mb-3 text-start">
-            <label class="small text-muted mb-1">الرمز السري:</label>
-            <input type="password" id="loginPass" class="form-control auth-input" placeholder="••••••••" required>
-          </div>
-          <div id="loginAlert" class="alert alert-danger py-2 d-none small mb-3">البريد أو الرمز غير صحيح!</div>
-          <button type="submit" class="btn btn-action-save w-100 py-2 fs-6 mb-2">
-            <i class="fa-solid fa-right-to-bracket me-1"></i> دخول واسترداد من السحابة
-          </button>
-          <button type="button" class="btn btn-outline-warning w-100 py-1 btn-sm rounded-pill" onclick="forgotPasswordAction()">
-            <i class="fa-solid fa-key me-1"></i> نسيت كلمة المرور؟ (إرسال للتيليجرام)
-          </button>
-        </form>
+        <div class="mb-2 text-start">
+          <label class="small text-muted mb-1">البريد الإلكتروني:</label>
+          <input type="email" id="loginEmail" class="form-control auth-input" placeholder="example@gmail.com" required>
+        </div>
+        <div class="mb-3 text-start">
+          <label class="small text-muted mb-1">الرمز السري:</label>
+          <input type="password" id="loginPass" class="form-control auth-input" placeholder="••••••••" required>
+        </div>
+        <div id="loginAlert" class="alert alert-danger py-2 d-none small mb-3">البريد أو الرمز غير صحيح!</div>
+        <button type="button" class="btn btn-action-save w-100 py-2 fs-6 mb-2" onclick="handleLogin()">
+          <i class="fa-solid fa-right-to-bracket me-1"></i> دخول واسترداد من السحابة
+        </button>
+        <button type="button" class="btn btn-outline-warning w-100 py-1 btn-sm rounded-pill" onclick="forgotPasswordAction()">
+          <i class="fa-solid fa-key me-1"></i> نسيت كلمة المرور؟ (إرسال للتيليجرام)
+        </button>
       </div>
 
       <!-- نافذة التسجيل الجديد (تمنح 3 أيام تجريبية) -->
       <div class="tab-pane fade" id="registerTabPane" role="tabpanel">
-        <form id="registerForm" onsubmit="handleRegister(event)">
-          <div class="mb-2 text-start">
-            <label class="small text-muted mb-1">البريد الإلكتروني الحقيقي:</label>
-            <input type="email" id="regEmail" class="form-control auth-input" placeholder="example@gmail.com" required>
-          </div>
-          <div class="mb-2 text-start">
-            <label class="small text-muted mb-1">الرمز السري:</label>
-            <input type="password" id="regPass" class="form-control auth-input" placeholder="••••••••" required>
-          </div>
-          <div class="mb-3 text-start">
-            <label class="small text-muted mb-1">اليوزر نيم:</label>
-            <input type="text" id="regUsername" class="form-control auth-input" placeholder="أدخل اليوزر نيم الخاص بك" required>
-          </div>
-          <div class="alert alert-warning py-2 small mb-3 text-start" style="font-size: 0.78rem; line-height: 1.4;">
-            <i class="fa-solid fa-circle-info me-1"></i> <strong>ملاحظة:</strong> عزيزي المستخدم رجاءً ادخل حسابك ورقمك ويوزر نيم حقيقي حفاظاً لك لكي لا يتم نسيانه.<br>
-            <span class="text-success mt-1 d-block">✨ يمنحك التسجيل 3 أيام تجريبية مجانية مع الحفظ السحابي!</span>
-          </div>
-          <button type="submit" class="btn btn-action-add w-100 py-2 fs-6">
-            <i class="fa-solid fa-user-plus me-1"></i> إنشاء حساب سحابي تجريبي
-          </button>
-        </form>
+        <div class="mb-2 text-start">
+          <label class="small text-muted mb-1">البريد الإلكتروني الحقيقي:</label>
+          <input type="email" id="regEmail" class="form-control auth-input" placeholder="example@gmail.com" required>
+        </div>
+        <div class="mb-2 text-start">
+          <label class="small text-muted mb-1">الرمز السري:</label>
+          <input type="password" id="regPass" class="form-control auth-input" placeholder="••••••••" required>
+        </div>
+        <div class="mb-3 text-start">
+          <label class="small text-muted mb-1">اليوزر نيم:</label>
+          <input type="text" id="regUsername" class="form-control auth-input" placeholder="أدخل اليوزر نيم الخاص بك" required>
+        </div>
+        <div class="alert alert-warning py-2 small mb-3 text-start" style="font-size: 0.78rem; line-height: 1.4;">
+          <i class="fa-solid fa-circle-info me-1"></i> <strong>ملاحظة:</strong> عزيزي المستخدم رجاءً ادخل حسابك ورقمك ويوزر نيم حقيقي حفاظاً لك لكي لا يتم نسيانه.<br>
+          <span class="text-success mt-1 d-block">✨ يمنحك التسجيل 3 أيام تجريبية مجانية مع الحفظ السحابي!</span>
+        </div>
+        <button type="button" class="btn btn-action-add w-100 py-2 fs-6" onclick="handleRegister()">
+          <i class="fa-solid fa-user-plus me-1"></i> إنشاء حساب سحابي تجريبي
+        </button>
       </div>
     </div>
 
@@ -1050,8 +1046,7 @@
   }
 
   // تسجيل الدخول
-  function handleLogin(e) {
-    if (e) e.preventDefault();
+  function handleLogin() {
     const emailInput = document.getElementById('loginEmail');
     const passInput = document.getElementById('loginPass');
     
@@ -1059,6 +1054,11 @@
     
     const email = emailInput.value.trim().toLowerCase();
     const pass = passInput.value;
+
+    if (!email || !pass) {
+      alert("يرجى إدخال البريد الإلكتروني وكلمة المرور!");
+      return;
+    }
 
     fetchDataFromJSONbin((cloudData) => {
       globalCloudDatabase = cloudData || {};
@@ -1079,8 +1079,7 @@
   }
 
   // إنشاء حساب جديد (تجريبي 3 أيام)
-  function handleRegister(e) {
-    if (e) e.preventDefault();
+  function handleRegister() {
     const emailInput = document.getElementById('regEmail');
     const passInput = document.getElementById('regPass');
     const usernameInput = document.getElementById('regUsername');
@@ -1090,6 +1089,11 @@
     const email = emailInput.value.trim().toLowerCase();
     const pass = passInput.value;
     const username = usernameInput.value.trim();
+
+    if (!email || !pass || !username) {
+      alert("يرجى ملء جميع حقول التسجيل بشكل صحيح!");
+      return;
+    }
 
     if (email === ADMIN_EMAIL) {
       alert("هذا البريد مخصص للأدمن الأساسي، يرجى تسجيل الدخول مباشرة.");
@@ -1277,4 +1281,4 @@
     if (changePasswordModalInstance) changePasswordModalInstance.show();
   }
 
-  function subm
+  function submitChangePassword(
