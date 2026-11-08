@@ -26,7 +26,7 @@ jobs:
           java-version: 17
 
       - name: Install dependencies
-        run: npm install
+        run: npm install || (sleep 20 && npm install) || (sleep 40 && npm install)
 
       - name: Add Android platform
         run: npx cap add android
@@ -36,7 +36,7 @@ jobs:
 
       - name: Generate app icons
         continue-on-error: true
-        run: npx @capacitor/assets generate --android --iconBackgroundColor '#0b0f19' --iconBackgroundColorDark '#0b0f19'
+        run: npx --yes @capacitor/assets@3.0.5 generate --android --iconBackgroundColor '#0b0f19' --iconBackgroundColorDark '#0b0f19'
 
       - name: Sync web assets
         run: npx cap sync android
