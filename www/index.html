@@ -1,1 +1,245 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="theme-color" content="#1e3a8a"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<title>قائمقامية قضاء السماوة | الحضور والإجازات</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}[hidden]{display:none!important}html,body{margin:0}
+body{font-family:Cairo,Tahoma,"Segoe UI",Arial,sans-serif;background:#eef2f9;color:#111827;min-height:100vh}
+.wrap{max-width:1250px;margin:auto;padding:14px}
+.hd{background:linear-gradient(135deg,#1e3a8a,#2563eb 60%,#3b82f6);border-radius:18px;color:#fff;padding:22px;display:grid;grid-template-columns:1fr 1.3fr;gap:18px;align-items:center;box-shadow:0 10px 30px #1e3a8a55}
+.hd h1{margin:0;font-size:34px}.hd p{margin:6px 0 0;color:#cfe0ff;font-size:14px}
+.gold{background:#ffc107;color:#1a1a1a;text-align:center;border-radius:10px;padding:10px;margin-bottom:10px}.gold b{font-size:20px}.gold small{font-weight:700}
+.rcs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:10px}
+.rc{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);border-radius:10px;padding:8px;text-align:center}.rc small{display:block;color:#cfe0ff}.rc b{font-size:14px}
+.gn{background:#fff;border-radius:10px;padding:6px 12px;display:flex;align-items:center;gap:8px;color:#1d4ed8;font-weight:700}.gn input{border:0;outline:0;flex:1;font:inherit;font-size:14px;color:#374151;background:transparent;min-width:0}
+.info{background:#e0f2fe;border:1px solid #bae6fd;color:#0c4a6e;border-radius:10px;padding:10px;text-align:center;margin:14px 0}
+.bar2{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.tabs{display:flex;gap:8px;overflow-x:auto;max-width:100%}.tl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.mu{color:#6b7280;font-size:13px}
+.tb{background:#fff;border:1px solid #d6deee;border-radius:10px;padding:10px 14px;font:inherit;font-weight:600;cursor:pointer;white-space:nowrap}.tb.on{background:#1e3a8a;color:#fff;border-color:#1e3a8a}
+.bt{border:1px solid transparent;border-radius:999px;padding:9px 16px;font:inherit;font-weight:700;cursor:pointer;background:#fff}
+.bt.b{background:#2563eb;color:#fff}.bt.gr{background:#15803d;color:#fff}.bt.o{border-color:#111;color:#111}.bt.y{border-color:#eab308;color:#a16207;background:#fffbeb}.bt.rd{border-color:#ef4444;color:#ef4444;background:#fff}.bt.d{background:#ef4444;color:#fff;padding:6px 12px}.bt.s{border-color:#cbd5e1;color:#1e293b}
+.card{background:#fff;border:1px solid #e3e8f2;border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:0 2px 10px #1e3a8a0f}
+h2{font-size:18px;color:#1d4ed8;margin:0 0 12px}
+.ch{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px}.ch h2{margin:0}.sel,.acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input,select{border:1px solid #cfd8e8;border-radius:8px;padding:8px;font:inherit;font-size:16px;width:100%;background:#fff;color:#111827}
+.sel select{width:auto;border-color:#2563eb;color:#1e3a8a;font-weight:700;font-size:14px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:10px}
+.hol{background:#f8fafc;border:1px solid #e3e8f2;border-radius:10px;padding:12px;margin-bottom:12px;font-size:14px}.hol>div{margin-top:8px}
+.hc{display:inline-block;border:1px solid #ef4444;color:#ef4444;border-radius:20px;padding:3px 12px;cursor:pointer;font-size:13px;margin-left:6px}.hc.on{background:#ef4444;color:#fff}
+.tw{overflow-x:auto}table.gt{width:100%;border-collapse:collapse;min-width:1150px;font-size:14px}table.gt th{background:#f4f7fc;color:#334155;padding:10px;border:1px solid #e3e8f2}table.gt th small{display:block;color:#64748b;font-weight:400}table.gt td{border:1px solid #e3e8f2;padding:6px;vertical-align:middle;text-align:center}
+td.nm{font-weight:700}.tm{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:4px 0}.tm input,td input{font-size:13px;padding:6px}td select{font-size:14px;padding:6px}
+.cab select{background:#fee2e2}.clv select{background:#fef3c7}.sb{display:block;color:#a16207;font-size:12px}
+.tr{background:none;border:0;color:#ef4444;font-size:18px;cursor:pointer}
+table.lt{width:100%;border-collapse:collapse;font-size:14px}table.lt th,table.lt td{padding:9px;border-bottom:1px solid #e3e8f2;text-align:right;white-space:nowrap}table.lt th{background:#f4f7fc;color:#334155}
+.ok{color:#15803d;font-weight:700}.no{color:#dc2626;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}.chip{background:#f1f5f9;border:1px solid #cbd5e1;border-radius:20px;padding:6px 12px;cursor:pointer;font-size:14px}.chip input{width:auto;margin-left:6px}
+video,canvas{width:100%;max-width:320px;border-radius:14px;background:#000}
+#lock{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1e3a8a,#3b82f6);z-index:99;padding:20px}
+#lock .card{max-width:360px;width:100%;text-align:center;border-radius:18px}#lock h1{color:#1e3a8a;margin:0 0 6px}
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.roles label{border:1px solid #cbd5e1;border-radius:10px;padding:8px;font-size:14px;cursor:pointer}.roles input{width:auto}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#15803d;color:#fff;padding:10px 20px;border-radius:999px;z-index:200;font-weight:700}
+.paper{background:#fff;color:#1a1a2e;border-radius:6px;padding:28px 32px;max-width:794px;margin:0 auto 14px;box-shadow:0 4px 20px #0002;font-family:Cairo,"Segoe UI",Tahoma,Arial,sans-serif}
+.paper .pk{text-align:center;font-size:26px;font-weight:700;margin-bottom:2px}.paper h2{text-align:center;font-size:18px;color:#1a1a2e;border-bottom:3px double #8a6d1d;padding-bottom:10px;margin-bottom:6px}
+.paper .sub{text-align:center;color:#555;font-size:13px;margin-bottom:14px}.paper table{width:100%;border-collapse:collapse;font-size:13px}.paper th{background:#f3ecd2;border:1px solid #bbb;padding:7px}.paper td{border:1px solid #ccc;padding:7px;white-space:normal}
+.paper .sig{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:46px;text-align:center;font-size:12px}.paper .sig div{border-top:1px solid #333;padding-top:6px}
+#sheet{display:none}
+.nm,.nmh{position:sticky;right:0;z-index:2;background:#fff;min-width:170px;max-width:230px;font-size:16px;white-space:normal}.nmh{background:#f4f7fc}td.nm{font-weight:700;text-align:right;padding:10px}
+.tl2{display:flex;align-items:center;gap:6px;margin:5px 0}.tl2>small{width:48px;color:#475569;font-size:12px;text-align:right}.tp{display:flex;align-items:center;gap:3px;flex:1}.tp select{padding:6px 2px;font-size:14px}
+.dtabs{display:none;gap:6px;margin-bottom:10px}.dtb{flex:1;border:1px solid #cbd5e1;background:#fff;border-radius:10px;padding:8px 2px;font:inherit;font-weight:700;font-size:13px;cursor:pointer}.dtb small{display:block;color:#64748b;font-weight:400}.dtb.on{background:#2563eb;color:#fff;border-color:#2563eb}.dtb.on small{color:#dbeafe}
+@media(max-width:700px){.dtabs{display:flex}table.gt{min-width:0}.dc{display:none}.dc.sel{display:table-cell}.nm,.nmh{min-width:105px;max-width:135px;font-size:15px}.wrap{padding:8px}}
+@media(max-width:800px){.hd{grid-template-columns:1fr}.hd h1{font-size:26px}}
+@media print{@page{size:A4;margin:12mm}html,body{background:#fff!important}body>*:not(#sheet){display:none!important}#sheet{display:block!important}#sheet .paper{box-shadow:none;max-width:none;padding:0;margin:0}.paper th{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 
+body{background:linear-gradient(160deg,#ede9fe 0,#e0f2fe 45%,#fce7f3 100%) fixed;color:#0f172a;font-size:16px}
+.hd{background:linear-gradient(120deg,#0891b2,#6d28d9 55%,#db2777);box-shadow:0 12px 30px #6d28d955}.hd p{color:#fef9c3;font-weight:600}
+.gold{background:linear-gradient(135deg,#fde047,#fb923c);color:#1c1002;box-shadow:0 6px 16px #f9731655}.gold b{font-size:22px}
+.gn{color:#6d28d9;box-shadow:0 4px 12px #0003}.gn input{color:#0f172a;font-weight:600}
+.info{background:#cffafe;border-color:#22d3ee;color:#164e63;font-weight:700}
+.tb{border:2px solid #ddd6fe;color:#3b0764;font-weight:700}.tb.on{background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff;border-color:transparent}
+.bt.b{background:linear-gradient(135deg,#0ea5e9,#6366f1)}.bt.gr{background:linear-gradient(135deg,#10b981,#059669)}.bt.o{border-color:#7c3aed;color:#6d28d9;background:#faf5ff}.bt.y{border-color:#f59e0b;color:#92400e;background:#fffbeb}.bt.rd{border-color:#e11d48;color:#e11d48;background:#fff1f2}.bt.d{background:linear-gradient(135deg,#f43f5e,#e11d48)}.bt.s{border-color:#a78bfa;color:#4c1d95;background:#f5f3ff}.bt.bell{border-color:#db2777;color:#be185d;background:#fdf2f8}
+#bc{background:#e11d48;color:#fff;border-radius:999px;padding:1px 7px;font-size:12px}
+.card{border:1px solid #ddd6fe;border-top:4px solid #8b5cf6;box-shadow:0 6px 18px #6d28d91a}h2{color:#5b21b6}
+.sel select{border-color:#7c3aed;color:#4c1d95}input,select{border:2px solid #c4b5fd;color:#0f172a;font-weight:600}input::placeholder{color:#64748b;font-weight:400}
+table.gt th{background:#ede9fe;color:#3b0764;border-color:#c4b5fd}table.gt td{border-color:#ddd6fe}.nmh{background:#ede9fe}td.nm{color:#1e1b4b}
+.hol{background:#fff7ed;border-color:#fed7aa}.hc{border-color:#e11d48;color:#be123c;font-weight:700}.hc.on{color:#fff}
+.dtb.on{background:linear-gradient(135deg,#7c3aed,#db2777);border-color:transparent}
+table.lt th{background:#ede9fe;color:#3b0764}table.lt td{border-color:#ddd6fe;color:#0f172a}
+.cok select{background:#d1fae5;color:#064e3b}.cab select{background:#fecaca;color:#7f1d1d}.clv select{background:#fde68a;color:#78350f}
+.ok{color:#047857}.no{color:#be123c}.chip{background:#faf5ff;border-color:#c4b5fd;color:#3b0764}
+#lock{background:linear-gradient(135deg,#0891b2,#6d28d9 55%,#db2777)}#lock h1{color:#5b21b6}.roles label{border:2px solid #ddd6fe;font-weight:700;color:#3b0764}
+#toast{background:linear-gradient(135deg,#7c3aed,#db2777);max-width:92vw;text-align:center}
+#np{position:fixed;inset:0;background:#0008;z-index:150;display:flex;align-items:flex-start;justify-content:center;padding:20px;overflow:auto}.npc{background:#fff;border-radius:16px;padding:16px;max-width:520px;width:100%}
+.ni{display:flex;gap:10px;padding:10px;border-bottom:1px solid #ede9fe;font-size:15px}.ni b{display:block;color:#3b0764}.ni small{color:#64748b}
+.gt.wk{table-layout:fixed}.gt.wk th.nmh,.gt.wk td.nm{width:190px}.gt.wk th:last-child,.gt.wk td:last-child{width:56px}
+.tl2{display:block;margin:7px 0}.tl2>small{display:block;width:auto;font-weight:700;color:#4c1d95;font-size:13px;margin-bottom:3px;text-align:right}
+.tp{display:flex;gap:4px;align-items:center}.tp select{flex:1;min-width:0;width:100%;padding:8px 2px;font-size:15px;font-weight:700;text-align:center;text-align-last:center;-webkit-appearance:none;appearance:none;background:#fff;color:#1e1b4b;border:2px solid #7c3aed;border-radius:8px}.tp select:first-child{flex:1.5}.tp b{font-size:18px;color:#4c1d95}
+.ts{background:#ede9fe;color:#3b0764;border-radius:8px;padding:4px;margin:6px 0;font-weight:700;font-size:13px}
+.fvb{display:block;color:#047857;font-weight:700;font-size:12px;margin-top:3px}
+</style></head><body>
+<div id="lock"><div class="card"><div style="font-size:44px">🏛️</div><h1>قائمقامية قضاء السماوة</h1><p class="mu">نظام الحضور والإجازات — أدخل الرمز للدخول</p>
+<input id="pin" type="password" inputmode="numeric" placeholder="الرمز" style="text-align:center">
+<div class="roles" id="roles"></div>
+<button class="bt b" style="width:100%" onclick="login()">دخول</button><p id="err" class="no"></p></div></div>
+<div id="app" hidden><div class="wrap">
+<div class="hd"><div><h1>قائمقامية قضاء السماوة</h1><p>نظام إدارة الحضور والغياب والإجازات الموحد</p></div>
+<div><div class="gold"><small id="dt">مدير الدائرة</small><br><b id="dn"></b></div>
+<div class="gn">📌 ملاحظات: <input id="gen" placeholder="أدخل الملاحظات العامة للمسؤولين هنا..." onchange="saveGen(this.value)"></div></div></div>
+<div class="info">ℹ️ ملاحظة // أي إضافة أو تعديل تظهر كما هي معدلة لمدير الدائرة. <span id="net">💾 محلي</span></div>
+<div class="bar2"><div class="tabs" id="nav"></div><div class="tl"><span id="who2" class="mu"></span><button class="bt bell" onclick="openN()">🔔 <b id="bc" hidden>0</b></button><button class="bt y" onclick="chPw()">🔑 تغيير الرمز السري</button><button class="bt rd" onclick="lockApp()">🔒 قفل</button></div></div>
+<main id="v"></main></div></div>
+<div id="np" hidden><div class="npc"><div class="ch"><h2>🔔 الإشعارات</h2><button class="bt s" onclick="$('np').hidden=true">✖ إغلاق</button></div><button class="bt b" onclick="askNotif()" style="margin-bottom:10px">📲 تفعيل إشعارات الجهاز</button><div id="nl"></div></div></div>
+<div id="sheet"></div><div id="toast" hidden></div>
+<script src="/qaimqamiya-hr-system/face-api.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
+<script>
+const FIREBASE_CONFIG={apiKey:"AIzaSyCuiPTtkgotBp90q_AEklmjvf8zXk5rSLk",authDomain:"inadnout-f3368.firebaseapp.com",projectId:"inadnout-f3368",storageBucket:"inadnout-f3368.firebasestorage.app",messagingSenderId:"221743078655",appId:"1:221743078655:web:1467b95d3dbe4f2db700ca"};
+firebase.initializeApp(FIREBASE_CONFIG);
+const KEYS=["director","manager","accounting","hr"],ROLES=["مدير الدائرة","مدير الإدارة","مسؤول الحاسبة","مسؤول الموظفين"];
+const INFO=[{t:"مدير الدائرة",n:["الحقوقي عدي قاسم محمد الاعرجي"]},{t:"مدير الإدارة",n:["سماهر عبد الكاظم","محمد عفات","باسم رزاق"]},{t:"مسؤول الحاسبة",n:["حسين عبد المجيد"]},{t:"مسؤول الموظفين",n:["ياسر عامر برغش"]}];let ri=0;
+const TABS=[["att","1. الحضور والانصراف"],["lv","2. سجل الإجازات المطور"],["emp","3. العناوين الوظيفية"],["grd","4. حضور الحراس"],["mov","5. سجل الحركات"],["nt","6. الملاحظات"],["face","7. بصمة الوجه"]];
+const COLS=["emps","att2","lv","notes","mov","hol","meta"];
+let S={},role=ROLES[0],tab="att",DB=null,seeded={},dirty=false,stream,IMG=null;
+COLS.forEach(c=>S[c]=[]);S.notif=[];
+try{const L=JSON.parse(localStorage.getItem("hrdb2"));if(L)COLS.forEach(c=>{if(Array.isArray(L[c]))S[c]=L[c]})}catch(e){}
+const $=i=>document.getElementById(i),uid=()=>Date.now()+Math.random().toString(36).slice(2,6);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const today=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10),nowT=()=>new Date().toTimeString().slice(0,5);
+const save=()=>{try{localStorage.setItem("hrdb2",JSON.stringify(S))}catch(e){}};
+function toast(t,ms){const d=$("toast");d.textContent=t;d.hidden=false;clearTimeout(window._tt);window._tt=setTimeout(()=>d.hidden=true,ms||2200)}
+function put(c,r){r.by=role;const i=S[c].findIndex(x=>x.id==r.id);i<0?S[c].push(r):S[c][i]=r;save();if(DB)DB.collection(c).doc(String(r.id)).set(r).catch(()=>{})}
+function del(c,id){S[c]=S[c].filter(x=>x.id!=id);save();if(DB)DB.collection(c).doc(String(id)).delete().catch(()=>{})}
+const genText=()=>(S.meta.find(x=>x.id=="gen")||{}).text||"";
+function setNet(o){$("net").textContent=o?"🌐 متصل ومشترك":"💾 محلي"}
+async function net(){try{DB=firebase.firestore();
+COLS.forEach(c=>DB.collection(c).onSnapshot(s=>{if(s.empty&&S[c].length&&!seeded[c]){seeded[c]=1;S[c].forEach(r=>DB.collection(c).doc(String(r.id)).set(r).catch(()=>{}));return}seeded[c]=1;S[c]=s.docs.map(d=>d.data());save();setNet(1);const g=$("gen");if(g&&document.activeElement!=g)g.value=genText();const a=document.activeElement;if(!$("app").hidden&&tab!="face"&&!(dirty&&(tab=="att"||tab=="grd"))&&!(a&&a.matches("input,select")))go(tab)},()=>setNet(0)));
+DB.collection("notif").onSnapshot(sn=>{sn.docChanges().forEach(ch=>{if(ch.type!="added")return;const n=ch.doc.data();if(n.ts<Date.now()-12096e5){ch.doc.ref.delete().catch(()=>{});return}if(S.notif.some(x=>x.id==n.id))return;S.notif.push(n);if(n.ts>T_LOGIN&&n.cid!=CID)popN(n)});S.notif.sort((a,b)=>b.ts-a.ts);S.notif=S.notif.slice(0,100);upBell()})}catch(e){}}
+// ===== أدوات التاريخ =====
+const D=(y,m,d)=>new Date(Date.UTC(y,m,d)),iso=x=>x.toISOString().slice(0,10);
+const addD=(d,n)=>{const x=new Date(d+"T00:00:00Z");x.setUTCDate(x.getUTCDate()+n);return iso(x)};
+const DN=["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس"];
+const nw=(y,m)=>Math.ceil((D(y,m,1).getUTCDay()+D(y,m+1,0).getUTCDate())/7);
+function weekDays(y,m,w){const s=D(y,m,1-D(y,m,1).getUTCDay()+7*(w-1));return[0,1,2,3,4].map(i=>{const x=new Date(s);x.setUTCDate(s.getUTCDate()+i);return iso(x)})}
+const T0=new Date(today()+"T00:00:00Z");let V={y:T0.getUTCFullYear(),m:T0.getUTCMonth(),w:Math.floor((T0.getUTCDate()-1+D(T0.getUTCFullYear(),T0.getUTCMonth(),1).getUTCDay())/7)+1};
+V.d=T0.getUTCDay()<5?T0.getUTCDay():0;
+// ===== الإجازات =====
+const KIND={daily:"يومية",hourly:"زمنية (ساعات)",sick:"مرضية",annual:"استحقاق سنوية",unpaid:"سنة بدون راتب",seven:"7 أيام"},DAYS={seven:7};
+const lvDays=l=>l.kind=="hourly"?1:l.kind=="seven"?7:l.kind=="unpaid"?365:(l.amt||1);
+const lvOn=(eid,d)=>S.lv.find(l=>l.eid==eid&&l.date<=d&&d<=addD(l.date,lvDays(l)-1));
+const isHol=d=>S.hol.some(h=>h.id==d);
+function used(eid,m){let d=0;S.lv.filter(l=>l.eid==eid&&l.date.slice(0,7)==m&&(l.kind=="daily"||l.kind=="hourly")).forEach(l=>d+=l.kind=="hourly"?l.amt/3:l.amt);return d}
+const bal=(eid,m=today().slice(0,7))=>4-used(eid,m);
+const ename=id=>(S.emps.find(e=>e.id==id)||{name:"(محذوف)"}).name;
+const empOpts=()=>S.emps.map(e=>`<option value="${e.id}">${esc(e.name)}</option>`).join("");
+function onLeave(){const t=today(),L=S.lv.filter(l=>l.date<=t&&t<=addD(l.date,lvDays(l)-1));return L.length?`<div class="tw"><table class="lt"><tr><th>الموظف</th><th>النوع</th><th>حتى تاريخ</th><th>البديل</th></tr>${L.map(l=>`<tr><td>${esc(ename(l.eid))}</td><td>${KIND[l.kind]}</td><td>${addD(l.date,lvDays(l)-1)}</td><td>${l.sub?esc(ename(l.sub)):"—"}</td></tr>`).join("")}</table></div>`:`<p class="mu">لا يوجد مجازون اليوم</p>`}
+// ===== التقارير والطباعة =====
+const PL={day:"اليوم",week:"آخر 7 أيام",month:"هذا الشهر",all:"الكل"},PER={lv:"month",nt:"day",mov:"month"};
+const inR=(d,p)=>{if(p=="all")return true;const ds=today();if(p=="day")return d==ds;if(p=="week"){const x=(new Date(ds)-new Date(d))/864e5;return x>=0&&x<7}return d.slice(0,7)==ds.slice(0,7)};
+const bar=t=>`<div class="row"><select onchange="PER['${t}']=this.value;go('${t}')">${Object.entries(PL).map(([k,v])=>`<option value="${k}" ${PER[t]==k?"selected":""}>${v}</option>`).join("")}</select><button class="bt o" onclick="printRep('${t}')">🖨️ طباعة / حفظ PDF</button></div>`;
+const sigs=()=>`<div class="sig">${INFO.map(x=>`<div>${x.t}<br><small>${x.n.join(" / ")}</small></div>`).join("")}</div>`;
+function repData(t){const p=PER[t];let title,heads,recs,rows;
+if(t=="lv"){title="سجل الإجازات";heads=["التاريخ","الموظف","النوع","المدة","البديل","رصيد الشهر","بواسطة"];recs=S.lv.filter(l=>inR(l.date,p)).sort((a,b)=>a.date.localeCompare(b.date));rows=recs.map(l=>[l.date,ename(l.eid),KIND[l.kind],l.kind=="hourly"?l.amt+" ساعة":(DAYS[l.kind]||l.amt)+" يوم",l.sub?ename(l.sub):"—",bal(l.eid,l.date.slice(0,7))>0?"لديه رصيد":"لا رصيد",l.by||""])}
+else if(t=="mov"){title="سجل حركات اللجان خارج الدائرة";heads=["التاريخ","اللجنة","الأعضاء","جهة الذهاب","المهمة","الخروج","العودة","بواسطة"];recs=S.mov.filter(m=>inR(m.date,p)).sort((a,b)=>a.date.localeCompare(b.date));rows=recs.map(m=>[m.date,m.com,m.mem||"—",m.place||"—",m.task||"—",m.out||"—",m.back||"—",m.by||""])}
+else{title="الملاحظات والمطالعات";heads=["التاريخ","الخاص بـ","الملاحظة","بواسطة"];recs=S.notes.filter(n=>inR(n.date,p)).sort((a,b)=>a.date.localeCompare(b.date));rows=recs.map(n=>[n.date,n.eid?ename(n.eid):"عامة",n.text,n.by||""])}
+return{title,heads,rows,recs}}
+function paperHTML(t,edit){const d=repData(t);return `<div class="paper"><div class="pk">🏛️ قائمقامية قضاء السماوة</div><h2>${d.title}</h2><div class="sub">الفترة: ${PL[PER[t]]} · تاريخ الطباعة: ${today()} ${nowT()} · أعدّه: ${esc(role)}</div><table><tr><th>#</th>${d.heads.map(h=>`<th>${h}</th>`).join("")}${edit?"<th></th>":""}</tr>${d.rows.map((r,i)=>`<tr><td>${i+1}</td>${r.map(c=>`<td>${esc(c)}</td>`).join("")}${edit?`<td><button class="bt d" onclick="del('notes','${d.recs[i].id}');go('nt')">حذف</button></td>`:""}</tr>`).join("")||`<tr><td colspan="9">لا توجد سجلات</td></tr>`}</table>${sigs()}</div>`}
+function printRep(t){$("sheet").innerHTML=paperHTML(t);setTimeout(()=>window.print(),150)}
+function printWeek(t){saveWeek(1);const g=t=="grd",ds=weekDays(V.y,V.m,V.w),L=S.emps.filter(e=>!!e.guard==g);
+const c=(e,d)=>{const r=S.att2.find(x=>x.id==e.id+"_"+d)||{},lv=lvOn(e.id,d),st=isHol(d)?"عطلة رسمية":(r.st||(lv?"إجازة":"حاضر"));return esc(st)+(r.in||r.out?`<br>${r.in||""} – ${r.out||""}`:"")+(r.note?`<br><small>${esc(r.note)}</small>`:"")+(lv&&lv.sub&&st=="إجازة"?`<br><small>البديل: ${esc(ename(lv.sub))}</small>`:"")};
+$("sheet").innerHTML=`<style>@media print{@page{size:A4 landscape;margin:10mm}}</style><div class="paper"><div class="pk">🏛️ قائمقامية قضاء السماوة</div><h2>${g?"سجل حضور وغياب الحراس":"سجل الحضور والغياب"} — الأسبوع ${V.w} / شهر ${V.m+1} / ${V.y}</h2><div class="sub">من ${ds[0]} إلى ${ds[4]} · تاريخ الطباعة: ${today()} ${nowT()} · أعدّه: ${esc(role)}</div><table><tr><th>#</th><th>الاسم</th>${ds.map((d,i)=>`<th>${DN[i]}<br>${d}</th>`).join("")}</tr>${L.map((e,i)=>`<tr><td>${i+1}</td><td>${esc(e.name)}</td>${ds.map(d=>`<td style="text-align:center">${c(e,d)}</td>`).join("")}</tr>`).join("")}</table>${sigs()}</div>`;setTimeout(()=>window.print(),150)}
+// ===== شبكة الحضور الأسبوعية =====
+const HH=Array.from({length:24},(_,h)=>h),MM=Array.from({length:60},(_,m)=>m),p2=n=>String(n).padStart(2,"0");
+const f12=t=>{if(!t)return"--";const[h,m]=t.split(":");return p2(h%12||12)+":"+m+" "+(+h<12?"ص":"م")};
+const fvT=id=>((S.att2.find(x=>x.id==id+"_"+today())||{}).fv)||"";
+function tp(id,f,val,dis){const[h,m]=(val||"").split(":");return `<span class="tp"><select data-t="${id}|${f}|h" ${dis}><option value="">--</option>${HH.map(x=>`<option value="${p2(x)}" ${h==p2(x)?"selected":""}>${p2(x%12||12)} ${x<12?"ص":"م"}</option>`).join("")}</select><b>:</b><select data-t="${id}|${f}|m" ${dis}>${MM.map(x=>`<option value="${p2(x)}" ${(m||"00")==p2(x)?"selected":""}>${p2(x)}</option>`).join("")}</select></span>`}
+function cell(e,d,i){const id=e.id+"_"+d,r=S.att2.find(x=>x.id==id)||{},h=isHol(d),lv=lvOn(e.id,d),st=h?"عطلة رسمية":(r.st||(lv?"إجازة":"حاضر")),dis=h?"disabled":"";
+return `<td class="dc ${i==V.d?"sel":""} ${st=="غائب"?"cab":st=="إجازة"||h?"clv":st=="حاضر"?"cok":""}" data-d="${i}"><select data-k="${id}" data-f="st" ${dis}>${["حاضر","غائب","إجازة","مهمة رسمية"].map(o=>`<option ${o==st?"selected":""}>${o}</option>`).join("")}${h?"<option selected>عطلة رسمية</option>":""}</select>${lv&&lv.sub?`<small class="sb">البديل: ${esc(ename(lv.sub))}</small>`:""}${r.fv?`<small class="fvb">✔ تم التحقق بالبصمة ${f12(r.fv)}</small>`:""}${r.in||r.out?`<div class="ts">⏰ ${f12(r.in)} ← ${f12(r.out)}</div>`:""}<div class="tl2"><small>حضور</small>${tp(id,"in",r.in,dis)}</div><div class="tl2"><small>انصراف</small>${tp(id,"out",r.out,dis)}</div><input data-k="${id}" data-f="note" placeholder="تصحيح/ملاحظة..." value="${esc(r.note||"")}" ${dis}></td>`}
+function saveWeek(q){const m={};document.querySelectorAll("[data-k]").forEach(el=>{if(el.disabled)return;(m[el.dataset.k]=m[el.dataset.k]||{})[el.dataset.f]=el.value});
+const T={};document.querySelectorAll("[data-t]").forEach(el=>{if(el.disabled)return;const[k,f,p]=el.dataset.t.split("|"),z=k+"|"+f;(T[z]=T[z]||{k,f})[p]=el.value});
+Object.values(T).forEach(o=>{(m[o.k]=m[o.k]||{})[o.f]=o.h?o.h+":"+(o.m||"00"):""});let n=0;
+for(const k in m){const[eid,d]=k.split("_"),o=S.att2.find(x=>x.id==k)||{},v=m[k],def=lvOn(eid,d)?"إجازة":"حاضر";
+if(v.st!=(o.st||def)||(v.in||"")!=(o.in||"")||(v.out||"")!=(o.out||"")||(v.note||"")!=(o.note||"")){if(v.st=="غائب"&&(o.st||def)!="غائب")notify("absent","تم تسجيل غياب الموظف "+ename(eid)+" يوم "+d);if(v.out&&v.out!=(o.out||""))notify("out","انصراف الموظف "+ename(eid)+" الساعة "+v.out+" ("+d+")");put("att2",{id:k,eid,date:d,st:v.st,in:v.in||"",out:v.out||"",note:v.note||"",fv:o.fv||""});n++}}
+dirty=false;if(!q)toast(n?"تم حفظ "+n+" تعديل ✔":"لا توجد تعديلات جديدة")}
+function selDay(i){V.d=i;document.querySelectorAll(".dc").forEach(el=>el.classList.toggle("sel",el.dataset.d==i));document.querySelectorAll(".dtb").forEach((el,j)=>el.classList.toggle("on",j==i))}
+function togH(d){saveWeek(1);isHol(d)?del("hol",d):put("hol",{id:d});go(tab)}
+function grid(g){const t=g?"grd":"att",ds=weekDays(V.y,V.m,V.w),L=S.emps.filter(e=>!!e.guard==g);
+return `<div class="card"><div class="ch"><h2>👥 ${g?"حضور وغياب الحراس":"الحضور والغياب"}</h2><div class="sel">
+<select onchange="saveWeek(1);V.y=+this.value;go(tab)">${[2025,2026,2027,2028,2029,2030].map(y=>`<option ${y==V.y?"selected":""}>${y}</option>`).join("")}</select>
+<select onchange="saveWeek(1);V.m=+this.value-1;V.w=1;go(tab)">${[1,2,3,4,5,6,7,8,9,10,11,12].map(m=>`<option value="${m}" ${m==V.m+1?"selected":""}>شهر ${m}</option>`).join("")}</select>
+<select onchange="saveWeek(1);V.w=+this.value;go(tab)">${Array.from({length:nw(V.y,V.m)},(_,i)=>`<option value="${i+1}" ${i+1==V.w?"selected":""}>الأسبوع ${i+1}</option>`).join("")}</select></div>
+<div class="acts"><button class="bt o" onclick="printWeek('${t}')">🖨️ طباعة</button><button class="bt b" onclick="addEmp(${g})">➕ إضافة ${g?"حارس":"موظف"}</button><button class="bt gr" onclick="saveWeek()">💾 حفظ التغييرات</button></div></div>
+<div class="hol"><b>🏖️ تحديد عطلة رسمية للأسبوع:</b><div>${ds.map((d,i)=>`<span class="hc ${isHol(d)?"on":""}" onclick="togH('${d}')">⊗ ${DN[i]}</span>`).join("")}</div></div>
+<div class="dtabs">${DN.map((n,i)=>`<button class="dtb ${i==V.d?"on":""}" onclick="selDay(${i})">${n}<small>${ds[i].slice(5)}</small></button>`).join("")}</div>
+<div class="tw"><table class="gt wk" oninput="dirty=true"><tr><th class="nmh">اسم ${g?"الحارس":"الموظف"}</th>${ds.map((d,i)=>`<th class="dc ${i==V.d?"sel":""}" data-d="${i}">${DN[i]}<small>${d.slice(5)}</small></th>`).join("")}<th>إجراء</th></tr>${L.map((e,i)=>`<tr><td class="nm">${i+1}. ${esc(e.name)}${fvT(e.id)?`<small class="fvb">✔ تم التحقق من بصمة الوجه ${f12(fvT(e.id))}</small>`:""}</td>${ds.map((d,j)=>cell(e,d,j)).join("")}<td><button class="tr" onclick="delE('${e.id}')">🗑</button></td></tr>`).join("")||`<tr><td colspan="7" class="mu">لا يوجد — اضغط «إضافة»</td></tr>`}</table></div></div>`}
+// ===== العناوين / الموظفون =====
+function addEmp(g){const n=(prompt(g?"اسم الحارس":"اسم الموظف")||"").trim();if(!n)return;put("emps",{id:uid(),name:n,job:prompt("العنوان الوظيفي")||"",guard:!!g});go(tab)}
+function upE(id,f,v){const e=S.emps.find(x=>x.id==id);if(e){e[f]=v;put("emps",e)}}
+function delE(id){if(confirm("حذف الموظف؟")){del("emps",id);go(tab)}}
+// ===== الشاشات =====
+const VIEWS={
+att(){return grid(false)},grd(){return grid(true)},
+emp(){return `<div class="card"><div class="ch"><h2>🪪 العناوين الوظيفية</h2><div class="acts"><button class="bt b" onclick="addEmp(false)">➕ إضافة موظف</button><button class="bt o" onclick="addEmp(true)">➕ إضافة حارس</button></div></div><div class="tw"><table class="gt" style="min-width:600px"><tr><th>#</th><th>الاسم</th><th>العنوان الوظيفي</th><th>النوع</th><th>بصمة وجه</th><th></th></tr>${S.emps.map((e,i)=>`<tr><td>${i+1}</td><td><input value="${esc(e.name)}" onchange="upE('${e.id}','name',this.value)"></td><td><input value="${esc(e.job)}" onchange="upE('${e.id}','job',this.value)"></td><td>${e.guard?"حارس":"موظف"}</td><td>${e.face2||e.face?"✔":"—"}</td><td><button class="tr" onclick="delE('${e.id}')">🗑</button></td></tr>`).join("")}</table></div></div>`},
+lv(){return `<div class="card"><h2>🏖️ المجازون اليوم</h2>${onLeave()}</div>
+<div class="card"><h2>تسجيل إجازة</h2><div class="row"><select id="le">${empOpts()}</select><select id="lk">${Object.entries(KIND).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select><input id="la" type="number" min="1" value="1" placeholder="العدد (أيام/ساعات)"><input id="ld" type="date" value="${today()}"><select id="ls"><option value="">الموظف البديل (اختياري)</option>${empOpts()}</select></div><button class="bt b" onclick="addL()">حفظ</button><p class="mu">كل 3 ساعات زمنية = يوم، ولكل موظف 4 أيام شهرياً.</p></div>
+<div class="card"><h2>رصيد الإجازة هذا الشهر</h2><div class="tw"><table class="lt"><tr><th>الموظف</th><th>المستهلك</th><th>المتبقي</th><th>رصيد؟</th></tr>${S.emps.map(e=>{const b=bal(e.id);return `<tr><td>${esc(e.name)}</td><td>${used(e.id,today().slice(0,7)).toFixed(1)} يوم</td><td>${b.toFixed(1)} يوم</td><td class="${b>0?"ok":"no"}">${b>0?"نعم ✔":"لا ✖"}</td></tr>`}).join("")||"<tr><td>لا يوجد موظفون</td></tr>"}</table></div></div>
+<div class="card"><h2>سجل الإجازات</h2>${bar('lv')}<div class="tw"><table class="lt"><tr><th>التاريخ</th><th>الموظف</th><th>النوع</th><th>المدة</th><th>البديل</th><th>رصيد الشهر</th><th>بواسطة</th><th></th></tr>${S.lv.filter(l=>inR(l.date,PER.lv)).slice().reverse().map(l=>{const b=bal(l.eid,l.date.slice(0,7));return `<tr><td>${l.date}</td><td>${esc(ename(l.eid))}</td><td>${KIND[l.kind]}</td><td>${l.kind=="hourly"?l.amt+" ساعة":(DAYS[l.kind]||l.amt)+" يوم"}</td><td>${l.sub?esc(ename(l.sub)):"—"}</td><td class="${b>0?"ok":"no"}">${b>0?"لديه رصيد":"لا رصيد"}</td><td>${esc(l.by||"")}</td><td><button class="bt d" onclick="del('lv','${l.id}');go('lv')">حذف</button></td></tr>`}).join("")}</table></div></div>`},
+mov(){return `<div class="card"><h2>🚗 تسجيل حركة لجنة خارج الدائرة</h2><div class="row"><input id="mc" placeholder="اسم / عنوان اللجنة"><input id="mp" placeholder="جهة الذهاب (المكان)"><input id="md" type="date" value="${today()}"><input id="mo" type="time" value="${nowT()}"><input id="mb" type="time" title="وقت العودة"></div><input id="mt" placeholder="المهمة / الغرض من الحركة" style="margin-bottom:10px"><div class="chips">${S.emps.map(e=>`<label class="chip"><input type="checkbox" name="mm" value="${esc(e.name)}">${esc(e.name)}</label>`).join("")||`<span class="mu">أضف موظفين أولاً</span>`}</div><button class="bt b" onclick="addM()">حفظ الحركة</button><p class="mu">اترك «العودة» فارغاً، ثم اضغط «تسجيل العودة» عند رجوع اللجنة.</p></div>
+<div class="card">${bar('mov')}<div class="tw"><table class="lt"><tr><th>التاريخ</th><th>اللجنة</th><th>الأعضاء</th><th>الجهة</th><th>المهمة</th><th>الخروج</th><th>العودة</th><th>بواسطة</th><th></th></tr>${S.mov.filter(m=>inR(m.date,PER.mov)).slice().reverse().map(m=>`<tr><td>${m.date}</td><td>${esc(m.com)}</td><td style="white-space:normal">${esc(m.mem||"—")}</td><td>${esc(m.place||"—")}</td><td style="white-space:normal">${esc(m.task||"—")}</td><td>${m.out||"—"}</td><td>${m.back||`<button class="bt s" onclick="retM('${m.id}')">تسجيل العودة</button>`}</td><td>${esc(m.by||"")}</td><td><button class="bt d" onclick="del('mov','${m.id}');go('mov')">حذف</button></td></tr>`).join("")}</table></div></div>`},
+nt(){return `<div class="card"><h2>إضافة ملاحظة / مطالعة</h2><div class="row"><select id="ne"><option value="">عامة</option>${empOpts()}</select><input id="nd" type="date" value="${today()}"><input id="nx" placeholder="نص الملاحظة"></div><button class="bt b" onclick="addN()">حفظ</button></div>
+<div class="card">${bar('nt')}</div>${paperHTML('nt',true)}`},
+face(){return `<div class="card"><h2>تسجيل الحضور ببصمة الوجه</h2><video id="vid" autoplay playsinline muted></video><canvas id="cv" hidden></canvas><div class="row" style="margin-top:10px"><select id="fe">${empOpts()}</select></div>
+<div class="acts"><button class="bt s" onclick="startCam()">📷 تشغيل الكاميرا</button><label class="bt s">📸 التقاط صورة<input id="fi" type="file" accept="image/*" capture="user" hidden onchange="fileSig(this)"></label><button class="bt b" onclick="faceVerify()">✅ تسجيل حضور بالوجه</button><button class="bt o" onclick="faceEnroll()">📸 تسجيل وجه الموظف</button></div><p id="fm" class="mu"></p>
+<p id="fn" class="mu" style="font-size:12px"></p></div>`}};
+// ===== عمليات =====
+function addL(){if(!$("le").value)return;const r={id:uid(),eid:$("le").value,kind:$("lk").value,amt:+$("la").value||1,date:$("ld").value,sub:$("ls").value==$("le").value?"":$("ls").value};put("lv",r);notify("leave","تم تسجيل إجازة "+KIND[r.kind]+" للموظف "+ename(r.eid)+" ابتداءً من "+r.date+(r.sub?" والبديل: "+ename(r.sub):""));go("lv")}
+function addN(){const t=$("nx").value.trim();if(!t)return;put("notes",{id:uid(),eid:$("ne").value,date:$("nd").value,text:t});notify("note","ملاحظة جديدة من "+INFO[ri].t+": "+t.slice(0,80));go("nt")}
+function addM(){const c=$("mc").value.trim();if(!c)return;const mem=[...document.querySelectorAll("input[name=mm]:checked")].map(x=>x.value).join("، ");put("mov",{id:uid(),date:$("md").value,com:c,place:$("mp").value,task:$("mt").value,out:$("mo").value,back:$("mb").value,mem});notify("move","خروج لجنة «"+c+"» ("+(mem||"بدون أعضاء")+") إلى "+($("mp").value||"—")+" الساعة "+($("mo").value||nowT()));go("mov")}
+function retM(id){const m=S.mov.find(x=>x.id==id);if(m){m.back=nowT();put("mov",m);notify("move","عودة لجنة «"+m.com+"» الساعة "+m.back);go("mov")}}
+async function chPw(){const p=prompt("اكتب الرمز السري الجديد (6 أحرف/أرقام على الأقل)");if(!p)return;if(p.length<6){alert("الرمز قصير: 6 على الأقل");return}try{await firebase.auth().currentUser.updatePassword(p);toast("تم تغيير الرمز ✔")}catch(e){alert("تعذر التغيير ("+(e.code||e.message)+"). اخرج وادخل من جديد ثم أعد المحاولة")}}
+function lockApp(){firebase.auth().signOut().finally(()=>location.reload())}
+// ===== الكاميرا =====
+function fileSig(i){const f=i.files[0];if(!f)return;const im=new Image();im.onload=()=>{IMG=im;$("fm").textContent="تم تحميل الصورة: اختر الآن تسجيل الوجه أو تسجيل الحضور"};im.src=URL.createObjectURL(f)}
+async function startCam(){const m=$("fm");try{if(!navigator.mediaDevices)throw{name:"NoHttps"};stopCam();stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user"},audio:false});const v=$("vid");v.srcObject=stream;v.setAttribute("playsinline","");await v.play();m.textContent="الكاميرا تعمل ✔"}catch(e){stream=null;m.textContent={NotAllowedError:"الكاميرا محجوبة: اسمح بها للموقع من إعدادات المتصفح",NotFoundError:"لا توجد كاميرا في هذا الجهاز",NoHttps:"افتح الموقع عبر https"}[e.name]||"تعذر فتح الكاميرا، استخدم زر التقاط صورة"}}
+function stopCam(){if(stream)stream.getTracks().forEach(t=>t.stop());stream=null}
+function sig(el){const c=$("cv");c.width=c.height=16;const x=c.getContext("2d");x.drawImage(el||$("vid"),0,0,16,16);const d=x.getImageData(0,0,16,16).data,o=[];for(let i=0;i<d.length;i+=4)o.push((d[i]+d[i+1]+d[i+2])/3);const m=o.reduce((a,b)=>a+b)/o.length;return o.map(v=>Math.round(v-m))}
+const FACE_BASE="/qaimqamiya-hr-system/models";
+let FM=false,FL=null;
+function loadFace(){const n=()=>$("fn");if(FM){n().textContent="✅ التعرف الحقيقي على الوجه جاهز";return}if(typeof faceapi=="undefined"){n().textContent="⚠️ ملف face-api.min.js غير موجود: يعمل التعرف التقريبي";return}n().textContent="⏳ جارٍ تحميل نماذج التعرف...";
+FL=FL||Promise.all([faceapi.nets.tinyFaceDetector.loadFromUri(FACE_BASE),faceapi.nets.faceLandmark68Net.loadFromUri(FACE_BASE),faceapi.nets.faceRecognitionNet.loadFromUri(FACE_BASE)]);
+FL.then(()=>{FM=true;if(n())n().textContent="✅ التعرف الحقيقي على الوجه جاهز"}).catch(()=>{FL=null;if(n())n().textContent="⚠️ تعذر تحميل النماذج: يعمل التعرف التقريبي"})}
+async function desc(el){if(el.tagName=="VIDEO"&&el.readyState<2)return null;const r=await faceapi.detectSingleFace(el,new faceapi.TinyFaceDetectorOptions({inputSize:320,scoreThreshold:.5})).withFaceLandmarks().withFaceDescriptor();return r?r.descriptor:null}
+async function faceEnroll(){const e=S.emps.find(x=>x.id==$("fe").value),el=stream?$("vid"):IMG,m=$("fm");if(!e||!el){m.textContent="اختر الموظف وشغّل الكاميرا أو التقط صورة أولاً";return}
+if(FM){m.textContent="⏳ جارٍ تحليل الوجه...";const d=await desc(el);if(!d){m.textContent="❌ لم يُكتشف وجه واضح، قرّب الوجه وحسّن الإضاءة";return}e.face2=Array.from(d).map(x=>+x.toFixed(4));put("emps",e);m.textContent="✅ تم تسجيل وجه "+e.name;return}
+e.face=sig(el);put("emps",e);m.textContent="تم تسجيل وجه "+e.name+" (طريقة تقريبية)"}
+async function faceVerify(){const el=stream?$("vid"):IMG,m=$("fm");if(!el){m.textContent="شغّل الكاميرا أو التقط صورة أولاً";return}let best=null,bd=1e9,ok=false;
+if(FM){m.textContent="⏳ جارٍ التعرف...";const d=await desc(el);if(!d){m.textContent="❌ لم يُكتشف وجه واضح";return}S.emps.filter(e=>e.face2).forEach(e=>{const x=faceapi.euclideanDistance(d,e.face2);if(x<bd){bd=x;best=e}});ok=best&&bd<0.5}
+else{const s=sig(el);S.emps.filter(e=>e.face).forEach(e=>{const x=e.face.reduce((a,v,i)=>a+Math.abs(v-s[i]),0)/256;if(x<bd){bd=x;best=e}});ok=best&&bd<25}
+if(ok){const k=best.id+"_"+today(),o=S.att2.find(x=>x.id==k)||{};put("att2",{id:k,eid:best.id,date:today(),st:"حاضر",in:o.in||nowT(),out:o.out||"",note:o.note||"",fv:nowT()});m.textContent="✅ تم التحقق من بصمة الوجه: "+best.name+" — سُجّل حاضراً";toast("✅ "+best.name+": تم التحقق من بصمة الوجه وسُجّل حاضراً",4000)}else m.textContent="❌ لم يتم التعرف على الوجه"}
+// ===== الإشعارات =====
+const CID=uid();let T_LOGIN=0,NSEEN=0;const NI={absent:"🚫",out:"🚪",move:"🚗",leave:"🏖️",note:"📝"};
+function notify(type,text){if(!DB)return;const r={id:uid(),ts:Date.now(),type,text,cid:CID,by:role,who:INFO[ri].n.join(" / ")};DB.collection("notif").doc(r.id).set(r).catch(()=>{})}
+function beep(){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.value=.08;o.start();o.stop(c.currentTime+.25)}catch(e){}}
+function popN(n){toast((NI[n.type]||"🔔")+" "+n.text+" — "+n.by,6000);beep();if("Notification" in window&&Notification.permission=="granted"){try{new Notification("قائمقامية قضاء السماوة",{body:n.text+" — "+n.by,tag:n.id})}catch(e){}}upBell()}
+function upBell(){const b=$("bc");if(!b)return;const c=S.notif.filter(n=>n.ts>NSEEN&&n.cid!=CID).length;b.hidden=!c;b.textContent=c}
+function openN(){NSEEN=Date.now();try{localStorage.setItem("nseen",NSEEN)}catch(e){}upBell();$("nl").innerHTML=S.notif.slice(0,50).map(n=>`<div class="ni"><span>${NI[n.type]||"🔔"}</span><div><b>${esc(n.text)}</b><small>${esc(n.by||"")} — ${esc(n.who||"")} · ${new Date(n.ts).toLocaleString("ar")}</small></div></div>`).join("")||`<p class="mu">لا توجد إشعارات بعد</p>`;$("np").hidden=false}
+const VAPID="BEqQTOb9_saWUHWggUHEyslQbUuq8eiKuQMfXy1B-xh7MmCGpc_SvpvtTWgEmA-M7Fr1Zhwdr3gSNgBuvwU5zog";
+async function enablePush(silent){try{if(!("Notification" in window)||!("serviceWorker" in navigator)||!firebase.messaging.isSupported())throw 0;
+if(Notification.permission!="granted"){if(silent)return;const p=await Notification.requestPermission();if(p!="granted"){toast("لم يتم السماح بالإشعارات");return}}
+const reg=await navigator.serviceWorker.register("firebase-messaging-sw.js");const tk=await firebase.messaging().getToken({vapidKey:VAPID,serviceWorkerRegistration:reg});if(!tk)throw 0;
+if(DB)DB.collection("tokens").doc(tk).set({id:tk,token:tk,cid:CID,ri,by:role,ts:Date.now()}).catch(()=>{});if(!silent)toast("تم تفعيل الإشعارات على هذا الجهاز ✔")}catch(e){if(!silent)toast("تعذر تفعيل إشعارات الخلفية على هذا المتصفح")}}
+function askNotif(){enablePush(false)}
+function saveGen(v){put("meta",{id:"gen",text:v});if(v.trim())notify("note",`ملاحظة عامة جديدة من ${INFO[ri].t}: ${v.slice(0,80)}`)}
+// ===== الدخول والتنقل =====
+
+$("roles").innerHTML=ROLES.map((r,i)=>`<label><input type="radio" name="r" value="${r}" ${i?"":"checked"}> ${r}</label>`).join("");
+async function login(){const i=ROLES.indexOf(document.querySelector("input[name=r]:checked").value);
+try{await firebase.auth().signInWithEmailAndPassword(KEYS[i]+"@hr.local",$("pin").value)}catch(e){$("err").textContent="الرمز غير صحيح أو تعذر الاتصال ("+(e.code||e.message)+")";return}
+ri=i;role=ROLES[i];T_LOGIN=Date.now();NSEEN=+localStorage.getItem("nseen")||T_LOGIN;$("lock").hidden=true;$("app").hidden=false;$("dt").textContent=INFO[i].t;$("dn").textContent=INFO[i].n.join(" / ");$("gen").value=genText();nav();net();enablePush(true);go("att")}
+function nav(){$("nav").innerHTML=TABS.map(t=>`<button class="tb ${t[0]==tab?"on":""}" onclick="saveWeek(1);go('${t[0]}')">${t[1]}</button>`).join("")}
+function go(t){tab=t;dirty=false;nav();stopCam();$("v").innerHTML=VIEWS[t]();if(t=="face")loadFace()}
+</script></body></html>
